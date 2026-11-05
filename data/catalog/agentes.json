@@ -1,0 +1,1441 @@
+{
+ "meta": {
+  "dataset": "catalog-agents-es",
+  "language": "es-ES",
+  "source": "valorant-api.com (catálogo comunitario, no afiliado a Riot Games)",
+  "source_url": "https://valorant-api.com/v1/agents?isPlayableCharacter=true&language=es-ES",
+  "riot_version": "13.09.00.5777412",
+  "riot_branch": "release-13.09",
+  "fetched_at": "2026-10-29T00:24:33+00:00",
+  "license": "Datos e imágenes de Riot Games; uso local educativo; redistribución no confirmada",
+  "runtime_network": false
+ },
+ "roles": {
+  "Controlador": {
+   "name": "Controlador",
+   "description": "Los controladores se especializan en dividir terrenos peligrosos en varias zonas para que su equipo pueda encargarse del resto.",
+   "agents": [
+    "astra",
+    "brimstone",
+    "clove",
+    "harbor",
+    "miks",
+    "omen",
+    "viper"
+   ]
+  },
+  "Iniciador": {
+   "name": "Iniciador",
+   "description": "Los iniciadores se centran en servirse de ángulos inusuales para ayudar a su equipo a adentrarse en territorios clave y alejar a los defensores.",
+   "agents": [
+    "breach",
+    "fade",
+    "gekko",
+    "kayo",
+    "skye",
+    "sova",
+    "tejo"
+   ]
+  },
+  "Centinela": {
+   "name": "Centinela",
+   "description": "Los centinelas son expertos en defensa que se centran en bloquear áreas y vigilar los flancos tanto durante las rondas de ataque como en las de defensa.",
+   "agents": [
+    "chamber",
+    "cypher",
+    "deadlock",
+    "killjoy",
+    "sage",
+    "veto",
+    "vyse"
+   ]
+  },
+  "Duelista": {
+   "name": "Duelista",
+   "description": "Los duelistas son asesinos autosuficientes que, gracias a sus habilidades y destrezas, suelen conseguir iniciar enfrentamientos y anotarse muchos asesinatos.",
+   "agents": [
+    "hush",
+    "iso",
+    "jett",
+    "neon",
+    "phoenix",
+    "raze",
+    "reyna",
+    "waylay",
+    "yoru"
+   ]
+  }
+ },
+ "agents": [
+  {
+   "name": "Astra",
+   "slug": "astra",
+   "role": "Controlador",
+   "role_en": "Controller",
+   "role_description": "Los controladores se especializan en dividir terrenos peligrosos en varias zonas para que su equipo pueda encargarse del resto.",
+   "description": "Astra, la agente ghanesa, controla las energías del cosmos para dar forma al campo de batalla a su antojo. Con pleno dominio de su forma astral y un gran talento para la anticipación estratégica, siempre va eones por delante de los movimientos de sus enemigos.",
+   "portrait_full": "/static/assets/agentes/completo/astra.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Pozo gravitatorio",
+     "description": "ACTIVA una estrella para crear una zona que atrae a todos los jugadores hacia el centro, explota y aplica vulnerabilidad a todos los jugadores.",
+     "icon": "/static/assets/habilidades/astra-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Pulso nova",
+     "description": "ACTIVA una estrella para detonarla y conmocionar a todos los jugadores alcanzados.",
+     "icon": "/static/assets/habilidades/astra-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Nebulosa",
+     "description": "ACTIVA una estrella para transformarla en una nube de humo.",
+     "icon": "/static/assets/habilidades/astra-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Separación cósmica",
+     "description": "ENTRA en Forma astral. Utiliza el DISPARO ALTERNATIVO para EQUIPAR Separación cósmica. DISPARA para colocarla, pivota y DISPARA de nuevo para crear un muro indestructible que bloquea el sonido.",
+     "icon": "/static/assets/habilidades/astra-ultimate.webp"
+    },
+    {
+     "slot": "Passive",
+     "key": "P",
+     "key_label": "Pasiva",
+     "name": "Forma astral",
+     "description": "ACTIVA la definitiva para entrar en Forma astral. DISPARA para lanzar estrellas. INTERACTÚA para recuperar una estrella. Recuperar una estrella genera una breve nube de humo.",
+     "icon": "/static/assets/habilidades/astra-passive.webp"
+    }
+   ]
+  },
+  {
+   "name": "Breach",
+   "slug": "breach",
+   "role": "Iniciador",
+   "role_en": "Initiator",
+   "role_description": "Los iniciadores se centran en servirse de ángulos inusuales para ayudar a su equipo a adentrarse en territorios clave y alejar a los defensores.",
+   "description": "Breach, el sueco biónico, dispara una serie de explosiones cinéticas controladas para abrirse paso por el territorio enemigo. Su capacidad para infligir daño y sembrar el caos garantiza que los combates siempre estén de su parte.",
+   "portrait_full": "/static/assets/agentes/completo/breach.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Réplica",
+     "description": "EQUIPA Réplica. DISPARA para enviar una zona a través de un muro, que explota e inflige daño de forma repetida a todos los jugadores.",
+     "icon": "/static/assets/habilidades/breach-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Explosión cegadora",
+     "description": "EQUIPA Explosión cegadora. DISPARA para lanzarla a través de un muro y que explote, lo que ciega a los jugadores que la vean.",
+     "icon": "/static/assets/habilidades/breach-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Falla",
+     "description": "EQUIPA Falla. MANTÉN PULSADO DISPARAR para aumentar la distancia. SUELTA para detonar en una zona que conmociona a todos los jugadores.",
+     "icon": "/static/assets/habilidades/breach-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Fragor imparable",
+     "description": "EQUIPA Fragor imparable. DISPARA para lanzar una ola que conmociona y lanza por los aires a todos los jugadores.",
+     "icon": "/static/assets/habilidades/breach-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Brimstone",
+   "slug": "brimstone",
+   "role": "Controlador",
+   "role_en": "Controller",
+   "role_description": "Los controladores se especializan en dividir terrenos peligrosos en varias zonas para que su equipo pueda encargarse del resto.",
+   "description": "De origen estadounidense, Brimstone cuenta con un arsenal de órbita que garantiza que su equipo siempre vaya por delante. Su capacidad para aportar herramientas de utilidad de una forma segura y precisa lo convierte en un comandante de primera línea sin igual.",
+   "portrait_full": "/static/assets/agentes/completo/brimstone.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Baliza estimulante",
+     "description": "Lanza una Baliza estimulante AL INSTANTE. Al aterrizar, crea una zona que otorga un estimulante de combate y velocidad a los aliados.",
+     "icon": "/static/assets/habilidades/brimstone-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Incendiario",
+     "description": "EQUIPA Incendiario. DISPARA para lanzarlo. Al aterrizar, crea una zona que inflige daño a todos los jugadores.",
+     "icon": "/static/assets/habilidades/brimstone-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Cortina de humo",
+     "description": "EQUIPA un mapa táctico. DISPARA para establecer las ubicaciones del humo. Utiliza el DISPARO ALTERNATIVO para lanzar el humo.",
+     "icon": "/static/assets/habilidades/brimstone-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Golpe orbital",
+     "description": "EQUIPA un mapa táctico. DISPARA para lanzar un Golpe orbital en una ubicación, lo que inflige una gran cantidad de daño a lo largo del tiempo a todos los jugadores.",
+     "icon": "/static/assets/habilidades/brimstone-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Chamber",
+   "slug": "chamber",
+   "role": "Centinela",
+   "role_en": "Sentinel",
+   "role_description": "Los centinelas son expertos en defensa que se centran en bloquear áreas y vigilar los flancos tanto durante las rondas de ataque como en las de defensa.",
+   "description": "El diseñador de armas francés, siempre bien vestido y bien pertrechado, expulsa a los agresores con precisión letal. Chamber aprovecha su arsenal personalizado para resistir, elimina enemigos a distancia y crea la contingencia perfecta para cada plan.",
+   "portrait_full": "/static/assets/agentes/completo/chamber.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Marca registrada",
+     "description": "EQUIPA una Marca registrada destructible. DISPARA para colocarla. Se activa cuando hay cerca enemigos visibles dentro del alcance y crea una zona que ralentiza a todos los jugadores. Se puede recuperar.",
+     "icon": "/static/assets/habilidades/chamber-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Cazador de cabezas",
+     "description": "EQUIPA Cazador de cabezas. DISPARA para usarlo. Utiliza el DISPARO ALTERNATIVO para apuntar con la mira.",
+     "icon": "/static/assets/habilidades/chamber-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Rendez-vous",
+     "description": "EQUIPA un Rendez-vous destructible. DISPARA para colocarlo. Mientras estés dentro del alcance, REACTIVA la habilidad para teleportarte al instante hasta él. Se puede recuperar.",
+     "icon": "/static/assets/habilidades/chamber-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Tour de force",
+     "description": "ACTIVA para acceder a un fusil de francotirador que inflige daño letal con disparos directos a la parte superior del cuerpo. DISPARA para usarlo. Utiliza el DISPARO ALTERNATIVO para apuntar con la mira. Al conseguir un asesinato, creas una zona que ralentiza a todos los jugadores.",
+     "icon": "/static/assets/habilidades/chamber-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Clove",
+   "slug": "clove",
+   "role": "Controlador",
+   "role_en": "Controller",
+   "role_description": "Los controladores se especializan en dividir terrenos peligrosos en varias zonas para que su equipo pueda encargarse del resto.",
+   "description": "Le agente escocese Clove no para de liarla, tanto en el fragor de la batalla como en el frío abrazo de la muerte. Le joven inmortal trae de cabeza a sus enemigos incluso desde el más allá, porque saben que en cualquier momento podría volver al mundo de los vivos.",
+   "portrait_full": "/static/assets/agentes/completo/clove.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Chute de energía",
+     "description": "ACTÍVALA sobre un enemigo muerto al que hayas dañado o asesinado para obtener velocidad y sobrecuración.",
+     "icon": "/static/assets/habilidades/clove-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Tejemaneje",
+     "description": "EQUIPA Tejemaneje. DISPARA para lanzarlo. Explota al aterrizar y aplica declive a todos los jugadores.",
+     "icon": "/static/assets/habilidades/clove-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Treta",
+     "description": "EQUIPA un mapa táctico. DISPARA para colocar las ubicaciones del humo. Utiliza el DISPARO ALTERNATIVO para lanzar el humo. Mientras Clove está fuera de combate, puede acceder a Treta para lanzar nubes de humo breves.",
+     "icon": "/static/assets/habilidades/clove-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "No me voy",
+     "description": "Al morir, ACTIVA la habilidad para canalizar una autorresurrección. Durante la canalización, Clove es intangible. REACTIVA la habilidad para terminar la canalización antes de tiempo. Tras resucitar, consigue un asesinato o una asistencia para seguir con vida.",
+     "icon": "/static/assets/habilidades/clove-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Cypher",
+   "slug": "cypher",
+   "role": "Centinela",
+   "role_en": "Sentinel",
+   "role_description": "Los centinelas son expertos en defensa que se centran en bloquear áreas y vigilar los flancos tanto durante las rondas de ataque como en las de defensa.",
+   "description": "Cypher es un experto en información de Marruecos que se especializa en redes de vigilancia y es capaz de seguirle la pista al enemigo constantemente. No hay secreto a salvo ni maniobra que pase desapercibida. Cypher siempre está alerta.",
+   "portrait_full": "/static/assets/agentes/completo/cypher.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Cable trampa",
+     "description": "EQUIPA un Cable trampa destructible. DISPARA para colocar un cable entre superficies. Cable trampa se camufla tras colocarlo. Se activa cuando los enemigos entran en contacto, lo que los ancla y, tras un breve lapso, los revela si no destruyen Cable trampa. Se puede recoger.",
+     "icon": "/static/assets/habilidades/cypher-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Prisión cibernética",
+     "description": "Lanza una Prisión cibernética AL INSTANTE. INTERACTÚA para crear un cilindro que bloquea la visión y que reproduce una señal de audio cuando los enemigos entran en contacto con él. Se puede recoger durante la FASE DE COMPRA.",
+     "icon": "/static/assets/habilidades/cypher-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Cámara espía",
+     "description": "EQUIPA una Cámara espía destructible. DISPARA para colocarla. Cámara espía se camufla tras colocarla. REACTIVA la habilidad para controlarla. DISPARA para lanzar un dardo que revela brevemente a los enemigos alcanzados hasta que se lo quitan. Se puede recoger.",
+     "icon": "/static/assets/habilidades/cypher-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Hurto neuronal",
+     "description": "ACTIVA sobre un enemigo muerto seleccionado. Tras un breve lapso, revela brevemente a los enemigos con vida dos veces.",
+     "icon": "/static/assets/habilidades/cypher-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Deadlock",
+   "slug": "deadlock",
+   "role": "Centinela",
+   "role_en": "Sentinel",
+   "role_description": "Los centinelas son expertos en defensa que se centran en bloquear áreas y vigilar los flancos tanto durante las rondas de ataque como en las de defensa.",
+   "description": "Deadlock, la agente noruega, despliega un surtido de avanzados nanocables para defender el campo de batalla de cualquier asalto, por letal que sea. Nadie escapa a su atenta mirada ni sobrevive a su implacable ferocidad.",
+   "portrait_full": "/static/assets/agentes/completo/deadlock.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Malla barrera",
+     "description": "EQUIPA Malla barrera. DISPARA para lanzarla. Al aterrizar, crea indicadores que se pueden destruir y se fortifican tras un breve periodo de tiempo. Estos indicadores forman barreras que bloquean el movimiento de los jugadores.",
+     "icon": "/static/assets/habilidades/deadlock-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Sensor sónico",
+     "description": "EQUIPA un Sensor sónico destructible. DISPARA para colocarlo. Se activa al detectar ruido enemigo cerca y crea una zona que conmociona a todos los jugadores. Sensor sónico se camufla tras colocarlo. Se puede recoger.",
+     "icon": "/static/assets/habilidades/deadlock-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Red de gravedad",
+     "description": "EQUIPA Red de gravedad. DISPARA para lanzarla. Utiliza el DISPARO ALTERNATIVO para tirarla. Explota al aterrizar y obliga a todos los jugadores a agacharse y moverse lentamente hasta que se quiten la red.",
+     "icon": "/static/assets/habilidades/deadlock-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Aniquilación",
+     "description": "EQUIPA Aniquilación. DISPARA para lanzar una zona que atrapa al primer enemigo alcanzado en un capullo destructible y lo arrastra por un camino para infligirle daño letal a menos que se destruya el capullo.",
+     "icon": "/static/assets/habilidades/deadlock-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Fade",
+   "slug": "fade",
+   "role": "Iniciador",
+   "role_en": "Initiator",
+   "role_description": "Los iniciadores se centran en servirse de ángulos inusuales para ayudar a su equipo a adentrarse en territorios clave y alejar a los defensores.",
+   "description": "Fade, la cazarrecompensas turca, controla el poder de las pesadillas para poner al descubierto los secretos de los enemigos. Ataviada con el propio terror, da caza a sus objetivos y revela sus miedos más profundos, para después acabar con ellos en la oscuridad.",
+   "portrait_full": "/static/assets/agentes/completo/fade.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Acechador",
+     "description": "EQUIPA un Acechador destructible. DISPARA para lanzarlo hacia adelante. MANTÉN PULSADO DISPARAR para dirigirlo en la dirección de la mira. Persigue al primer enemigo o rastro de terror que ve y limita la visión al impactar.",
+     "icon": "/static/assets/habilidades/fade-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Apresar",
+     "description": "EQUIPA Apresar. DISPARA para lanzarlo. REACTIVA la habilidad para que caiga antes de tiempo. Al aterrizar, ensordece, aplica declive y ancla a los enemigos.",
+     "icon": "/static/assets/habilidades/fade-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Tormento",
+     "description": "EQUIPA un Tormento destructible. DISPARA para lanzarlo. REACTIVA la habilidad para que caiga antes de tiempo. Al aterrizar, marca y revela a los enemigos al alcance que estén en el campo de visión.",
+     "icon": "/static/assets/habilidades/fade-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Ocaso",
+     "description": "EQUIPA Ocaso. DISPARA para lanzar una onda que ensordece, aplica declive y marca a los enemigos.",
+     "icon": "/static/assets/habilidades/fade-ultimate.webp"
+    },
+    {
+     "slot": "Passive",
+     "key": "P",
+     "key_label": "Pasiva",
+     "name": "Rastros de terror",
+     "description": "Los enemigos marcados dejan un rastro de terror que revela su ubicación.",
+     "icon": ""
+    }
+   ]
+  },
+  {
+   "name": "Gekko",
+   "slug": "gekko",
+   "role": "Iniciador",
+   "role_en": "Initiator",
+   "role_description": "Los iniciadores se centran en servirse de ángulos inusuales para ayudar a su equipo a adentrarse en territorios clave y alejar a los defensores.",
+   "description": "Gekko, de Los Ángeles, lidera una pequeña pandilla de calamitosas criaturas. Sus colegas toman la delantera para dispersar a los enemigos, mientras que Gekko los persigue para luego reagruparse y repetir el proceso.",
+   "portrait_full": "/static/assets/agentes/completo/gekko.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Mosh",
+     "description": "EQUIPA a Mosh. DISPARA para lanzarlo. Utiliza el DISPARO ALTERNATIVO para tirarlo. Al aterrizar, crea una zona que inflige algo de daño prolongado antes de explotar e infligir mucho daño a todos los jugadores. Vuelve a ser un glóbulo.",
+     "icon": "/static/assets/habilidades/gekko-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Wingman",
+     "description": "EQUIPA un Wingman destructible. DISPARA para lanzarlo hacia adelante. Persigue al primer enemigo que ve y lo conmociona al impactar. Utiliza el DISPARO ALTERNATIVO para que Wingman coloque o desactive la Spike en una zona de colocación objetivo. Vuelve a ser un glóbulo.",
+     "icon": "/static/assets/habilidades/gekko-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Dizzy",
+     "description": "EQUIPA una Dizzy destructible. DISPARA para lanzarla. Dispara plasma a los enemigos en su campo de visión y los ciega. Vuelve a ser un glóbulo.",
+     "icon": "/static/assets/habilidades/gekko-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Thrash",
+     "description": "EQUIPA una Thrash destructible. DISPARA para controlarla. DISPARA de nuevo para que se lance y explote, lo que detiene a todos los jugadores. DISPARA mientras se lanza para que explote antes. Vuelve a ser un glóbulo solo una vez.",
+     "icon": "/static/assets/habilidades/gekko-ultimate.webp"
+    },
+    {
+     "slot": "Passive",
+     "key": "P",
+     "key_label": "Pasiva",
+     "name": "Glóbulo",
+     "description": "Las habilidades de Gekko se transforman en un glóbulo después de usarlas. INTERACTÚA para recuperar los glóbulos cercanos y obtener otra carga tras un breve enfriamiento.",
+     "icon": ""
+    }
+   ]
+  },
+  {
+   "name": "Harbor",
+   "slug": "harbor",
+   "role": "Controlador",
+   "role_en": "Controller",
+   "role_description": "Los controladores se especializan en dividir terrenos peligrosos en varias zonas para que su equipo pueda encargarse del resto.",
+   "description": "Desde las costas de la India, Harbor llega al campo de batalla armado con tecnología ancestral capaz de controlar el agua. Libera espumosos torrentes y demoledoras olas para escudar a sus aliados o machacar a quien se interponga en su camino.",
+   "portrait_full": "/static/assets/agentes/completo/harbor.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Descarga tormentosa",
+     "description": "EQUIPA Descarga tormentosa. DISPARA para lanzarla. Explota al aterrizar, lo que limita la visión y ralentiza a todos los jugadores.",
+     "icon": "/static/assets/habilidades/harbor-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Marea alta",
+     "description": "EQUIPA Marea alta. DISPARA para lanzar hacia delante un muro que bloquea la visión y ralentiza a los jugadores que entren en contacto con él. MANTÉN PULSADO DISPARAR para dirigirla en la dirección de la mira. Utiliza el DISPARO ALTERNATIVO para detenerlo antes de tiempo.",
+     "icon": "/static/assets/habilidades/harbor-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Cala",
+     "description": "ENTRA en las profundidades. REACTIVA la habilidad para lanzar una nube de humo. MANTÉN PULSADO DISPARAR/DISPARO ALTERNATIVO para ajustar la distancia. RECARGA para cambiar de vista. Tras lanzar la habilidad, REACTÍVALA para transformar el humo en un escudo destructible.",
+     "icon": "/static/assets/habilidades/harbor-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Ajuste de cuentas",
+     "description": "EQUIPA Ajuste de cuentas. DISPARA para lanzar hacia delante un muro que limita la visión y ralentiza a los jugadores que entren en contacto con él. REACTIVA la habilidad para detener el muro antes.",
+     "icon": "/static/assets/habilidades/harbor-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Hush",
+   "slug": "hush",
+   "role": "Duelista",
+   "role_en": "Duelist",
+   "role_description": "Los duelistas son asesinos autosuficientes que, gracias a sus habilidades y destrezas, suelen conseguir iniciar enfrentamientos y anotarse muchos asesinatos.",
+   "description": "La agente china Hush utiliza la telequinesis para cerrar los casos más confidenciales. Lucha con precisión y delicadeza, y redirige su utilidad de combate en el aire para desplazar al equipo enemigo antes de suspenderlo en el aire y asestar el golpe de gracia.",
+   "portrait_full": "/static/assets/agentes/completo/hush.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Corriente",
+     "description": "Crea un ancla AL INSTANTE. Si Hush está en el aire, levita brevemente en el sitio. Tras un breve lapso de tiempo, se impulsa hacia ella.",
+     "icon": "/static/assets/habilidades/hush-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Fogonazo",
+     "description": "EQUIPA Fogonazo. DISPARA para lanzarlo. Utiliza el DISPARO ALTERNATIVO para prepararlo. REACTIVA la habilidad para dirigirlo hacia la mira. Explota en cualquier superficie o tras un breve lapso de tiempo y ciega a quienes lo estén mirando.",
+     "icon": "/static/assets/habilidades/hush-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Traslado",
+     "description": "EQUIPA Traslado. DISPARA para lanzarlo. Utiliza el DISPARO ALTERNATIVO para prepararlo. REACTIVA la habilidad para dirigirlo hacia la mira. Explota en cualquier superficie o tras un breve lapso de tiempo, lo que atrae a todos los jugadores hacia el centro y les aplica una conmoción si chocan contra una superficie u otro jugador. Se reinicia cada dos asesinatos.",
+     "icon": "/static/assets/habilidades/hush-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Suspensión",
+     "description": "Prepara Suspensión AL INSTANTE. DISPARA para lanzarla hacia delante y dirígela con la mira. REACTIVA la habilidad o DISPARA de nuevo para detonar y hacer levitar a todos los jugadores.",
+     "icon": "/static/assets/habilidades/hush-ultimate.webp"
+    },
+    {
+     "slot": "Passive",
+     "key": "P",
+     "key_label": "Pasiva",
+     "name": "Telequinesis",
+     "description": "Hush puede recoger armas, la Spike e INTERACTUAR con interruptores desde más lejos.",
+     "icon": "/static/assets/habilidades/hush-passive.webp"
+    }
+   ]
+  },
+  {
+   "name": "Iso",
+   "slug": "iso",
+   "role": "Duelista",
+   "role_en": "Duelist",
+   "role_description": "Los duelistas son asesinos autosuficientes que, gracias a sus habilidades y destrezas, suelen conseguir iniciar enfrentamientos y anotarse muchos asesinatos.",
+   "description": "Iso, el asesino a sueldo chino, entra en un estado de flujo de energía para acabar con sus rivales. Capaz de reconfigurar la energía del ambiente para crear una protección a prueba de balas, avanza concentrado hacia su siguiente duelo a muerte.",
+   "portrait_full": "/static/assets/agentes/completo/iso.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Contingencia",
+     "description": "EQUIPA Contingencia. DISPARA para lanzar un muro indestructible que bloquea la visión. Utiliza el DISPARO ALTERNATIVO para ralentizar el muro.",
+     "icon": "/static/assets/habilidades/iso-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Socavar",
+     "description": "EQUIPA Socavar. DISPARA para lanzarlo hacia adelante. Suprime y aplica vulnerabilidad a todos los jugadores.",
+     "icon": "/static/assets/habilidades/iso-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Disparo doble",
+     "description": "Canaliza la concentración AL INSTANTE. Obtienes un escudo que bloquea daño una vez.",
+     "icon": "/static/assets/habilidades/iso-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Contrato de asesinato",
+     "description": "EQUIPA Contrato de asesinato. DISPARA para lanzar una zona que os arrastra a ti y al primer enemigo alcanzado a un duelo. Canaliza concentración al principio de un duelo.",
+     "icon": "/static/assets/habilidades/iso-ultimate.webp"
+    },
+    {
+     "slot": "Passive",
+     "key": "P",
+     "key_label": "Pasiva",
+     "name": "Concentración",
+     "description": "Con concentración, recarga más rápido y genera orbes de energía destructibles de los enemigos muertos a los que Iso haya infligido daño o asesinado. Cuando se dispara un orbe de energía, otorga un escudo que bloquea daño una vez y restaura la concentración.",
+     "icon": ""
+    }
+   ]
+  },
+  {
+   "name": "Jett",
+   "slug": "jett",
+   "role": "Duelista",
+   "role_en": "Duelist",
+   "role_description": "Los duelistas son asesinos autosuficientes que, gracias a sus habilidades y destrezas, suelen conseguir iniciar enfrentamientos y anotarse muchos asesinatos.",
+   "description": "Jett viene de Corea del Sur y su estilo de lucha ágil y evasivo le permite asumir grandes riesgos. En las refriegas, recorre el terreno en círculos y hace trizas a los enemigos con una rapidez espectacular.",
+   "portrait_full": "/static/assets/agentes/completo/jett.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Borrasca",
+     "description": "Lanza una nube AL INSTANTE. Se convierte en una nube de humo brevemente sobre cualquier superficie o tras un breve lapso de tiempo. MANTÉN PULSADO ACTIVAR para dirigirla en la dirección de la mira.",
+     "icon": "/static/assets/habilidades/jett-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Vendaval",
+     "description": "Se propulsa AL INSTANTE a mucha altura hacia arriba.",
+     "icon": "/static/assets/habilidades/jett-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Viento de cola",
+     "description": "Prepara un deslizamiento AL INSTANTE. REACTIVA la habilidad para deslizarte hacia delante o en la dirección del movimiento. Se reinicia cada dos asesinatos.",
+     "icon": "/static/assets/habilidades/jett-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Tormenta de cuchillas",
+     "description": "Accede AL INSTANTE a cinco cuchillos arrojadizos de gran precisión que infligen daño letal con los impactos directos a la cabeza. DISPARA para lanzarlos. Al conseguir asesinatos, recuperas tus cuchillos. Utiliza el DISPARO ALTERNATIVO para lanzar todos los cuchillos restantes sin que se reinicie el enfriamiento.",
+     "icon": "/static/assets/habilidades/jett-ultimate.webp"
+    },
+    {
+     "slot": "Passive",
+     "key": "P",
+     "key_label": "Pasiva",
+     "name": "Planeo",
+     "description": "MANTÉN PULSADO SALTAR mientras caes para planear.",
+     "icon": "/static/assets/habilidades/jett-passive.webp"
+    }
+   ]
+  },
+  {
+   "name": "KAY/O",
+   "slug": "kayo",
+   "role": "Iniciador",
+   "role_en": "Initiator",
+   "role_description": "Los iniciadores se centran en servirse de ángulos inusuales para ayudar a su equipo a adentrarse en territorios clave y alejar a los defensores.",
+   "description": "KAY/O es una máquina de guerra construida con un único propósito: neutralizar a los radiantes. Su poder para suprimir habilidades enemigas incapacita a sus adversarios, lo que asegura la ventaja para él y sus aliados.",
+   "portrait_full": "/static/assets/agentes/completo/kayo.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "FRAG/mento",
+     "description": "EQUIPA FRAG/mento. DISPARA para lanzar. Utiliza el DISPARO ALTERNATIVO para tirarlo. Explota al aterrizar y emite repetidamente pulsos que infligen daño a todos los jugadores.",
+     "icon": ""
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Unidad/FLASH",
+     "description": "EQUIPA Unidad/FLASH. DISPARA para lanzar. Utiliza el DISPARO ALTERNATIVO para tirarla. Tras un breve lapso de tiempo, explota y ciega a todos los jugadores que la vean.",
+     "icon": ""
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Punto/CERO",
+     "description": "EQUIPA un Punto/CERO destructible. DISPARA para lanzar. Emite pulsos sobre cualquier superficie y suprime a los enemigos al alcance.",
+     "icon": ""
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Cmd/ANULAR",
+     "description": "Otorga sobrecarga AL INSTANTE y emite repetidamente un pulso que suprime a los enemigos al alcance. Sobrecarga otorga un estimulante de combate. Al recibir daño letal, KAY/O queda abatido y se le puede reestabilizar.",
+     "icon": ""
+    }
+   ]
+  },
+  {
+   "name": "Killjoy",
+   "slug": "killjoy",
+   "role": "Centinela",
+   "role_en": "Sentinel",
+   "role_description": "Los centinelas son expertos en defensa que se centran en bloquear áreas y vigilar los flancos tanto durante las rondas de ataque como en las de defensa.",
+   "description": "Killjoy es una brillante agente alemana que se encarga de tomar posiciones clave del campo de batalla con su arsenal de inventos. Si su daño no acaba con los enemigos, su horda de robots ayudarán a su equipo a despejarlos en un abrir y cerrar de ojos.",
+   "portrait_full": "/static/assets/agentes/completo/killjoy.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Nanoenjambre",
+     "description": "EQUIPA un Nanoenjambre destructible. DISPARA para lanzarlo. Utiliza el DISPARO ALTERNATIVO para tirarlo. Nanoenjambre se camufla tras colocarlo. INTERACTÚA para crear una zona que inflige daño a todos los jugadores. Se puede recoger durante la FASE DE COMPRA.",
+     "icon": "/static/assets/habilidades/killjoy-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Bot de alarma",
+     "description": "EQUIPA un Bot de alarma destructible. DISPARA para colocarlo. Bot de alarma se camufla tras colocarlo. Se activa con los enemigos visibles cercanos que estén al alcance. Persigue al primer enemigo que ve, explota y aplica vulnerabilidad. Se puede recuperar.",
+     "icon": "/static/assets/habilidades/killjoy-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Torreta",
+     "description": "EQUIPA una Torreta destructible. Mientras la tengas equipada, REACTIVA la habilidad para cambiar la dirección o MANTÉN PULSADO el DISPARO ALTERNATIVO para rotarla. DISPARA para colocarla. Dispara a los enemigos en el campo de visión. Se puede recuperar.",
+     "icon": "/static/assets/habilidades/killjoy-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Bloqueo",
+     "description": "EQUIPA un Bloqueo destructible. DISPARA para preparar una zona. Tras un breve lapso de tiempo, detiene a los enemigos que se encuentren dentro del alcance.",
+     "icon": "/static/assets/habilidades/killjoy-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Miks",
+   "slug": "miks",
+   "role": "Controlador",
+   "role_en": "Controller",
+   "role_description": "Los controladores se especializan en dividir terrenos peligrosos en varias zonas para que su equipo pueda encargarse del resto.",
+   "description": "Directo desde Croacia, Miks sube al escenario y canaliza energía sónica pura. Con su pasión contagiosa y sus poderes sónicos, reúne a su equipo para avanzar al unísono y seguir el ritmo juntos en el campo de batalla.",
+   "portrait_full": "/static/assets/agentes/completo/miks.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Pulso disonante",
+     "description": "EQUIPA un Pulso disonante destructible. Utiliza el DISPARO ALTERNATIVO para alternar entre conmocionar y curar. DISPARA para lanzarlo. Emite pulsos repetidamente al aterrizar y aplica el efecto seleccionado a todos los jugadores que se encuentren dentro del alcance.",
+     "icon": "/static/assets/habilidades/miks-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Armonizar",
+     "description": "EQUIPA Armonizar. DISPARA a un aliado objetivo para otorgar un estimulante de combate y velocidad a ese aliado y a ti. Al conseguir asesinatos mientras está activa, se reinicia la mejora si los jugadores armonizados siguen vivos. Utiliza el DISPARO ALTERNATIVO para lanzarlo sobre ti mismo sin el reinicio.",
+     "icon": "/static/assets/habilidades/miks-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Onda sonora",
+     "description": "EQUIPA un mapa táctico. DISPARA para colocar las ubicaciones del humo. Utiliza el DISPARO ALTERNATIVO para lanzar el humo.",
+     "icon": "/static/assets/habilidades/miks-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Seísmo de graves",
+     "description": "EQUIPA Seísmo de graves. DISPARA para lanzar una zona que ensordece, repele y ralentiza a todos los jugadores.",
+     "icon": "/static/assets/habilidades/miks-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Neon",
+   "slug": "neon",
+   "role": "Duelista",
+   "role_en": "Duelist",
+   "role_description": "Los duelistas son asesinos autosuficientes que, gracias a sus habilidades y destrezas, suelen conseguir iniciar enfrentamientos y anotarse muchos asesinatos.",
+   "description": "Neon, una agente filipina, se lanza hacia la batalla a una velocidad trepidante, disparando descargas bioeléctricas tan rápido como las genera su cuerpo. Se adelanta para pillar a sus enemigos desprevenidos y acabar con ellos más rápida que el rayo.",
+   "portrait_full": "/static/assets/agentes/completo/neon.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Vía rápida",
+     "description": "Lanza AL INSTANTE dos muros que bloquean la visión y que se extienden hasta chocar contra una superficie.",
+     "icon": "/static/assets/habilidades/neon-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Proyectil electrizante",
+     "description": "Lanza AL INSTANTE un proyectil que rebota una vez. Explota en cada superficie y conmociona a todos los jugadores.",
+     "icon": "/static/assets/habilidades/neon-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Cambio de marcha",
+     "description": "Consume combustible AL INSTANTE para obtener velocidad. REACTIVA la habilidad para cancelarla. Utiliza el DISPARO ALTERNATIVO para deslizarte hacia delante o en la dirección del movimiento. Se reinicia cada dos asesinatos.",
+     "icon": "/static/assets/habilidades/neon-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Sobrecarga",
+     "description": "Recarga AL INSTANTE Cambio de marcha. Accede a un rayo preciso que se puede usar mientras se activa Cambio de marcha. DISPARA para lanzarlo. Al conseguir un asesinato, la barra de combustible se recarga por completo.",
+     "icon": "/static/assets/habilidades/neon-ultimate.webp"
+    },
+    {
+     "slot": "Passive",
+     "key": "P",
+     "key_label": "Pasiva",
+     "name": "Batería",
+     "description": "Recarga la barra de combustible de forma pasiva a lo largo del tiempo.",
+     "icon": ""
+    }
+   ]
+  },
+  {
+   "name": "Omen",
+   "slug": "omen",
+   "role": "Controlador",
+   "role_en": "Controller",
+   "role_description": "Los controladores se especializan en dividir terrenos peligrosos en varias zonas para que su equipo pueda encargarse del resto.",
+   "description": "Omen es un fantasma de tiempos pasados que acecha en las sombras. Es capaz de cegar al enemigo, teleportarse a través del campo de batalla y sembrar el caos y la paranoia mientras sus rivales se preguntan dónde atacará la próxima vez.",
+   "portrait_full": "/static/assets/agentes/completo/omen.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Aparición tenebrosa",
+     "description": "EQUIPA una Aparición tenebrosa. DISPARA para canalizar brevemente y luego teleportarte a la ubicación objetivo.",
+     "icon": "/static/assets/habilidades/omen-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Paranoia",
+     "description": "EQUIPA Paranoia. DISPARA para lanzarla hacia adelante. Limita la visión y ensordece a todos los jugadores.",
+     "icon": "/static/assets/habilidades/omen-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Velo tenebroso",
+     "description": "ENTRA en la visión sombría. REACTIVA la habilidad para lanzar una nube de humo. MANTÉN PULSADO DISPARAR/DISPARO ALTERNATIVO para ajustar la distancia. RECARGA para cambiar de vista.",
+     "icon": "/static/assets/habilidades/omen-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Desde las sombras",
+     "description": "EQUIPA un mapa táctico. DISPARA para empezar a teleportarte a la ubicación seleccionada. Mientras se teletransporta, Omen aparece como una sombra destructible en su destino. REACTIVA la habilidad para cancelarla.",
+     "icon": "/static/assets/habilidades/omen-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Phoenix",
+   "slug": "phoenix",
+   "role": "Duelista",
+   "role_en": "Duelist",
+   "role_description": "Los duelistas son asesinos autosuficientes que, gracias a sus habilidades y destrezas, suelen conseguir iniciar enfrentamientos y anotarse muchos asesinatos.",
+   "description": "Phoenix proviene del Reino Unido y sus poderes estelares salen a relucir con su estilo de combate, que prende fuego al campo de batalla de forma deslumbrante. Con apoyo o en solitario, él es quien decide cuándo y cómo se lucha.",
+   "portrait_full": "/static/assets/agentes/completo/phoenix.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Llamarada",
+     "description": "EQUIPA Llamarada. DISPARA para lanzar un muro de fuego que bloquea la visión e inflige daño a todos los jugadores. MANTÉN PULSADO DISPARAR para dirigirla en la dirección de la mira.",
+     "icon": "/static/assets/habilidades/phoenix-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Combustión",
+     "description": "EQUIPA Combustión. DISPARA para lanzarla. Utiliza el DISPARO ALTERNATIVO para tirarla. Al aterrizar, crea una zona de fuego que inflige daño a todos los jugadores.",
+     "icon": "/static/assets/habilidades/phoenix-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Bola curva",
+     "description": "EQUIPA una Bola curva. DISPARA para lanzarla hacia la izquierda, utiliza el DISPARO ALTERNATIVO para lanzarla hacia la derecha. Tras un breve lapso de tiempo, explota y ciega a todos los jugadores que la vean. Se reinicia cada dos asesinatos.",
+     "icon": "/static/assets/habilidades/phoenix-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Cenizas",
+     "description": "Coloca un marcador en tu ubicación AL INSTANTE. Al recibir daño letal o cuando Cenizas expira, regresa al marcador con la vida al máximo y la misma cantidad de armadura que tenía al activar la habilidad.",
+     "icon": "/static/assets/habilidades/phoenix-ultimate.webp"
+    },
+    {
+     "slot": "Passive",
+     "key": "P",
+     "key_label": "Pasiva",
+     "name": "Fuego interior",
+     "description": "Phoenix se cura al estar de pie en su propio fuego en lugar de sufrir daño.",
+     "icon": ""
+    }
+   ]
+  },
+  {
+   "name": "Raze",
+   "slug": "raze",
+   "role": "Duelista",
+   "role_en": "Duelist",
+   "role_description": "Los duelistas son asesinos autosuficientes que, gracias a sus habilidades y destrezas, suelen conseguir iniciar enfrentamientos y anotarse muchos asesinatos.",
+   "description": "Raze llega desde Brasil con ganas de hacer que todo salte por los aires. Con su estilo de juego basado en la fuerza bruta, destaca a la hora de barrer a grupos de enemigos atrincherados y de despejar áreas estrechas con explosión y sin compasión.",
+   "portrait_full": "/static/assets/agentes/completo/raze.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Bot explosivo",
+     "description": "EQUIPA un Bot explosivo destructible. DISPARA para lanzarlo hacia adelante. Persigue al primer enemigo que ve, explota al impactar e inflige daño a los enemigos.",
+     "icon": "/static/assets/habilidades/raze-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Fardo explosivo",
+     "description": "Lanza AL INSTANTE un Fardo explosivo destructible que se adhiere a las superficies y se arma totalmente tras un breve periodo de tiempo. REACTIVA la habilidad para detonarlo y repeler a todo lo que alcance. Si está totalmente armado, Fardo explosivo también inflige daño a los enemigos.",
+     "icon": "/static/assets/habilidades/raze-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Balas de pintura",
+     "description": "EQUIPA Balas de pintura. DISPARA para lanzarla. Utiliza el DISPARO ALTERNATIVO para tirarla. Tras un breve lapso de tiempo, explota, lo que inflige daño y crea submuniciones, cada una de las cuales inflige daño a todos los jugadores. Se reinicia cada dos asesinatos.",
+     "icon": "/static/assets/habilidades/raze-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Cierratelones",
+     "description": "Prepara AL INSTANTE Cierratelones. DISPARA para lanzarlo. Explota contra cualquier superficie e inflige mucho daño a todos los jugadores.",
+     "icon": "/static/assets/habilidades/raze-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Reyna",
+   "slug": "reyna",
+   "role": "Duelista",
+   "role_en": "Duelist",
+   "role_description": "Los duelistas son asesinos autosuficientes que, gracias a sus habilidades y destrezas, suelen conseguir iniciar enfrentamientos y anotarse muchos asesinatos.",
+   "description": "Desde el corazón de México, Reyna llega para dominar los combates uno contra uno, y cada asesinato que consigue la hace más fuerte. Su potencial es prácticamente infinito, y la destreza individual es el único factor determinante de su éxito.",
+   "portrait_full": "/static/assets/agentes/completo/reyna.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Mirada lasciva",
+     "description": "EQUIPA una Mirada lasciva destructible. DISPARA para enviarla hacia adelante. Tras un breve lapso, se forma y limita la visión de los enemigos que la miren.",
+     "icon": "/static/assets/habilidades/reyna-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Devorar",
+     "description": "Consume un orbe de alma AL INSTANTE para curarte. El exceso de curación se convierte en sobrecuración. Mientras la DEFINITIVA está activa, Devorar se lanza automáticamente.",
+     "icon": "/static/assets/habilidades/reyna-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Despreciar",
+     "description": "Consume AL INSTANTE un orbe de alma para volverte intangible durante un breve periodo de tiempo. REACTIVA la habilidad para cancelar antes de tiempo. Mientras la DEFINITIVA está activa, también obtienes invisibilidad.",
+     "icon": "/static/assets/habilidades/reyna-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Emperatriz",
+     "description": "Obtiene Emperatriz AL INSTANTE. Emperatriz otorga un estimulante de combate, consumo ilimitado de orbes de alma y sobrecuración permanente.",
+     "icon": "/static/assets/habilidades/reyna-ultimate.webp"
+    },
+    {
+     "slot": "Passive",
+     "key": "P",
+     "key_label": "Pasiva",
+     "name": "Vitalidad",
+     "description": "Genera un orbe de alma de los enemigos muertos a los que haya infligido daño o asesinado.",
+     "icon": ""
+    }
+   ]
+  },
+  {
+   "name": "Sage",
+   "slug": "sage",
+   "role": "Centinela",
+   "role_en": "Sentinel",
+   "role_description": "Los centinelas son expertos en defensa que se centran en bloquear áreas y vigilar los flancos tanto durante las rondas de ataque como en las de defensa.",
+   "description": "Originaria de China, Sage destaca a la hora de crear espacios seguros para su equipo allá donde va. Sus capacidades especiales para revivir a compañeros caídos en batalla y para mantener a raya los asaltos enemigos la convierten en la calma en mitad de la tormenta para su equipo.",
+   "portrait_full": "/static/assets/agentes/completo/sage.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Orbe barrera",
+     "description": "EQUIPA un Orbe barrera destructible. Mientras la habilidad esté equipada, REACTIVA la habilidad para girar el muro o MANTÉN PULSADO el DISPARO ALTERNATIVO para rotarlo. DISPARA para colocar un muro destructible que se fortifica tras un breve periodo de tiempo.",
+     "icon": "/static/assets/habilidades/sage-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Orbe de ralentización",
+     "description": "EQUIPA un Orbe de ralentización. DISPARA para lanzarlo. Al aterrizar, crea una zona que ralentiza a todos los jugadores y reproduce una señal de audio cuando los enemigos la atraviesan.",
+     "icon": "/static/assets/habilidades/sage-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Orbe de sanación",
+     "description": "EQUIPA Orbe de sanación. DISPARA a un aliado herido para otorgarle curación. Utiliza el DISPARO ALTERNATIVO para lanzarla sobre ti misma.",
+     "icon": "/static/assets/habilidades/sage-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Resurrección",
+     "description": "EQUIPA Resurrección. DISPARA a un aliado muerto objetivo para resucitarlo.",
+     "icon": "/static/assets/habilidades/sage-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Skye",
+   "slug": "skye",
+   "role": "Iniciador",
+   "role_en": "Initiator",
+   "role_description": "Los iniciadores se centran en servirse de ángulos inusuales para ayudar a su equipo a adentrarse en territorios clave y alejar a los defensores.",
+   "description": "Skye y su manada de bestias se abren paso desde Australia y a través de territorio hostil. Sus creaciones obstaculizan los avances enemigos y su capacidad para curar a los demás se ocupa de que, a su lado, su equipo esté a salvo.",
+   "portrait_full": "/static/assets/agentes/completo/skye.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Reforestación",
+     "description": "EQUIPA Reforestación. MANTÉN PULSADO DISPARAR para curar a los aliados que estén dentro del alcance y del campo de visión. Tiene una reserva de curación limitada. No se puede curar a sí misma.",
+     "icon": "/static/assets/habilidades/skye-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Precursor",
+     "description": "EQUIPA un Precursor destructible. DISPARA para controlarlo. DISPARA de nuevo para que se lance y explote, lo que conmociona a todos los jugadores e inflige daño a los enemigos al impactar directamente.",
+     "icon": "/static/assets/habilidades/skye-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Luz guía",
+     "description": "EQUIPA Luz guía. DISPARA para lanzarla hacia adelante. MANTÉN PULSADO DISPARAR para dirigirla en la dirección de la mira. REACTIVA la habilidad para detonarla y cegar a los jugadores que la vean.",
+     "icon": "/static/assets/habilidades/skye-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Buscadores",
+     "description": "EQUIPA unos Buscadores destructibles. DISPARA para lanzar hasta tres Buscadores. Persigue a los tres enemigos más cercanos, limita su visión y los ralentiza al impactar.",
+     "icon": "/static/assets/habilidades/skye-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Sova",
+   "slug": "sova",
+   "role": "Iniciador",
+   "role_en": "Initiator",
+   "role_description": "Los iniciadores se centran en servirse de ángulos inusuales para ayudar a su equipo a adentrarse en territorios clave y alejar a los defensores.",
+   "description": "Nacido en el eterno invierno de la tundra rusa, Sova destaca a la hora de localizar, perseguir y eliminar a los enemigos con una eficiencia y una precisión inclementes. Su arco personalizado junto con su sobrenatural capacidad de rastreamiento hacen que sea imposible escapar.",
+   "portrait_full": "/static/assets/agentes/completo/sova.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Dron de reconocimiento",
+     "description": "EQUIPA un Dron de reconocimiento destructible. DISPARA para controlarlo. DISPARA de nuevo para lanzar un dardo que revela repetidamente a los enemigos.",
+     "icon": "/static/assets/habilidades/sova-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Flecha explosiva",
+     "description": "EQUIPA una Flecha explosiva. DISPARA para lanzar un proyectil que explota contra cualquier superficie e inflige daño a todos los jugadores. MANTÉN PULSADO DISPARAR para aumentar la velocidad del proyectil. Utiliza el DISPARO ALTERNATIVO para añadir hasta dos rebotes.",
+     "icon": "/static/assets/habilidades/sova-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Proyectil de reconocimiento",
+     "description": "EQUIPA un Proyectil de reconocimiento destructible. DISPARA para lanzar un proyectil que revela repetidamente a los enemigos cercanos que estén dentro del alcance y el campo de visión. MANTÉN PULSADO DISPARAR para aumentar la velocidad del proyectil. Utiliza el DISPARO ALTERNATIVO para añadir hasta dos rebotes.",
+     "icon": "/static/assets/habilidades/sova-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Furia del cazador",
+     "description": "EQUIPA Furia del cazador. DISPARA para hacer que dispare una zona que inflige daño. Se puede lanzar hasta dos veces más. Los enemigos alcanzados se revelan a Sova.",
+     "icon": "/static/assets/habilidades/sova-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Tejo",
+   "slug": "tejo",
+   "role": "Iniciador",
+   "role_en": "Initiator",
+   "role_description": "Los iniciadores se centran en servirse de ángulos inusuales para ayudar a su equipo a adentrarse en territorios clave y alejar a los defensores.",
+   "description": "Tejo, un consultor de inteligencia veterano de Colombia, controla un sistema de guiado balístico que obliga a sus enemigos a decidir entre renunciar a su posición... o a sus vidas. Sus ataques dirigidos pondrán en jaque a sus contrincantes y los dejará a su merced.",
+   "portrait_full": "/static/assets/agentes/completo/tejo.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Dron de sigilo",
+     "description": "EQUIPA un Dron de sigilo destructible. DISPARA para controlarlo. DISPARA de nuevo para revelar y suprimir a los enemigos cercanos que estén dentro del alcance y el campo de visión.",
+     "icon": "/static/assets/habilidades/tejo-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Entrega especial",
+     "description": "EQUIPA Entrega especial. DISPARA para lanzarla. Utiliza el DISPARO ALTERNATIVO para lanzarla con un rebote. Explota contra cualquier superficie, lo que conmociona e inflige daño a todos los jugadores.",
+     "icon": "/static/assets/habilidades/tejo-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Descarga guiada",
+     "description": "EQUIPA un mapa táctico. DISPARA para fijar ubicaciones. Utiliza el DISPARO ALTERNATIVO para lanzar misiles que se desplazan y emiten pulsos de forma repetida, lo que inflige daño a todos los jugadores.",
+     "icon": "/static/assets/habilidades/tejo-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Armagedón",
+     "description": "EQUIPA un mapa táctico. DISPARA para colocarlo, pivota y DISPARA de nuevo para lanzar una onda que inflige mucho daño a todos los jugadores. Utiliza el DISPARO ALTERNATIVO para cancelar la selección de objetivo.",
+     "icon": "/static/assets/habilidades/tejo-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Veto",
+   "slug": "veto",
+   "role": "Centinela",
+   "role_en": "Sentinel",
+   "role_description": "Los centinelas son expertos en defensa que se centran en bloquear áreas y vigilar los flancos tanto durante las rondas de ataque como en las de defensa.",
+   "description": "Veto, un asesino a sueldo senegalés cuya fuerza radica en una potente mutación genética, pone en jaque el funcionamiento de las iniciaciones anulando tanto las capacidades como la tecnología de su oponente. Cuando juegas en el campo de Veto, las armas de fuego son el mejor aliado.",
+   "portrait_full": "/static/assets/agentes/completo/veto.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Corte transversal",
+     "description": "EQUIPA un Corte transversal destructible. DISPARA para colocarlo. Mientras estés dentro del alcance, INTERACTÚA para teleportarte hasta él. Se puede recuperar durante la FASE DE COMPRA.",
+     "icon": "/static/assets/habilidades/veto-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Asfixia",
+     "description": "EQUIPA una Asfixia destructible. DISPARA para lanzarla. Asfixia se camufla tras colocarla. Se activa con los enemigos visibles cercanos que estén dentro del alcance, a los que ensordece, aplica declive y ancla. Se puede recuperar durante la FASE DE COMPRA.",
+     "icon": "/static/assets/habilidades/veto-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Interceptor",
+     "description": "EQUIPA un Interceptor destructible. DISPARA para colocarlo. REACTIVA la habilidad para activarlo. Mientras esté activo, destruye la utilidad enemiga a la que se pueda disparar o que rebote contra los jugadores que estén dentro del alcance y el campo de visión. Se puede recuperar.",
+     "icon": "/static/assets/habilidades/veto-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Evolución",
+     "description": "Consigue una Evolución AL INSTANTE. La Evolución otorga un estimulante de combate, curación continua e inmunidad a todas las debilitaciones y al daño, excepto el de las armas.",
+     "icon": "/static/assets/habilidades/veto-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Viper",
+   "slug": "viper",
+   "role": "Controlador",
+   "role_en": "Controller",
+   "role_description": "Los controladores se especializan en dividir terrenos peligrosos en varias zonas para que su equipo pueda encargarse del resto.",
+   "description": "Viper es una química estadounidense con un amplio arsenal de dispositivos venenosos que le sirven para tomar el control del campo de batalla y cegar a los enemigos. Si las toxinas no acaban con su presa, la paranoia la rematará.",
+   "portrait_full": "/static/assets/agentes/completo/viper.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Veneno de serpiente",
+     "description": "EQUIPA Veneno de serpiente. DISPARA para lanzarlo. Al aterrizar, crea una zona que aplica vulnerabilidad e inflige un poco de daño a todos los jugadores.",
+     "icon": "/static/assets/habilidades/viper-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Nube venenosa",
+     "description": "EQUIPA Nube venenosa. DISPARA para lanzarla. Utiliza el DISPARO ALTERNATIVO para tirarla. REACTIVA la habilidad para consumir combustible y crear un humo tóxico que aplica declive a los enemigos. Se puede recoger durante la FASE DE COMPRA.",
+     "icon": "/static/assets/habilidades/viper-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Pantalla tóxica",
+     "description": "EQUIPA Pantalla tóxica. DISPARA para lanzar y colocar una línea de emisores. REACTIVA la habilidad para consumir combustible y crear un muro tóxico que bloquea la visión y aplica declive a los enemigos.",
+     "icon": "/static/assets/habilidades/viper-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Pozo de la víbora",
+     "description": "EQUIPA Pozo de la víbora. DISPARA para formar una gran nube tóxica que bloquea la visión y aplica declive a los enemigos que se encuentren en su interior. MANTÉN PULSADO ACTIVAR para disipar la nube.",
+     "icon": "/static/assets/habilidades/viper-ultimate.webp"
+    },
+    {
+     "slot": "Passive",
+     "key": "P",
+     "key_label": "Pasiva",
+     "name": "Toxina",
+     "description": "La toxina de Viper inflige declive de forma continua cuando los enemigos entran en contacto con ella. Recarga el combustible de forma pasiva a lo largo del tiempo.",
+     "icon": ""
+    }
+   ]
+  },
+  {
+   "name": "Vyse",
+   "slug": "vyse",
+   "role": "Centinela",
+   "role_en": "Sentinel",
+   "role_description": "Los centinelas son expertos en defensa que se centran en bloquear áreas y vigilar los flancos tanto durante las rondas de ataque como en las de defensa.",
+   "description": "La prodigiosa ferromante Vyse crea metal en estado líquido para aislar, atrapar y desarmar a sus enemigos. Gracias a su astucia y poder de manipulación, fuerza a sus oponentes a desconfiar incluso del campo de batalla.",
+   "portrait_full": "/static/assets/agentes/completo/vyse.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Zarzal lacerante",
+     "description": "EQUIPA un Zarzal lacerante destructible. DISPARA para lanzarlo. Zarzal lacerante se camufla tras colocarlo. INTERACTÚA para crear una zona que ralentiza e inflige daño cuando un jugador pasa por ella. Se puede recuperar durante la FASE DE COMPRA.",
+     "icon": "/static/assets/habilidades/vyse-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Cizallas",
+     "description": "EQUIPA Cizallas. DISPARA para colocarla. Cizallas se camufla tras colocarla. Se activa cuando los enemigos pasan por encima y, tras un breve lapso de tiempo, crea un muro indestructible durante unos instantes. Se puede recuperar durante la FASE DE COMPRA.",
+     "icon": "/static/assets/habilidades/vyse-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Rosa metálica",
+     "description": "EQUIPA una Rosa metálica destructible. DISPARA para colocarla. Utiliza el DISPARO ALTERNATIVO para colocarla a través de un muro. REACTIVA la habilidad para cegar a todos los jugadores que la estén mirando. Se puede recuperar.",
+     "icon": "/static/assets/habilidades/vyse-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Jardín de acero",
+     "description": "EQUIPA Jardín de acero. DISPARA para preparar una zona. Tras un breve lapso de tiempo, inutiliza las armas principales de los enemigos que se encuentren dentro del alcance.",
+     "icon": "/static/assets/habilidades/vyse-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Waylay",
+   "slug": "waylay",
+   "role": "Duelista",
+   "role_en": "Duelist",
+   "role_description": "Los duelistas son asesinos autosuficientes que, gracias a sus habilidades y destrezas, suelen conseguir iniciar enfrentamientos y anotarse muchos asesinatos.",
+   "description": "La tailandesa Waylay es una prismática radiante capaz de transformarse en luz para desplazarse por el campo de batalla y eliminar a sus objetivos con fragmentos lumínicos antes de regresar a un lugar seguro en menos de lo que canta un gallo.",
+   "portrait_full": "/static/assets/agentes/completo/waylay.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Saturación",
+     "description": "EQUIPA Saturación. DISPARA para lanzarla. Explota al aterrizar y entorpece a todos los jugadores.",
+     "icon": "/static/assets/habilidades/waylay-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Velocidad de la luz",
+     "description": "EQUIPA Velocidad de la luz. DISPARA para deslizarte dos veces hacia delante. Utiliza el DISPARO ALTERNATIVO para deslizarte hacia delante una vez. Solo el primer deslizamiento puede lanzarse hacia arriba.",
+     "icon": "/static/assets/habilidades/waylay-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Refracción",
+     "description": "Coloca un marcador en tu ubicación AL INSTANTE. REACTIVA la habilidad para viajar hasta él. Mientras viaja, Waylay es inmune, pero no puede ver a los enemigos. Se reinicia cada dos asesinatos.",
+     "icon": "/static/assets/habilidades/waylay-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Trayectorias convergentes",
+     "description": "EQUIPA Trayectorias convergentes. DISPARA para obtener velocidad y lanzar una zona que entorpece a todos los jugadores.",
+     "icon": "/static/assets/habilidades/waylay-ultimate.webp"
+    }
+   ]
+  },
+  {
+   "name": "Yoru",
+   "slug": "yoru",
+   "role": "Duelista",
+   "role_en": "Duelist",
+   "role_description": "Los duelistas son asesinos autosuficientes que, gracias a sus habilidades y destrezas, suelen conseguir iniciar enfrentamientos y anotarse muchos asesinatos.",
+   "description": "Yoru, nacido en Japón, abre agujeros en el tejido de la realidad para infiltrarse tras las líneas enemigas sin ser visto. Utiliza el engaño y la agresividad por igual para acabar con sus objetivos antes de que sepan qué ha pasado.",
+   "portrait_full": "/static/assets/agentes/completo/yoru.webp",
+   "abilities": [
+    {
+     "slot": "Grenade",
+     "key": "C",
+     "key_label": "Habilidad C",
+     "name": "Engaño",
+     "description": "EQUIPA Engaño. DISPARA para enviar un clon destructible hacia delante. Utiliza el DISPARO ALTERNATIVO para colocar un marcador en tu ubicación. INTERACTÚA para transformar el marcador en un clon. Los clones avanzan de forma continua y se girarán hacia el primer enemigo que les dispare, lo que cegará a quienes los estén mirando.",
+     "icon": "/static/assets/habilidades/yoru-grenade.webp"
+    },
+    {
+     "slot": "Ability1",
+     "key": "Q",
+     "key_label": "Habilidad Q",
+     "name": "Punto ciego",
+     "description": "EQUIPA Punto ciego. DISPARA para lanzarlo. Tras rebotar en una superficie, explota y ciega a todos los jugadores que lo vean.",
+     "icon": "/static/assets/habilidades/yoru-ability1.webp"
+    },
+    {
+     "slot": "Ability2",
+     "key": "E",
+     "key_label": "Habilidad E",
+     "name": "Infiltración",
+     "description": "EQUIPA Infiltración. DISPARA para lanzarla hacia adelante. Utiliza el DISPARO ALTERNATIVO para colocarla. REACTIVA la habilidad para teleportarte hasta ella. INTERACTÚA para fingir una teleportación. Se reinicia cada dos asesinatos.",
+     "icon": "/static/assets/habilidades/yoru-ability2.webp"
+    },
+    {
+     "slot": "Ultimate",
+     "key": "X",
+     "key_label": "Definitiva",
+     "name": "Viaje interdimensional",
+     "description": "EQUIPA Viaje interdimensional. DISPARA para volverte intangible e invisible. Infiltración está disponible durante este estado. REACTIVA la habilidad para abandonarla antes.",
+     "icon": "/static/assets/habilidades/yoru-ultimate.webp"
+    }
+   ]
+  }
+ ]
+}

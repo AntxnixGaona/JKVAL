@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load jkval_assets %}
+{% block content %}
+<section class="page-hero comp-hero">
+  <div class="wrap">
+    <p class="eyebrow">Fase 2 / Sinergia<span class="eyebrow__meta">Por mapa y rango</span></p>
+    <h1>Combinaciones</h1>
+    <p class="lede">Elige un mapa y un rango para ver las combinaciones observadas. Siempre se muestran uso, tasa de victorias, muestra, intervalo y parche; cuando no hay muestra suficiente, la página lo dice y no rellena huecos.</p>
+    <p class="context-line">
+      <span class="chip chip--data">{{ report.matches }} partidas en el filtro</span>
+      <span class="chip chip--data">Mínimo {{ report.threshold }} usos</span>
+      <span class="chip">Recomendable desde {{ report.recommendable_threshold }} usos</span>
+      <span class="badge badge--demo">DEMO · Datos ficticios</span>
+    </p>
+  </div>
+</section>
+
+<section class="section section--filters" aria-labelledby="comp-filters-title">
+  <div class="wrap">
+    <div class="section-head section-head--compact">
+      <div><p class="eyebrow">01 / Filtros</p><h2 id="comp-filters-title">Acota la muestra</h2></div>
+      <p class="section-head__note">Los rangos que no alcanzan el mínimo para el mapa elegido no se ofrecen. Los mapas sin muestra siguen visibles para que puedas comprobar su estado vacío.</p>
+    </div>
+
+    <form class="comp-filters" method="get" action="{% url 'core:composiciones' %}">
+      <input type="hidden" name="sort" value="{{ sort }}">
+      <label class="field">
+        <span>Mapa</span>
+        <select name="map">
+          {% for option in map_options %}
+          <option value="{{ option.value }}"{% if option.value == map_name %} selected{% endif %}>{{ option.label }}{% if not option.available %} · sin muestra{% endif %}</option>
+          {% endfor %}
+          <option value="all"{% if map_name == "all" %} selected{% endif %}>Todos los mapas</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Rango</span>
+        <select name="rank">
+          <option value="all"{% if rank == "all" %} selected{% endif %}>Global · todos los rangos</option>
+          {% for group in rank_groups %}{% if group.options %}
+          <optgroup label="{{ group.name }}">
+            {% for option in group.options %}<option value="{{ option.value }}"{% if option.value == rank %} selected{% endif %}>{{ option.label }} · {{ option.matches }} partidas</option>{% endfor %}
+          </optgroup>
+          {% endif %}{% endfor %}
+        </select>
+        {% if unavailable_ranks %}<small>Sin cobertura suficiente aquí: {{ unavailable_ranks|join:", " }}.</small>{% endif %}
+      </label>
+      <label class="field">
+        <span>Región</span>
+        <select name="region">
+          {% for option in region_options %}<option value="{{ option.value }}"{% if option.value == region %} selected{% endif %}>{{ option.label }}</option>{% endfor %}
+        </select>
+      </label>
+      <label class="field">
+        <span>Acto</span>
+        <select name="act">
+          {% for option in act_options %}<option value="{{ option.value }}"{% if option.value == act %} selected{% endif %}>{{ option.label }}</option>{% endfor %}
+        </select>
+      </label>
+      <label class="field">
+        <span>Parche</span>
+        <select name="patch">
+          {% for option in patch_options %}<option value="{{ option.value }}"{% if option.value == patch %} selected{% endif %}>{{ option.label }}</option>{% endfor %}
+        </select>
+      </label>
+      <div class="comp-filters__actions">
+        <button class="btn btn--primary" type="submit">Aplicar</button>
+        <a class="btn btn--ghost" href="{% url 'core:composiciones' %}">Restablecer</a>
+      </div>
+    </form>
+
+    {% if notices %}
+    <ul class="notices" role="status">{% for notice in notices %}<li>{{ notice }}</li>{% endfor %}</ul>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section" aria-labelledby="comp-results-title">
+  <div class="wrap">
+    <div class="section-head section-head--display">
+      <div>
+        <p class="eyebrow">02 / Top 5</p>
+        <h2 id="comp-results-title"><span class="ghost-num" aria-hidden="true">05</span>Resultados<span class="h2-sub">{{ map_name }}{% if rank != "all" %} · {{ rank }}{% else %} · Global{% endif %}</span></h2>
+      </div>
+      <div class="segmented" role="group" aria-label="Ordenar combinaciones">
+        {% for link in sort_links %}
+        <a class="segmented__item{% if link.active %} is-active{% endif %}" href="{{ link.url }}"{% if link.active %} aria-current="true"{% endif %}>{{ link.label }}</a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <p class="context-line">
+      <span class="chip">{{ map_name }}</span>
+      <span class="chip">{% if rank == "all" %}Global · todos los rangos{% else %}{{ rank }}{% endif %}</span>
+      <span class="chip">{% if region == "all" %}Todas las regiones{% else %}{{ region }}{% endif %}</span>
+      <span class="chip">{% if act == "all" %}Todos los actos{% else %}{{ act }}{% endif %}</span>
+      <span class="chip">{% if patch == "all" %}Todos los parches{% else %}Parche {{ patch }}{% endif %}</span>
+      <span class="chip chip--data">{{ report.matches }} partidas</span>
+    </p>
+
+    {% if report.compositions %}
+    <div class="comp-grid comp-grid--full">
+      {% for comp in report.compositions %}
+      {% include "partials/comp-card.html" with comp=comp report=report patch_label=patch dataset_meta=dataset_meta %}
+      {% endfor %}
+    </div>
+    <p class="footnote">Se muestran {{ report.visible_count }} combinaciones con al menos {{ report.threshold }} usos. «Muestra limitada» significa entre {{ report.threshold }} y {{ report.recommendable_threshold }} usos: sirve para explorar, no para afirmar que una composición sea superior. El intervalo de Wilson al 95 % acota la incertidumbre.</p>
+
+    <div class="panel panel--coverage">
+      <h3>Cobertura de este filtro</h3>
+      <dl class="coverage-grid">
+        <div><dt>Partidas</dt><dd>{{ report.matches }}</dd></div>
+        <div><dt>Composición más usada</dt><dd>{{ report.best_sample }} usos</dd></div>
+        <div><dt>Umbral de visibilidad</dt><dd>{{ report.threshold }} usos</dd></div>
+        <div><dt>Umbral de recomendación</dt><dd>{{ report.recommendable_threshold }} usos</dd></div>
+        <div><dt>Periodo</dt><dd>{% if period %}{{ period }}{% else %}Varios actos{% endif %}</dd></div>
+        <div><dt>Publicado</dt><dd>{{ dataset_meta.published_at|slice:":10" }}</dd></div>
+      </dl>
+      <p class="footnote">Dataset {{ dataset_meta.dataset }} · {{ dataset_meta.label }}. Fuente: {{ dataset_meta.source }}. No se actualiza automáticamente ni se mezcla con datos reales.</p>
+    </div>
+    {% else %}
+    <div class="empty-state empty-state--coverage" role="status">
+      <h3>Sin combinaciones con muestra suficiente</h3>
+      <p>Con {{ report.matches }} partidas, la composición más repetida suma {{ report.best_sample }} usos y el mínimo para mostrarla es {{ report.threshold }}. No se completa el Top 5 con combinaciones inventadas ni con muestras que no lo sostienen.</p>
+      <dl class="coverage-grid coverage-grid--compact">
+        <div><dt>Mapa</dt><dd>{{ map_name }}</dd></div>
+        <div><dt>Rango</dt><dd>{% if rank == "all" %}Global{% else %}{{ rank }}{% endif %}</dd></div>
+        <div><dt>Partidas</dt><dd>{{ report.matches }}</dd></div>
+        <div><dt>Usos máximos</dt><dd>{{ report.best_sample }}</dd></div>
+        <div><dt>Mínimo exigido</dt><dd>{{ report.threshold }}</dd></div>
+        <div><dt>Combinaciones ocultas</dt><dd>{{ report.hidden_count }}</dd></div>
+      </dl>
+      <p class="empty-state__hint">Qué falta: más partidas para este mapa, rango y filtros. Puedes ampliar el alcance sin mezclar rangos de forma engañosa:</p>
+      <p class="empty-state__actions">
+        {% if rank != "all" %}<a class="btn btn--ghost" href="?map={{ map_name }}&amp;rank=all&amp;region={{ region }}&amp;act={{ act }}&amp;patch={{ patch }}&amp;sort={{ sort }}">Ver Global del mapa</a>{% endif %}
+        <a class="btn btn--ghost" href="?map=all&amp;rank=all&amp;region={{ region }}&amp;act={{ act }}&amp;patch={{ patch }}&amp;sort={{ sort }}">Ver todos los mapas</a>
+        <a class="btn btn--ghost" href="?map={{ map_name }}&amp;rank=all&amp;region=all&amp;act=all&amp;patch=all&amp;sort={{ sort }}">Quitar filtros de periodo y región</a>
+      </p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section section--editorial" aria-labelledby="comp-editorial-title">
+  <div class="wrap">
+    <div class="section-head section-head--display">
+      <div>
+        <p class="eyebrow">03 / Editorial</p>
+        <h2 id="comp-editorial-title"><span class="ghost-num" aria-hidden="true">E</span>Recomendaciones<span class="h2-sub">no medidas</span></h2>
+      </div>
+      <p class="section-head__note">Propuestas del equipo editorial del dataset, no resultados. Se muestran aparte del Top 5 porque no tienen partidas que las respalden: aparecen con 0 usos y sin tasa de victorias.</p>
+    </div>
+
+    {% if editorial %}
+    <div class="editorial-grid">
+      {% for comp in editorial %}
+      {% include "partials/comp-editorial.html" with comp=comp %}
+      {% endfor %}
+    </div>
+    <p class="footnote">Procedencia: {{ dataset_meta.source }} · dataset {{ dataset_meta.dataset }} · publicado {{ dataset_meta.published_at|slice:":10" }} · parche de referencia {{ dataset_meta.coverage.patches.0 }}. No hay fuente profesional citada para estas propuestas; por eso no se presentan como consejo verificado.</p>
+    {% else %}
+    <div class="empty-state" role="status">
+      <h3>Sin recomendaciones editoriales para este alcance</h3>
+      <p>El dataset no incluye propuestas editoriales para {% if map_name == "all" %}este filtro{% else %}{{ map_name }}{% endif %}. No se generan sugerencias nuevas para rellenar la sección.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="comp-method-title">
+  <div class="wrap">
+    <div class="prose-grid">
+      <div class="panel">
+        <h2 id="comp-method-title">Cómo se calcula</h2>
+        <ul class="check-list">
+          <li>Cada partida aporta dos composiciones (equipo A y B) y un ganador. Los usos son apariciones, no partidas distintas por composición.</li>
+          <li>El uso se reparte sobre las partidas del filtro; la tasa de victorias se calcula solo con los usos de esa composición.</li>
+          <li>Se ordena por uso o por el límite inferior del intervalo de Wilson, nunca por una tasa aislada con muestra corta.</li>
+          <li>Las composiciones marcadas «editorial» se muestran en un bloque aparte: no tienen usos en el dataset y no compiten en el Top 5 medido.</li>
+        </ul>
+      </div>
+      <div class="panel panel--aside">
+        <h2>Qué es DEMO</h2>
+        <p>Todo lo de esta página procede de un dataset sintético reproducible. No describe a la comunidad de VALORANT ni a Riot Games.</p>
+        <p>La integración con una fuente autorizada queda preparada mediante el mismo contrato de filtros y umbrales, pero <strong>no está conectada</strong>.</p>
+        <p><span class="badge badge--demo">DEMO · Datos ficticios</span></p>
+        <a class="btn btn--ghost btn--small" href="{% url 'core:fuentes' %}">Ver fuentes y método</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

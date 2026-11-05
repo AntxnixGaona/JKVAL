@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">{{ phase }} · En preparación</p>
+    <h1>{{ title }}</h1>
+    <p class="lede">{{ description }}</p>
+    <p><span class="badge badge--phase">Gate pendiente</span> <span class="badge badge--demo">DEMO</span></p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <div class="panel panel--split">
+      <div>
+        <h2>Qué incluirá</h2>
+        <ul class="check-list">
+          {% for item in includes %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </div>
+      <div class="panel__aside">
+        <h2>Estado honesto</h2>
+        <p>Esta página no simula funciones ni datos. Se habilita cuando la fase anterior esté verificada y existan fuentes o permisos suficientes.</p>
+        <a class="btn btn--primary" href="{% url 'core:home' %}">Volver a la portada DEMO</a>
+        <a class="btn btn--ghost" href="{% url 'core:fuentes' %}">Ver método y fuentes</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

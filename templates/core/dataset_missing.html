@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Estado · 503</p>
+    <h1>Dataset DEMO no disponible</h1>
+    <p class="lede">La aplicación está bien, pero falta el dataset sintético que alimenta la portada. No se muestran datos inventados como sustituto.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap panel">
+    <h2>Cómo generarlo</h2>
+    <pre><code>cd proyectos/JKVAL
+.venv/bin/python scripts/generate_demo_data.py
+.venv/bin/python manage.py runserver 127.0.0.1:8000</code></pre>
+    <p class="muted">Detalle técnico: {{ error_message }}</p>
+    <a class="btn btn--primary" href="{% url 'core:home' %}">Reintentar</a>
+    <a class="btn btn--ghost" href="{% url 'core:fuentes' %}">Ver método</a>
+  </div>
+</section>
+{% endblock %}

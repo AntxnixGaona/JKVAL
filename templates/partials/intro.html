@@ -1,0 +1,61 @@
+{% load static %}<div id="jkval-intro" class="intro" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Intro de JKVAL">
+  <div class="intro__grid" aria-hidden="true"></div>
+  <div class="intro__glow intro__glow--a" aria-hidden="true"></div>
+  <div class="intro__glow intro__glow--b" aria-hidden="true"></div>
+  <div class="intro__stage">
+    <video class="intro__video" data-intro-video muted playsinline preload="none" aria-hidden="true" tabindex="-1"
+      poster="{% static 'video/jkval_intro_poster.webp' %}">
+      <source src="{% static 'video/jkval_intro.webm' %}" type="video/webm">
+      <source src="{% static 'video/jkval_intro.mp4' %}" type="video/mp4">
+    </video>
+    <div class="intro__slash" aria-hidden="true"></div>
+    <svg class="intro__katana" viewBox="0 0 640 200" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="intro-blade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#2a0f5e"/>
+          <stop offset=".35" stop-color="#c9a8ff"/>
+          <stop offset=".55" stop-color="#f3ecff"/>
+          <stop offset=".8" stop-color="#8a5cff"/>
+          <stop offset="1" stop-color="#e9dcff"/>
+        </linearGradient>
+        <linearGradient id="intro-hilt" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#0a0420"/>
+          <stop offset=".5" stop-color="#3a1a7a"/>
+          <stop offset="1" stop-color="#0a0420"/>
+        </linearGradient>
+        <filter id="intro-glow" x="-30%" y="-80%" width="160%" height="260%">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <g class="intro__katana-g" filter="url(#intro-glow)">
+        <path d="M96 100 H500 L552 84 L590 100 L552 116 H96 Z" fill="url(#intro-blade)"/>
+        <path d="M96 100 H520" stroke="#ffffff" stroke-width="2" opacity=".65"/>
+        <path d="M552 84 L590 100 L552 116" fill="none" stroke="#efe6ff" stroke-width="3"/>
+        <rect x="70" y="90" width="30" height="20" rx="2" fill="url(#intro-hilt)" stroke="#a06bff" stroke-width="2"/>
+        <rect x="48" y="86" width="24" height="28" rx="3" fill="#1a0838" stroke="#6d3df0"/>
+        <path d="M48 100 H72 M58 86 V114 M68 86 V114" stroke="#a06bff" stroke-width="2" opacity=".8"/>
+        <path d="M96 82 C106 92 106 108 96 118" fill="none" stroke="#c9a8ff" stroke-width="4"/>
+      </g>
+    </svg>
+    <div class="intro__logo-wrap">
+      <div class="intro__logo">{% include "partials/logo.html" %}</div>
+      <p class="intro__wordmark">JKVAL <span>// COMPETITIVE LAB</span></p>
+    </div>
+    <div class="intro__sparks" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+  <div class="intro__hud">
+    <div class="intro__status">
+      <span class="intro__hint">Intro de bienvenida</span>
+      <progress id="intro-progress" class="intro__progress" max="100" value="0" aria-label="Progreso de la intro">0%</progress>
+    </div>
+    <div class="intro__controls">
+      <button type="button" class="btn btn--small btn--ghost" data-intro-sound aria-pressed="false">Activar sonido</button>
+      <button type="button" class="btn btn--small btn--ghost" data-intro-replay hidden>Repetir sonido</button>
+      <button type="button" class="btn btn--small btn--primary" data-intro-skip>Omitir intro <kbd>Esc</kbd></button>
+    </div>
+  </div>
+</div>

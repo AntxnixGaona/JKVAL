@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static jkval_assets %}
+{% block content %}
+<section class="agent-profile">
+  <div class="agent-profile__bg" aria-hidden="true"><img src="{{ agent.name|agent_img }}" alt="" width="192" height="192"></div>
+  <div class="wrap agent-profile__grid">
+    <div class="agent-profile__copy">
+      <p class="eyebrow"><a href="{% url 'core:guias' %}">Guías</a> / {{ agent.role }}</p>
+      <h1>{{ agent.name }}</h1>
+      <p class="lede">{{ agent.description }}</p>
+      <p class="context-line">
+        <span class="chip chip--data">{{ agent.role }}</span>
+        <span class="chip">Catálogo {{ catalog_meta.riot_version }}</span>
+        <span class="badge badge--demo">DEMO · Estadísticas ficticias</span>
+      </p>
+      <p class="role-note"><strong>Rol.</strong> {{ agent.role_description }}</p>
+    </div>
+    <div class="agent-profile__render">
+      {% if agent.portrait_full %}
+      <img src="{{ agent.portrait_full }}" alt="Render de cuerpo completo de {{ agent.name }}" width="720" height="900" decoding="async">
+      {% else %}
+      <img src="{{ agent.name|agent_img }}" alt="Retrato de {{ agent.name }}" width="192" height="192" decoding="async">
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="abilities-title">
+  <div class="wrap">
+    <div class="section-head section-head--compact">
+      <div><p class="eyebrow">01 / Kit</p><h2 id="abilities-title">Habilidades</h2></div>
+      <p class="section-head__note">Texto del catálogo en español. No incluye cifras de daño, radios ni tiempos: esos valores cambian por parche y no se copian sin verificar.</p>
+    </div>
+    <ul class="ability-grid">
+      {% for ability in agent.abilities %}
+      <li class="ability-card">
+        <div class="ability-card__top">
+          <span class="ability-key" aria-hidden="true">{{ ability.key }}</span>
+          {% if ability.icon %}<img src="{{ ability.icon }}" alt="" width="96" height="96" loading="lazy" decoding="async">{% endif %}
+          <span class="ability-card__slot">{{ ability.key_label }}</span>
+        </div>
+        <h3>{{ ability.name }}</h3>
+        <p>{{ ability.description }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="stats-title">
+  <div class="wrap">
+    <div class="section-head section-head--display">
+      <div><p class="eyebrow">02 / Medición</p><h2 id="stats-title">Rendimiento<span class="h2-sub">Competitivo</span></h2></div>
+      <p class="section-head__note">Uso = picks de {{ agent.name }} sobre el total de picks del filtro. Tasa de victorias = victorias con {{ agent.name }} sobre sus picks. Son métricas distintas y ninguna prueba que sea «el mejor».</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <caption class="sr-only">Rendimiento de {{ agent.name }} por rango en el dataset DEMO</caption>
+        <thead>
+          <tr><th scope="col">Rango</th><th scope="col">Uso</th><th scope="col">Tasa de victorias</th><th scope="col">Picks</th><th scope="col">IC 95 %</th><th scope="col">Estado</th></tr>
+        </thead>
+        <tbody>
+          {% for row in breakdown.by_rank %}
+          <tr{% if row.insufficient %} class="is-insufficient"{% endif %}>
+            <th scope="row">{{ row.label }}</th>
+            <td class="num">{{ row.usage|floatformat:1 }} %</td>
+            <td class="num">{% if row.win_rate != None %}{{ row.win_rate|floatformat:1 }} %{% else %}No aplica{% endif %}</td>
+            <td class="num">{{ row.picks }}</td>
+            <td class="num muted">{% if row.wilson_low != None %}{{ row.wilson_low|floatformat:1 }}–{{ row.wilson_high|floatformat:1 }} %{% else %}No aplica{% endif %}</td>
+            <td>{% if row.insufficient %}<span class="tag tag--warn">Datos insuficientes</span>{% else %}<span class="tag">Muestra suficiente</span>{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">Mínimo de muestra: {{ breakdown.threshold }} picks por agente y rango. Por debajo, la fila se marca y no se usa para recomendaciones.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="maps-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div><p class="eyebrow">03 / Territorio</p><h2 id="maps-title">Dónde aparece</h2></div>
+      <p class="section-head__note">Ordenado por tasa de victorias. Un mapa con muestra corta no convierte al agente en «mejor» allí.</p>
+    </div>
+    <div class="breakdown-grid">
+      <div class="panel">
+        <h3>Mejores tasas</h3>
+        <ul class="rank-list">
+          {% for row in best_maps %}
+          <li><a href="{% url 'core:guia_mapa' row.label|lower %}"><span>{{ row.label }}</span><span class="num">{{ row.win_rate|floatformat:1 }} % · {{ row.picks }} picks</span></a></li>
+          {% empty %}<li class="muted">Sin mapas con muestra suficiente.</li>{% endfor %}
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Menores tasas</h3>
+        <ul class="rank-list">
+          {% for row in weakest_maps %}
+          <li><a href="{% url 'core:guia_mapa' row.label|lower %}"><span>{{ row.label }}</span><span class="num">{{ row.win_rate|floatformat:1 }} % · {{ row.picks }} picks</span></a></li>
+          {% empty %}<li class="muted">Sin mapas con muestra suficiente.</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel--limits">
+      <h3>Cómo leer esta ficha</h3>
+      <ul class="check-list">
+        <li>El kit es catálogo oficial traducido, no una guía de ejecución ni valores numéricos por parche.</li>
+        <li>Las estadísticas son DEMO sintéticas: no describen a jugadores reales ni a la comunidad.</li>
+        <li>Uso alto no implica mejores resultados; revisa muestra e intervalo antes de concluir.</li>
+        <li>No hay consejos de creadores citados porque no se ha verificado una fuente para este parche.</li>
+      </ul>
+      <p class="footnote">Catálogo: {{ catalog_meta.source }} · {{ catalog_meta.riot_version }} · {{ catalog_meta.fetched_at|slice:":10" }}. Dataset: {{ dataset_meta.dataset }} ({{ dataset_meta.label }}), publicado {{ dataset_meta.published_at|slice:":10" }}.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,367 @@
+{
+  "base": "http://127.0.0.1:8000",
+  "checked_at": "2026-10-29T01:07:34Z",
+  "passed": 68,
+  "total": 68,
+  "screenshots": [
+    "01-intro-desktop.png",
+    "02-home-desktop.png",
+    "03-home-desktop-full.png",
+    "04-deathmatch.png",
+    "04b-filtro-estrecho.png",
+    "05-home-mobile.png",
+    "06-menu-mobile.png",
+    "07-home-mobile-full.png",
+    "08-intro-reduced.png",
+    "09-intro-mobile.png",
+    "10-combinaciones-mobile.png",
+    "10-rangos-desktop.png",
+    "11-combinaciones-desktop.png",
+    "11-rangos-desktop-full.png",
+    "12-guias-desktop.png",
+    "13-agente-jett.png",
+    "14-mapa-ascent.png"
+  ],
+  "results": [
+    {
+      "check": "intro visible en primera visita",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "barra de progreso avanza (valor real)",
+      "ok": true,
+      "detail": "32.7 → 51.9"
+    },
+    {
+      "check": "foco inicial en «Omitir intro»",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "intro reproduce el render 3D con fuentes WebM/MP4 y póster",
+      "ok": true,
+      "detail": "{\"sources\": [\"jkval_intro.webm\", \"jkval_intro.mp4\"], \"current\": \"jkval_intro.webm\", \"width\": 1600, \"height\": 900, \"duration\": 4, \"paused\": false, \"muted\": true, \"poster\": \"jkval_intro_poster.webp\"}"
+    },
+    {
+      "check": "la animación 3D se está reproduciendo (sin pausa y silenciada)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "Escape omite la intro y desbloquea el scroll",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "scroll desbloqueado tras omitir",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "título y H1 presentes",
+      "ok": true,
+      "detail": "Portada · JKVAL / EL META NO SE ADIVINA.\nSE LEE."
+    },
+    {
+      "check": "fuente Chakra Petch cargada (self-hosted)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "fuente display Barlow Condensed cargada",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "logotipo JKVAL vectorial propio (5 letras) en cabecera e intro",
+      "ok": true,
+      "detail": "{\"width\": 164, \"height\": 45, \"paths\": 5, \"viewBox\": \"0 0 404 110\", \"intro\": true, \"favicon\": \"http://127.0.0.1:8000/static/img/favicon.svg\"}"
+    },
+    {
+      "check": "favicon JKVAL enlazado",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "arte de mapa local cargado en el hero",
+      "ok": true,
+      "detail": "{\"w\": 1600, \"h\": 900, \"src\": \"ascent-1600.webp\"}"
+    },
+    {
+      "check": "emblema de rango real optimizado en la tarjeta",
+      "ok": true,
+      "detail": "{\"w\": 192, \"src\": \"http://127.0.0.1:8000/static/assets/rangos/diamanteiii.webp\"}"
+    },
+    {
+      "check": "retratos locales cargados en el Top 5",
+      "ok": true,
+      "detail": "[{\"w\": 192, \"src\": \"chamber.webp\"}, {\"w\": 192, \"src\": \"kayo.webp\"}, {\"w\": 192, \"src\": \"sova.webp\"}, {\"w\": 192, \"src\": \"harbor.webp\"}, {\"w\": 192, \"src\": \"killjoy.webp\"}]"
+    },
+    {
+      "check": "12 mapas locales cargados",
+      "ok": true,
+      "detail": "12 imágenes"
+    },
+    {
+      "check": "cortes diagonales activos en tarjeta y panel",
+      "ok": true,
+      "detail": "{\"card\": \"polygon(0px 0px, calc(100% - 28px) 0px, 100% 28px, 100% 100%, 28px 100%, 0px calc(100% - 28px))\", \"panel\": \"polygon(0px 0px, calc(100% - 22px) 0px, 100% 22px, 100% 100%, 22px 100%, 0px calc(100% - 22px))\"}"
+    },
+    {
+      "check": "sin desbordamiento horizontal en 1440",
+      "ok": true,
+      "detail": "overflow=0px"
+    },
+    {
+      "check": "textos clave sin recorte horizontal",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "ancla no queda tapada por la cabecera fija",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "Top 5 agentes renderizado",
+      "ok": true,
+      "detail": "5 filas"
+    },
+    {
+      "check": "sello DEMO visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "muestra e intervalo visibles en tabla",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "controles de formulario con etiqueta",
+      "ok": true,
+      "detail": "sin etiqueta=0"
+    },
+    {
+      "check": "primer Tab lleva al skip link",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "enlaces externos con rel=noopener",
+      "ok": true,
+      "detail": "0 sin noopener"
+    },
+    {
+      "check": "intro no se repite en la misma pestaña",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "Deathmatch muestra «No aplica» sin romper",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "selector de orden activo tras aplicar winrate",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "muestra insuficiente señalizada en filtro estrecho",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "sin desbordamiento horizontal en 390",
+      "ok": true,
+      "detail": "overflow=0px"
+    },
+    {
+      "check": "botón de menú visible en móvil",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "logotipo JKVAL visible en móvil",
+      "ok": true,
+      "detail": "{\"w\": 116, \"h\": 32}"
+    },
+    {
+      "check": "menú móvil desplegable legible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "intro móvil: HUD y botón omitir dentro de pantalla",
+      "ok": true,
+      "detail": "{\"hudInside\": true, \"skipInside\": true, \"logoCentered\": true, \"logoVisible\": true}"
+    },
+    {
+      "check": "intro móvil: logo visible y centrado",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "control de sonido activa y muestra «Repetir»",
+      "ok": true,
+      "detail": "{\"pressed\": \"true\", \"label\": \"SILENCIAR SONIDO\", \"replay\": true}"
+    },
+    {
+      "check": "Enter sobre «Omitir intro» cierra la intro",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "intro termina sola cerca de 5,2 s",
+      "ok": true,
+      "detail": "5.9s"
+    },
+    {
+      "check": "sin JavaScript la intro no bloquea y el contenido se sirve",
+      "ok": true,
+      "detail": "{\"introHidden\": true, \"mainVisible\": true, \"skip\": true, \"rows\": 10}"
+    },
+    {
+      "check": "rangos: 25 divisiones en 9 niveles con emblemas cargados",
+      "ok": true,
+      "detail": "{\"tiles\": 25, \"tiers\": 9, \"loaded\": 25}"
+    },
+    {
+      "check": "rangos: navegación activa, sin estilos inline y sin desbordamiento",
+      "ok": true,
+      "detail": "{\"tiles\": 25, \"loaded\": 25, \"tiers\": 9, \"names\": [\"HIERRO I\", \"HIERRO II\", \"HIERRO III\", \"BRONCE I\", \"BRONCE II\", \"BRONCE III\", \"PLATA I\", \"PLATA II\", \"PLATA III\", \"ORO I\", \"ORO II\", \"ORO III\", \"PLATINO I\", \"PLATINO II\", \"PLATINO III\", \"DIAMANTE I\", \"DIAMANTE II\", \"DIAMANTE III\", \"ASCENDENTE I\", \"ASCENDENTE II\", \"ASCENDENTE III\", \"INMORTAL I\", \"INMORTAL II\", \"INMORTAL III\", \"RADIANTE\"], \"first\": \"HIERRO I\", \"current\": \"/rangos/\", \"overflow\": 0, \"inlineStyles\": 0, \"demo\": true}"
+    },
+    {
+      "check": "sin desbordamiento horizontal en 360",
+      "ok": true,
+      "detail": "overflow=0px"
+    },
+    {
+      "check": "objetivos táctiles con altura suficiente",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "contraste AA en textos clave",
+      "ok": true,
+      "detail": "[{\"sel\": \".hero .lede\", \"ratio\": 13.4}, {\"sel\": \".data-table td\", \"ratio\": 18.63}, {\"sel\": \".data-table .muted\", \"ratio\": 11.03}, {\"sel\": \".site-nav a\", \"ratio\": 17.33}, {\"sel\": \".footnote\", \"ratio\": 11.03}, {\"sel\": \".badge--demo\", \"ratio\": 14.48}, {\"sel\": \".rank-card__desc\", \"ratio\": 11.03}]"
+    },
+    {
+      "check": "carga local < 2,5 s",
+      "ok": true,
+      "detail": "{\"dcl\": 96, \"load\": 111, \"resources\": 18, \"kb\": 863}"
+    },
+    {
+      "check": "peso de recursos iniciales < 1,5 MB",
+      "ok": true,
+      "detail": "863 KB en 18 recursos"
+    },
+    {
+      "check": "emulación de prefers-reduced-motion activa",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "intro termina sin bloquear con movimiento reducido",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "guías: 30 agentes y 12 mapas enlazados",
+      "ok": true,
+      "detail": "{\"agents\": 30, \"maps\": 12, \"roles\": [\"DUELISTA9\", \"INICIADOR7\", \"CONTROLADOR7\", \"CENTINELA7\"], \"abilities\": 116, \"h2Font\": \"Anton, \\\"Barlow Condensed\\\", \\\"Arial Narrow\\\", sans-serif\", \"demo\": true, \"overflow\": 0}"
+    },
+    {
+      "check": "guías: cuatro roles y titulares en Anton",
+      "ok": true,
+      "detail": "{\"roles\": [\"DUELISTA9\", \"INICIADOR7\", \"CONTROLADOR7\", \"CENTINELA7\"], \"font\": \"Anton, \\\"Barlow Condensed\\\", \\\"Arial Narrow\\\", sans-serif\"}"
+    },
+    {
+      "check": "guías: sin desbordamiento horizontal en 1440",
+      "ok": true,
+      "detail": "overflow=0px"
+    },
+    {
+      "check": "ficha de agente: nombre, kit y render cargado",
+      "ok": true,
+      "detail": "{\"h1\": \"JETT\", \"abilities\": 5, \"abilityIcons\": 5, \"renderWidth\": 720, \"rankRows\": 25, \"overflow\": 0}"
+    },
+    {
+      "check": "ficha de agente: tabla con las 25 divisiones y sin desbordamiento",
+      "ok": true,
+      "detail": "{\"h1\": \"JETT\", \"abilities\": 5, \"abilityIcons\": 5, \"renderWidth\": 720, \"rankRows\": 25, \"overflow\": 0}"
+    },
+    {
+      "check": "ficha de mapa: hero local, agentes y combinaciones",
+      "ok": true,
+      "detail": "{\"h1\": \"ASCENT\", \"hero\": 480, \"rows\": 8, \"comps\": 2, \"overflow\": 0}"
+    },
+    {
+      "check": "ficha de mapa: sin desbordamiento horizontal",
+      "ok": true,
+      "detail": "overflow=0px"
+    },
+    {
+      "check": "combinaciones: 5 filtros, hasta 5 tarjetas medidas con métricas y detalles",
+      "ok": true,
+      "detail": "{\"selects\": 5, \"rankOptions\": [\"all\", \"Bronce I\", \"Plata I\", \"Plata II\", \"Plata III\", \"Oro I\", \"Oro II\", \"Platino I\"], \"top\": 2, \"editorial\": 1, \"stats\": 12, \"details\": 2, \"demo\": true, \"overflow\": 0, \"firstValue\": \"Ascent\"}"
+    },
+    {
+      "check": "combinaciones: editoriales separadas del Top 5 medido",
+      "ok": true,
+      "detail": "{\"editorial\": 2, \"inMeasured\": 0, \"declaredUnmeasured\": 2, \"withProvenance\": 2}"
+    },
+    {
+      "check": "combinaciones: selector de rango agrupado por nivel y solo con cobertura",
+      "ok": true,
+      "detail": "{\"groups\": 7, \"grouped\": 19, \"loose\": [\"all\"]}"
+    },
+    {
+      "check": "combinaciones: sin desbordamiento horizontal en 1440",
+      "ok": true,
+      "detail": "overflow=0px"
+    },
+    {
+      "check": "combinaciones: foco visible en los filtros",
+      "ok": true,
+      "detail": "{\"active\": true, \"width\": 2, \"style\": \"solid\", \"color\": \"rgb(99, 242, 255)\"}"
+    },
+    {
+      "check": "combinaciones: filtro por división devuelve hasta 5 tarjetas con uso y victorias",
+      "ok": true,
+      "detail": "{\"count\": 2, \"activeSort\": \"MEJOR TASA DE VICTORIAS\", \"samples\": [\"717 usos\", \"718 usos\"], \"winrates\": [\"56.2 %\", \"45.4 %\"], \"overflow\": 0}"
+    },
+    {
+      "check": "combinaciones: estado vacío explica la cobertura faltante",
+      "ok": true,
+      "detail": "{\"empty\": true, \"explains\": true, \"noCards\": true, \"overflow\": 0}"
+    },
+    {
+      "check": "responsive 1440px: guías y combinaciones sin desbordamiento",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "responsive 980px: guías y combinaciones sin desbordamiento",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "responsive 760px: guías y combinaciones sin desbordamiento",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "responsive 390px: guías y combinaciones sin desbordamiento",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "sin errores de consola ni excepciones",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

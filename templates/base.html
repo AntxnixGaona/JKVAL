@@ -1,0 +1,89 @@
+{% load static %}<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="JKVAL: estadísticas, guías y práctica de VALORANT con contexto, muestra y fuente. Proyecto educativo no afiliado a Riot Games.">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b0220">
+  <title>{% if page_title %}{{ page_title }} · JKVAL{% else %}JKVAL{% endif %}</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="preload" href="{% static 'fonts/Anton-Regular.ttf' %}" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="{% static 'fonts/BarlowCondensed-Bold.ttf' %}" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="{% static 'fonts/ChakraPetch-Regular.ttf' %}" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/jkval.css' %}">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  {% include "partials/intro.html" %}
+
+  <header class="site-header">
+    <div class="header__rule" aria-hidden="true"></div>
+    <div class="wrap header__inner">
+      <a class="brand" href="{% url 'core:home' %}" aria-label="JKVAL, ir a la portada">
+        {% include "partials/logo.html" %}
+        <span class="brand__meta" aria-hidden="true">
+          <span class="brand__lab">Competitive Lab</span>
+          <span class="brand__sub">Valorant · datos</span>
+        </span>
+      </a>
+      <details class="nav-disclosure">
+        <summary class="nav-toggle"><span class="nav-toggle__mark" aria-hidden="true"></span>Menú</summary>
+        <nav class="site-nav" aria-label="Navegación principal">
+          <a href="{% url 'core:home' %}"{% if request.resolver_match.url_name == "home" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">01</span>Portada</a>
+          <a href="{% url 'core:guias' %}"{% if request.resolver_match.url_name == "guias" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">02</span>Guías</a>
+          <a href="{% url 'core:composiciones' %}"{% if request.resolver_match.url_name == "composiciones" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">03</span>Combinaciones</a>
+          <a href="{% url 'core:rangos' %}"{% if request.resolver_match.url_name == "rangos" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">04</span>Rangos</a>
+          <a href="{% url 'core:estadisticas' %}"{% if request.resolver_match.url_name == "estadisticas" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">05</span>Estadísticas</a>
+          <a href="{% url 'core:perfiles' %}"{% if request.resolver_match.url_name == "perfiles" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">06</span>Perfiles</a>
+          <a href="{% url 'core:aim_trainer' %}"{% if request.resolver_match.url_name == "aim_trainer" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">07</span>Aim trainer</a>
+        </nav>
+      </details>
+      <div class="header__status">
+        <span class="header__riot"><span class="status-dot" aria-hidden="true"></span><span class="header__status-text">Riot/RSO off</span></span>
+        <span class="badge badge--demo">DEMO</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer__wordmark" aria-hidden="true">JKVAL</div>
+    <div class="wrap footer__grid">
+      <div class="footer__brand">
+        <a class="brand brand--footer" href="{% url 'core:home' %}" aria-label="JKVAL, ir a la portada">{% include "partials/logo.html" %}</a>
+        <p>Competitive Lab. Un proyecto escolar para aprender a leer datos, contexto y límites. No afiliado a Riot Games.</p>
+        <p class="footer__demo"><span class="badge badge--demo">DEMO</span> Datos ficticios · Sin datos de jugadores</p>
+      </div>
+      <nav class="footer__col" aria-label="Explorar">
+        <h2>Explorar</h2>
+        <a href="{% url 'core:home' %}">Portada</a>
+        <a href="{% url 'core:guias' %}">Guías</a>
+        <a href="{% url 'core:composiciones' %}">Combinaciones</a>
+        <a href="{% url 'core:rangos' %}">Rangos</a>
+        <a href="{% url 'core:estadisticas' %}">Estadísticas</a>
+        <a href="{% url 'core:perfiles' %}">Perfiles</a>
+        <a href="{% url 'core:aim_trainer' %}">Aim trainer</a>
+      </nav>
+      <nav class="footer__col" aria-label="Transparencia">
+        <h2>Transparencia</h2>
+        <a href="{% url 'core:fuentes' %}">Fuentes y método</a>
+        <a href="{% url 'core:privacidad' %}">Privacidad</a>
+        <a href="{% url 'core:terminos' %}">Términos</a>
+        <a href="{% url 'core:aviso_legal' %}">Aviso legal</a>
+        <a href="{% url 'core:salud' %}">Estado del servicio</a>
+      </nav>
+    </div>
+    <div class="wrap footer__bottom">
+      <p>© 2026 JKVAL · Proyecto educativo. No afiliado ni respaldado por Riot Games. VALORANT y sus marcas pertenecen a Riot Games.</p>
+      <p>Sin analítica de terceros · Sin cookies publicitarias · Dataset DEMO sintético</p>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/nav.js' %}" defer></script>
+  <script src="{% static 'js/intro.js' %}" defer></script>
+</body>
+</html>

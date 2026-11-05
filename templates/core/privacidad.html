@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Privacidad · {{ updated }}</p>
+    <h1>Qué datos tratamos</h1>
+    <p class="lede">Principio de minimización: solo lo necesario para la cuenta, el perfil y el consentimiento. Nada de analítica de terceros.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap prose">
+    <h2>Ahora mismo</h2>
+    <p>La portada, las guías y las estadísticas se pueden consultar sin cuenta. Solo se usa una cookie de sesión para recordar el rango destacado de la visita y una marca local (<code>sessionStorage</code>) para no repetir la intro en la misma pestaña.</p>
+    <h2>Cuando existan cuentas (Fase 3)</h2>
+    <ul class="check-list">
+      <li>Correo y hash de contraseña para autenticación; verificación obligatoria.</li>
+      <li>Perfil JKVAL privado por defecto, separado del perfil de VALORANT.</li>
+      <li>Vinculación Riot opcional, nunca pidiendo la contraseña de Riot.</li>
+      <li>Exportar, ocultar, revocar consentimiento y eliminar cuenta/datos.</li>
+      <li>Logs sin contraseñas, tokens ni datos personales innecesarios.</li>
+    </ul>
+    <h2>Datos DEMO</h2>
+    <p>Las estadísticas actuales son sintéticas. No describen a ninguna persona ni a la comunidad. Están etiquetadas de forma persistente como <span class="badge badge--demo">DEMO · Datos ficticios</span>.</p>
+    <h2>Pendiente de decisión escolar</h2>
+    <p>Edad mínima, consentimiento de tutores, proveedor de correo, retención definitiva y hosting no están decididos. Hasta entonces, no se habilita registro ni se envían correos reales.</p>
+    <p class="muted">Este texto es informativo y no constituye asesoría legal.</p>
+  </div>
+</section>
+{% endblock %}

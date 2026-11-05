@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Transparencia</p>
+    <h1>Fuentes y método</h1>
+    <p class="lede">Qué datos usa JKVAL, de dónde salen, qué no podemos afirmar y cómo se etiqueta cada resultado.</p>
+    <p class="muted">Última revisión de esta página: {{ updated }}.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap prose-grid">
+    <article class="panel">
+      <h2>Estado actual: DEMO</h2>
+      <p>La portada usa un dataset <strong>sintético, determinista y estático</strong> generado por JKVAL con la semilla <code>20261028</code>. No contiene partidas reales, no procede de Riot y no representa a la comunidad. Cada tabla muestra el sello <span class="badge badge--demo">DEMO · Datos ficticios</span>.</p>
+      <p>Las tasas de victorias se acompañan de un <strong>intervalo de Wilson al 95 %</strong> cuando la muestra lo permite. Ese intervalo acota la incertidumbre del porcentaje observado; no convierte una muestra pequeña en una recomendación.</p>
+      <p>El objetivo de esta fase es validar la experiencia, la procedencia visible y los filtros antes de conectar cualquier fuente autorizada.</p>
+      <h2>Qué muestra cada estadística</h2>
+      <ul class="check-list">
+        <li><strong>Fuente y método:</strong> generador local y forma de cálculo.</li>
+        <li><strong>Parche y periodo:</strong> etiquetas del dataset; los periodos son simulados.</li>
+        <li><strong>Filtros:</strong> modo, rango, región, acto, parche y mapa aplicados.</li>
+        <li><strong>Muestra:</strong> partidas, picks y usos; umbral mínimo por agente y composición.</li>
+        <li><strong>Fechas:</strong> publicación simulada del dataset y hora real de la consulta.</li>
+        <li><strong>Estado:</strong> demo, estático, incompleto o atrasado cuando corresponda.</li>
+      </ul>
+      <h2>Qué no se hace</h2>
+      <ul class="check-list check-list--x">
+        <li>No se usan APIs privadas ni no documentadas.</li>
+        <li>No se extraen datos de Tracker.gg.</li>
+        <li>No se pide la contraseña de Riot.</li>
+        <li>No se mezclan datos DEMO con datos reales.</li>
+        <li>No se simulan actualizaciones ni se presenta una muestra parcial como la comunidad completa.</li>
+        <li>No se publican assets de Riot sin permiso confirmado.</li>
+      </ul>
+    </article>
+    <aside class="panel panel--aside">
+      <h2>Fuentes consultadas</h2>
+      <ul class="source-list">
+        <li>
+          <a href="https://developer.riotgames.com/docs/valorant" target="_blank" rel="noopener noreferrer">Riot · VALORANT API</a>
+          <span>Documentación oficial. Consultada 2026-10-28.</span>
+        </li>
+        <li>
+          <a href="https://developer.riotgames.com/policies/general" target="_blank" rel="noopener noreferrer">Riot · Políticas generales</a>
+          <span>Consultada 2026-10-28.</span>
+        </li>
+        <li>
+          <a href="https://developer.riotgames.com/docs/faqs" target="_blank" rel="noopener noreferrer">Riot · FAQ para desarrolladores</a>
+          <span>Consultada 2026-10-28.</span>
+        </li>
+        <li>
+          <a href="https://valorant-api.com/" target="_blank" rel="noopener noreferrer">valorant-api.com</a>
+          <span>API comunitaria no afiliada. Solo se usó para nombres, roles y lista de mapas; no para estadísticas. Derechos de Riot Games.</span>
+        </li>
+        <li>
+          <a href="https://www.djangoproject.com/download/" target="_blank" rel="noopener noreferrer">Django · versiones soportadas</a>
+          <span>Consultada 2026-10-28. Django 6.1.2 en uso.</span>
+        </li>
+      </ul>
+      <h2>Límites conocidos</h2>
+      <ul class="check-list">
+        <li>Sin aprobación de Riot ni clave de producción, no hay datos reales de jugadores.</li>
+        <li>Sin decisión escolar, el registro y el tratamiento de menores quedan bloqueados.</li>
+        <li>Los assets de Riot no se publican hasta confirmar permisos.</li>
+        <li>La revisión independiente de seguridad está pendiente por el límite de modelos gratuitos de la sesión.</li>
+      </ul>
+      <p><a href="{% url 'core:privacidad' %}">Privacidad</a> · <a href="{% url 'core:terminos' %}">Términos</a> · <a href="{% url 'core:aviso_legal' %}">Aviso legal</a></p>
+    </aside>
+  </div>
+</section>
+{% endblock %}

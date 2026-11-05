@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load jkval_assets %}
+{% block content %}
+<section class="map-hero">
+  <div class="map-hero__media" aria-hidden="true"><img src="{{ map_name|map_img }}" alt="" width="480" height="270"></div>
+  <div class="map-hero__scrim" aria-hidden="true"></div>
+  <div class="wrap map-hero__copy">
+    <p class="eyebrow"><a href="{% url 'core:guias' %}">Guías</a> / Mapas</p>
+    <h1>{{ map_name }}</h1>
+    <p class="lede">Presencia de agentes y combinaciones observadas en este mapa dentro del dataset DEMO. Los filtros por rango solo se muestran cuando alcanzan el mínimo de muestra.</p>
+    <p class="context-line">
+      <span class="chip chip--data">{{ breakdown.matches }} partidas</span>
+      <span class="chip chip--data">{{ breakdown.picks }} picks</span>
+      <span class="chip">Competitivo · todos los rangos</span>
+      <span class="badge badge--demo">DEMO · Datos ficticios</span>
+    </p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="map-agents-title">
+  <div class="wrap">
+    <div class="section-head section-head--compact">
+      <div><p class="eyebrow">01 / Presencia</p><h2 id="map-agents-title">Agentes</h2></div>
+      <p class="section-head__note">Ordenado por picks. La tasa de victorias se muestra aparte porque un agente muy elegido no es necesariamente el que más gana.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <caption class="sr-only">Agentes más elegidos en {{ map_name }} (dataset DEMO)</caption>
+        <thead><tr><th scope="col">#</th><th scope="col">Agente</th><th scope="col">Rol</th><th scope="col">Uso</th><th scope="col">Tasa de victorias</th><th scope="col">Picks</th><th scope="col">IC 95 %</th></tr></thead>
+        <tbody>
+          {% for row in breakdown.agents %}
+          <tr{% if row.insufficient %} class="is-insufficient"{% endif %}>
+            <td class="cell-rank"><span class="rank-num">{{ row.position }}</span></td>
+            <td class="cell-agent"><span class="agent-cell">
+              <span class="agent-thumb"><img src="{{ row.name|agent_img }}" alt="" width="192" height="192" loading="lazy" decoding="async"></span>
+              <span class="agent-cell__text"><a class="agent-name" href="{% url 'core:guia_agente' row.name|agent_slug %}">{{ row.name }}</a>{% if row.insufficient %}<span class="tag tag--warn">Datos insuficientes</span>{% endif %}</span>
+            </span></td>
+            <td class="muted">{{ row.role }}</td>
+            <td class="num">{{ row.usage|floatformat:1 }} %</td>
+            <td class="num">{% if row.win_rate != None %}{{ row.win_rate|floatformat:1 }} %{% else %}No aplica{% endif %}</td>
+            <td class="num">{{ row.picks }}</td>
+            <td class="num muted">{% if row.wilson_low != None %}{{ row.wilson_low|floatformat:1 }}–{{ row.wilson_high|floatformat:1 }} %{% else %}No aplica{% endif %}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="7" class="muted">Sin partidas para este mapa en el dataset.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="map-comps-title">
+  <div class="wrap">
+    <div class="section-head section-head--display">
+      <div><p class="eyebrow">02 / Sinergia</p><h2 id="map-comps-title">Combinaciones<span class="h2-sub">{{ map_name }}</span></h2></div>
+      <p class="section-head__note">Vista Global del mapa. Para filtrar por rango, usa el explorador de combinaciones: solo aparecen los rangos con muestra.</p>
+    </div>
+    {% if report.compositions %}
+    <div class="comp-grid comp-grid--full">
+      {% for comp in report.compositions %}
+      {% include "partials/comp-card.html" with comp=comp report=report patch_label="todos los parches" dataset_meta=dataset_meta %}
+      {% endfor %}
+    </div>
+    <p class="footnote">Mínimo para mostrar: {{ report.threshold }} usos por composición. Con {{ report.recommendable_threshold }} o más se marca «muestra sólida»; entre ambos, «muestra limitada».</p>
+    {% else %}
+    <div class="empty-state" role="status">
+      <h3>Sin combinaciones con muestra suficiente</h3>
+      <p>Este mapa tiene {{ report.matches }} partidas y {{ report.best_sample }} usos en su composición más repetida, por debajo del mínimo de {{ report.threshold }}.</p>
+      <p><a class="btn btn--ghost" href="{% url 'core:composiciones' %}?map={{ map_name }}">Abrir explorador con filtros</a></p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% load jkval_assets %}
+<article class="comp-full{% if comp.is_exploratory %} is-limited{% endif %}{% if comp.kind == 'editorial' %} is-editorial{% endif %}">
+  <header class="comp-full__head">
+    <span class="comp-full__index" aria-hidden="true">{{ comp.top_position|default:comp.position|stringformat:"02d" }}</span>
+    <div class="comp-full__title">
+      <h3>{{ comp.name }}</h3>
+      <p class="comp-full__tags">
+        {% if comp.kind == "editorial" %}
+        <span class="tag tag--editorial">Recomendación editorial</span>
+        {% else %}
+        <span class="tag">Observada · DEMO</span>
+        {% endif %}
+        {% if comp.is_recommendable %}<span class="tag tag--solid">Muestra sólida</span>
+        {% elif comp.is_exploratory %}<span class="tag tag--warn">Muestra limitada</span>{% endif %}
+      </p>
+    </div>
+  </header>
+
+  <ul class="comp-roster comp-roster--roles" aria-label="Agentes de la combinación">
+    {% for member in comp.agents %}
+    <li class="comp-member">
+      <a href="{% url 'core:guia_agente' member.name|agent_slug %}">
+        <img src="{{ member.name|agent_img }}" alt="" width="192" height="192" loading="lazy" decoding="async">
+        <span class="comp-member__name">{{ member.name }}</span>
+        <span class="comp-member__role">{{ member.role }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <dl class="comp-stats">
+    <div><dt>Uso en el filtro</dt><dd>{{ comp.usage|floatformat:1 }} %</dd></div>
+    <div><dt>Tasa de victorias</dt><dd>{% if comp.win_rate != None %}{{ comp.win_rate|floatformat:1 }} %{% else %}No aplica{% endif %}</dd></div>
+    <div><dt>Muestra</dt><dd>{{ comp.sample }} usos</dd></div>
+    <div><dt>IC 95 %</dt><dd>{% if comp.wilson_low != None %}{{ comp.wilson_low|floatformat:1 }}–{{ comp.wilson_high|floatformat:1 }} %{% else %}No aplica{% endif %}</dd></div>
+    <div><dt>Partidas del filtro</dt><dd>{{ report.matches }}</dd></div>
+    <div><dt>Parche</dt><dd>{{ patch_label }}</dd></div>
+  </dl>
+
+  <details class="comp-details">
+    <summary>Por qué aparece y cuándo falla</summary>
+    <div class="comp-details__body">
+      <p>{{ comp.description }}</p>
+      {% if comp.limits %}<p class="muted"><strong>Límites.</strong> {{ comp.limits }}</p>{% endif %}
+      {% if comp.kind == "editorial" %}
+      <p class="footnote">Recomendación editorial del dataset {{ dataset_meta.dataset }}, publicada el {{ dataset_meta.published_at|slice:":10" }} y asociada al parche {{ patch_label }}. No es una opinión profesional verificada ni una medición de rendimiento.</p>
+      {% else %}
+      <p class="footnote">La explicación es texto editorial del dataset DEMO; la medición es la de la tabla. No se ha verificado una fuente profesional para el parche {{ patch_label }}, así que no se muestra un consejo atribuido.</p>
+      {% endif %}
+    </div>
+  </details>
+</article>

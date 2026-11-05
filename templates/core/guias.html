@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static jkval_assets %}
+{% block content %}
+<section class="page-hero guide-hero">
+  <div class="wrap">
+    <p class="eyebrow">Fase 2 / Catálogo<span class="eyebrow__meta">Datos + contexto</span></p>
+    <h1>Guías</h1>
+    <p class="lede">Agentes, mapas y combinaciones con su rol, su utilidad y los límites de lo que se puede afirmar. Cada ficha separa catálogo de Riot, medición DEMO y texto editorial.</p>
+    <p class="context-line">
+      <span class="chip chip--data">{{ agents_total }} agentes</span>
+      <span class="chip chip--data">{{ maps|length }} mapas</span>
+      <span class="chip">Parche {{ dataset_meta.coverage.patches.0 }}</span>
+      <span class="badge badge--demo">DEMO · Datos ficticios</span>
+    </p>
+  </div>
+</section>
+
+{% if catalog_error %}
+<section class="section">
+  <div class="wrap">
+    <div class="empty-state" role="status">
+      <h3>Catálogo de agentes no disponible</h3>
+      <p>{{ catalog_error }} Ejecuta <code>scripts/build_catalog.py</code> para generarlo. Las fichas no muestran texto inventado mientras falte.</p>
+    </div>
+  </div>
+</section>
+{% else %}
+
+<section class="section" aria-labelledby="agents-guide-title">
+  <div class="wrap">
+    <div class="section-head section-head--display">
+      <div>
+        <p class="eyebrow">01 / Agentes</p>
+        <h2 id="agents-guide-title"><span class="ghost-num" aria-hidden="true">30</span>Fichas<span class="h2-sub">por rol</span></h2>
+      </div>
+      <p class="section-head__note">Texto de habilidades en español desde el catálogo comunitario; uso y victorias desde el dataset DEMO. Si un agente no tiene muestra suficiente, la ficha lo dice.</p>
+    </div>
+
+    {% for group in groups %}
+    <section class="role-block" aria-labelledby="role-{{ forloop.counter }}">
+      <div class="role-head">
+        <h3 id="role-{{ forloop.counter }}">{{ group.name }}<span class="h2-sub">{{ group.agents|length }}</span></h3>
+        <p>{{ group.description }}</p>
+      </div>
+      <ul class="agent-grid">
+        {% for agent in group.agents %}
+        <li>
+          <a class="agent-card" href="{% url 'core:guia_agente' agent.slug %}">
+            <span class="agent-card__media">
+              <img src="{{ agent.name|agent_img }}" alt="" width="192" height="192" loading="lazy" decoding="async">
+            </span>
+            <span class="agent-card__body">
+              <span class="agent-card__name">{{ agent.name }}</span>
+              <span class="agent-card__role">{{ agent.role }}</span>
+              <span class="agent-card__abilities" aria-hidden="true">
+                {% for ability in agent.abilities|slice:":4" %}
+                {% if ability.icon %}<img src="{{ ability.icon }}" alt="" width="96" height="96" loading="lazy" decoding="async">{% endif %}
+                {% endfor %}
+              </span>
+            </span>
+            <span class="agent-card__go" aria-hidden="true">→</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="maps-guide-title">
+  <div class="wrap">
+    <div class="section-head section-head--display">
+      <div>
+        <p class="eyebrow">02 / Mapas</p>
+        <h2 id="maps-guide-title"><span class="ghost-num" aria-hidden="true">12</span>Mapas<span class="h2-sub">cobertura</span></h2>
+      </div>
+      <p class="section-head__note">Cada mapa muestra los agentes con más picks y las combinaciones observadas en el dataset DEMO, sin mezclar rangos sin muestra.</p>
+    </div>
+    <ul class="map-grid map-grid--links">
+      {% for map_name in maps %}
+      <li class="map-card">
+        <a class="map-card__link" href="{% url 'core:guia_mapa' map_name|lower %}">
+          <span class="map-card__media"><img src="{{ map_name|map_img }}" alt="Arte del mapa {{ map_name }}" width="480" height="270" loading="lazy" decoding="async"></span>
+          <span class="map-card__index" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
+          <span class="map-card__body"><span class="map-card__name">{{ map_name }}</span><span>Ver ficha</span></span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div><p class="eyebrow">03 / Sinergia</p><h2>Combinaciones</h2></div>
+      <p class="section-head__note">El explorador permite elegir mapa y rango, comparar uso y tasa de victorias, y ver qué cobertura falta cuando no hay muestra.</p>
+    </div>
+    <p><a class="btn btn--primary" href="{% url 'core:composiciones' %}"><span>Abrir combinaciones</span><span class="btn__arrow" aria-hidden="true">→</span></a></p>
+    <p class="footnote">Catálogo: {{ catalog_meta.source }} · versión {{ catalog_meta.riot_version }} · consultado {{ catalog_meta.fetched_at|slice:":10" }}. Las imágenes y textos pertenecen a Riot Games; uso local educativo.</p>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

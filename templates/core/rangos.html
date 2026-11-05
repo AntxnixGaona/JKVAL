@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load jkval_assets %}
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Competitivo / Escala<span class="eyebrow__meta">25 divisiones</span></p>
+    <h1>Rangos</h1>
+    <p class="lede">La escala competitiva completa: nueve niveles y veinticinco divisiones, de Hierro I a Radiante. Cada ficha muestra el emblema y cuántas partidas del dataset DEMO respaldan su muestra. Donde no hay datos suficientes, se dice.</p>
+    <p class="context-line">
+      <span class="chip chip--data">{{ ranks_total }} divisiones</span>
+      <span class="chip">8 niveles con 3 divisiones</span>
+      <span class="chip">Radiante sin divisiones</span>
+      <span class="badge badge--demo">DEMO · Datos ficticios</span>
+    </p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="rank-wall-title">
+  <div class="wrap">
+    <div class="section-head section-head--display">
+      <div>
+        <p class="eyebrow">01 / Escala</p>
+        <h2 id="rank-wall-title"><span class="ghost-num" aria-hidden="true">25</span>De Hierro a Radiante<span class="h2-sub">Global</span></h2>
+      </div>
+      <p class="section-head__note">La distribución del dataset DEMO es sintética: no representa a la comunidad real. Sirve para comprobar la estructura y los estados de muestra, no para estimar cuántos jugadores hay en cada rango.</p>
+    </div>
+
+    <div class="rank-wall">
+      {% for tier in tiers %}
+      <section class="rank-tier rank-tier--{{ tier.id }}" aria-labelledby="tier-{{ tier.id }}">
+        <header class="rank-tier__head">
+          <span class="rank-tier__swatch" aria-hidden="true"></span>
+          <h3 id="tier-{{ tier.id }}">{{ tier.name }}</h3>
+          <span class="rank-tier__count">{{ tier.rows|length }} {% if tier.rows|length == 1 %}división{% else %}divisiones{% endif %}</span>
+        </header>
+        <p class="rank-tier__desc">{{ tier.description }}</p>
+        <ul class="rank-tiles">
+          {% for row in tier.rows %}
+          <li class="rank-tile{% if row.featured %} is-featured{% endif %}">
+            <span class="rank-tile__emblem">{% include "partials/rank-emblem.html" with rank=row.name %}</span>
+            <span class="rank-tile__name">{{ row.name }}</span>
+            <span class="rank-tile__count">{{ row.matches }} partida{{ row.matches|pluralize:"s" }}</span>
+            {% if row.matches < 200 %}<span class="tag tag--warn">Muestra mínima</span>{% endif %}
+            {% if row.featured %}<span class="tag">Destacado</span>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endfor %}
+    </div>
+
+    <p class="footnote">Partidas competitivas del dataset DEMO para todos los mapas, regiones, actos y parches. La etiqueta «Muestra mínima» aparece por debajo de 200 partidas: en esa franja no se deben leer diferencias de tasa de victorias como una recomendación.</p>
+  </div>
+</section>
+
+<section class="section section--alt" aria-labelledby="rank-method-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div><p class="eyebrow">02 / Lectura</p><h2 id="rank-method-title">Cómo se usa el rango</h2></div>
+      <p class="section-head__note">El rango acota la muestra. Nunca se mezcla un rango con «todos» sin decirlo, y una división con pocos datos no se presenta como conclusión.</p>
+    </div>
+    <div class="panel-grid">
+      <article class="panel">
+        <h2>Divisiones</h2>
+        <p>Ocho niveles tienen tres divisiones cada uno (I, II y III); Radiante es una sola insignia. La página de combinaciones permite consultar cada división por separado.</p>
+        <p><a href="{% url 'core:composiciones' %}">Ver combinaciones por división</a></p>
+      </article>
+      <article class="panel">
+        <h2>Muestra</h2>
+        <p>Las cifras de esta página cuentan partidas, no jugadores. Un mismo jugador puede aparecer en varias. La distribución es sintética y está fijada por una semilla reproducible.</p>
+        <p><a href="{% url 'core:fuentes' %}">Fuentes y método</a></p>
+      </article>
+      <article class="panel">
+        <h2>Límites</h2>
+        <p>Los emblemas son recursos locales de este proyecto educativo. Su redistribución fuera de JKVAL no está confirmada; el aviso legal recoge las condiciones de uso del contenido de Riot Games.</p>
+        <p><a href="{% url 'core:aviso_legal' %}">Aviso legal</a></p>
+      </article>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Error 500</p>
+    <h1>Algo falló en el servidor</h1>
+    <p class="lede">No se muestran trazas ni datos internos. Revisa la consola local y vuelve a intentarlo.</p>
+    <p><a class="btn btn--primary" href="{% url 'core:home' %}">Volver a la portada</a></p>
+  </div>
+</section>
+{% endblock %}

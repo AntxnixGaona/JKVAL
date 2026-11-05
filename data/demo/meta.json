@@ -1,0 +1,76 @@
+{
+  "dataset": "demo-v1",
+  "seed": 20261028,
+  "generated_at": "2026-10-28T12:00:00Z",
+  "source": "JKVAL DemoProvider (generador determinista local)",
+  "label": "DEMO · Datos ficticios",
+  "method": "Partidas sintéticas 5v5 con picks ponderados y resultado correlacionado con sesgo por agente/composición. Agregados con intervalo de Wilson 95 %.",
+  "published_at": "2026-10-27T18:00:00Z",
+  "update_policy": "Estático. No se actualiza automáticamente y no simula refrescos.",
+  "thresholds": {
+    "agent_picks": 200,
+    "composition_uses": 500
+  },
+  "coverage": {
+    "modes": {
+      "competitive": {
+        "rank": true,
+        "win_rate": true,
+        "map": true,
+        "compositions": true
+      },
+      "unrated": {
+        "rank": false,
+        "win_rate": true,
+        "map": true,
+        "compositions": true
+      },
+      "swiftplay": {
+        "rank": false,
+        "win_rate": true,
+        "map": true,
+        "compositions": true
+      },
+      "deathmatch": {
+        "rank": false,
+        "win_rate": false,
+        "map": false,
+        "compositions": false
+      }
+    },
+    "regions": [
+      "LATAM",
+      "NA",
+      "EU",
+      "APAC"
+    ],
+    "acts": [
+      "V26 A3",
+      "V26 A2"
+    ],
+    "patches": [
+      "13.09",
+      "13.08",
+      "13.07"
+    ],
+    "maps": [
+      "Abyss",
+      "Ascent",
+      "Bind",
+      "Breeze",
+      "Corrode",
+      "Fracture",
+      "Haven",
+      "Icebox",
+      "Lotus",
+      "Pearl",
+      "Split",
+      "Sunset"
+    ]
+  },
+  "notes": [
+    "Los datos no representan a la comunidad de VALORANT ni a Riot Games.",
+    "No se mezclan modos con y sin rango competitivo.",
+    "Los periodos de actos y parches son simulados para la demo."
+  ]
+}

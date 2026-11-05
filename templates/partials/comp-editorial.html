@@ -1,0 +1,38 @@
+{% load jkval_assets %}
+<article class="comp-editorial">
+  <header class="comp-editorial__head">
+    <span class="comp-editorial__mark" aria-hidden="true">E</span>
+    <div>
+      <h3>{{ comp.name }}</h3>
+      <p class="comp-full__tags">
+        <span class="tag tag--editorial">Recomendación editorial</span>
+        <span class="tag tag--warn">No medida · 0 usos en DEMO</span>
+      </p>
+    </div>
+  </header>
+
+  <ul class="comp-roster comp-roster--roles comp-roster--editorial" aria-label="Agentes propuestos por la recomendación editorial">
+    {% for member in comp.agents %}
+    <li class="comp-member">
+      <a href="{% url 'core:guia_agente' member.name|agent_slug %}">
+        <img src="{{ member.name|agent_img }}" alt="" width="192" height="192" loading="lazy" decoding="async">
+        <span class="comp-member__name">{{ member.name }}</span>
+        <span class="comp-member__role">{{ member.role }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <p class="comp-editorial__copy">{{ comp.description }}</p>
+  {% if comp.limits %}<p class="comp-editorial__limits"><strong>Límite declarado.</strong> {{ comp.limits }}</p>{% endif %}
+
+  <dl class="comp-editorial__meta">
+    <div><dt>Mapas sugeridos</dt><dd>{{ comp.maps|join:", " }}</dd></div>
+    <div><dt>Procedencia</dt><dd>{{ comp.source }}</dd></div>
+    <div><dt>Dataset</dt><dd>{{ comp.dataset }}</dd></div>
+    <div><dt>Fecha</dt><dd>{{ comp.published_at|slice:":10" }}</dd></div>
+    <div><dt>Parche de referencia</dt><dd>{{ comp.patch }}</dd></div>
+  </dl>
+
+  <p class="footnote">Hipótesis editorial del dataset DEMO. No procede de una fuente profesional verificada, no tiene muestra y no debe leerse como una composición con mejor tasa de victorias.</p>
+</article>

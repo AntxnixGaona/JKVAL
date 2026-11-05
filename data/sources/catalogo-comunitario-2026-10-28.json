@@ -1,0 +1,207 @@
+{
+  "source": "https://valorant-api.com/v1/agents?isPlayableCharacter=true ; https://valorant-api.com/v1/maps",
+  "note": "API comunitaria no afiliada a Riot Games. Solo nombres, roles y lista de mapas; no se usa para estadísticas. Datos de derechos de Riot Games.",
+  "fetched_at": "2026-10-28T22:11:27+00:00",
+  "agents": [
+    {
+      "name": "Astra",
+      "role": "Controller",
+      "slug": "Rift"
+    },
+    {
+      "name": "Breach",
+      "role": "Initiator",
+      "slug": "Breach"
+    },
+    {
+      "name": "Brimstone",
+      "role": "Controller",
+      "slug": "Sarge"
+    },
+    {
+      "name": "Chamber",
+      "role": "Sentinel",
+      "slug": "Deadeye"
+    },
+    {
+      "name": "Clove",
+      "role": "Controller",
+      "slug": "Smonk"
+    },
+    {
+      "name": "Cypher",
+      "role": "Sentinel",
+      "slug": "Gumshoe"
+    },
+    {
+      "name": "Deadlock",
+      "role": "Sentinel",
+      "slug": "Cable"
+    },
+    {
+      "name": "Fade",
+      "role": "Initiator",
+      "slug": "BountyHunter"
+    },
+    {
+      "name": "Gekko",
+      "role": "Initiator",
+      "slug": "Aggrobot"
+    },
+    {
+      "name": "Harbor",
+      "role": "Controller",
+      "slug": "Mage"
+    },
+    {
+      "name": "Hush",
+      "role": "Duelist",
+      "slug": "Paprika"
+    },
+    {
+      "name": "Iso",
+      "role": "Duelist",
+      "slug": "Sequoia"
+    },
+    {
+      "name": "Jett",
+      "role": "Duelist",
+      "slug": "Wushu"
+    },
+    {
+      "name": "KAY/O",
+      "role": "Initiator",
+      "slug": "Grenadier"
+    },
+    {
+      "name": "Killjoy",
+      "role": "Sentinel",
+      "slug": "Killjoy"
+    },
+    {
+      "name": "Miks",
+      "role": "Controller",
+      "slug": "Iris"
+    },
+    {
+      "name": "Neon",
+      "role": "Duelist",
+      "slug": "Sprinter"
+    },
+    {
+      "name": "Omen",
+      "role": "Controller",
+      "slug": "Wraith"
+    },
+    {
+      "name": "Phoenix",
+      "role": "Duelist",
+      "slug": "Phoenix"
+    },
+    {
+      "name": "Raze",
+      "role": "Duelist",
+      "slug": "Clay"
+    },
+    {
+      "name": "Reyna",
+      "role": "Duelist",
+      "slug": "Vampire"
+    },
+    {
+      "name": "Sage",
+      "role": "Sentinel",
+      "slug": "Thorne"
+    },
+    {
+      "name": "Skye",
+      "role": "Initiator",
+      "slug": "Guide"
+    },
+    {
+      "name": "Sova",
+      "role": "Initiator",
+      "slug": "Hunter"
+    },
+    {
+      "name": "Tejo",
+      "role": "Initiator",
+      "slug": "Cashew"
+    },
+    {
+      "name": "Veto",
+      "role": "Sentinel",
+      "slug": "Pine"
+    },
+    {
+      "name": "Viper",
+      "role": "Controller",
+      "slug": "Pandemic"
+    },
+    {
+      "name": "Vyse",
+      "role": "Sentinel",
+      "slug": "Nox"
+    },
+    {
+      "name": "Waylay",
+      "role": "Duelist",
+      "slug": "Terra"
+    },
+    {
+      "name": "Yoru",
+      "role": "Duelist",
+      "slug": "Stealth"
+    }
+  ],
+  "maps": [
+    {
+      "name": "Abyss",
+      "competitive": true
+    },
+    {
+      "name": "Ascent",
+      "competitive": true
+    },
+    {
+      "name": "Bind",
+      "competitive": true
+    },
+    {
+      "name": "Breeze",
+      "competitive": true
+    },
+    {
+      "name": "Corrode",
+      "competitive": true
+    },
+    {
+      "name": "Fracture",
+      "competitive": true
+    },
+    {
+      "name": "Haven",
+      "competitive": true
+    },
+    {
+      "name": "Icebox",
+      "competitive": true
+    },
+    {
+      "name": "Lotus",
+      "competitive": true
+    },
+    {
+      "name": "Pearl",
+      "competitive": true
+    },
+    {
+      "name": "Split",
+      "competitive": true
+    },
+    {
+      "name": "Sunset",
+      "competitive": true
+    }
+  ]
+}

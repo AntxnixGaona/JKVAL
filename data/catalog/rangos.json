@@ -1,0 +1,104 @@
+{
+  "version": "2026-10-28",
+  "source": "Lista de rangos competitivos de VALORANT (soporte oficial de Riot Games), nombres en es-ES",
+  "note": "25 divisiones: ocho niveles con tres divisiones y Radiante sin divisiones. Los emblemas son recursos locales del proyecto; no se afirma que sean redistribuibles fuera de este uso educativo.",
+  "tiers": [
+    {
+      "id": "hierro",
+      "name": "Hierro",
+      "color": "#a8a2b8",
+      "description": "Primer escalón del competitivo. La prioridad es conocer mapas, economía y comunicación básica.",
+      "divisions": [
+        {"name": "Hierro I", "emblem": "hierro 1.png"},
+        {"name": "Hierro II", "emblem": "hierro 2.png"},
+        {"name": "Hierro III", "emblem": "hierro 3.png"}
+      ]
+    },
+    {
+      "id": "bronce",
+      "name": "Bronce",
+      "color": "#c98a5a",
+      "description": "Se consolidan las bases: roles, control de espacio y constancia en las rondas.",
+      "divisions": [
+        {"name": "Bronce I", "emblem": "bronce 1.png"},
+        {"name": "Bronce II", "emblem": "bronce 2.png"},
+        {"name": "Bronce III", "emblem": "bronce 3.png"}
+      ]
+    },
+    {
+      "id": "plata",
+      "name": "Plata",
+      "color": "#cfd6e6",
+      "description": "El juego empieza a leerse: utilidad coordinada y decisiones menos improvisadas.",
+      "divisions": [
+        {"name": "Plata I", "emblem": "plata 1.png"},
+        {"name": "Plata II", "emblem": "plata 2.png"},
+        {"name": "Plata III", "emblem": "plata 3.png"}
+      ]
+    },
+    {
+      "id": "oro",
+      "name": "Oro",
+      "color": "#ffd166",
+      "description": "Ritmo y ejecución más consistentes; los errores individuales pesan más.",
+      "divisions": [
+        {"name": "Oro I", "emblem": "oro 1.png"},
+        {"name": "Oro II", "emblem": "oro 2.png"},
+        {"name": "Oro III", "emblem": "oro 3.png"}
+      ]
+    },
+    {
+      "id": "platino",
+      "name": "Platino",
+      "color": "#7fe6d8",
+      "description": "Coordinación de equipo y uso de información para abrir y cerrar rondas.",
+      "divisions": [
+        {"name": "Platino I", "emblem": "platino 1.png"},
+        {"name": "Platino II", "emblem": "platino 2.png"},
+        {"name": "Platino III", "emblem": "platino 3.png"}
+      ]
+    },
+    {
+      "id": "diamante",
+      "name": "Diamante",
+      "color": "#9ad0ff",
+      "description": "Ejecuciones afinadas y adaptación al rival; la ventaja se construye en los detalles.",
+      "divisions": [
+        {"name": "Diamante I", "emblem": "diamante 1.png"},
+        {"name": "Diamante II", "emblem": "diamante 2.png"},
+        {"name": "Diamante III", "emblem": "diamante 3.png"}
+      ]
+    },
+    {
+      "id": "ascendente",
+      "name": "Ascendente",
+      "color": "#5ce6a8",
+      "description": "Alto nivel coordinado; la preparación de rondas y el trade marcan la diferencia.",
+      "divisions": [
+        {"name": "Ascendente I", "emblem": "ascendente 1.png"},
+        {"name": "Ascendente II", "emblem": "ascendente 2.png"},
+        {"name": "Ascendente III", "emblem": "ascendente 3.png"}
+      ]
+    },
+    {
+      "id": "inmortal",
+      "name": "Inmortal",
+      "color": "#ff6b86",
+      "description": "Élite del competitivo; la consistencia y el detalle táctico definen los duelos.",
+      "divisions": [
+        {"name": "Inmortal I", "emblem": "inmortal 1.png"},
+        {"name": "Inmortal II", "emblem": "inmortal 2.png"},
+        {"name": "Inmortal III", "emblem": "inmortal 3.png"}
+      ]
+    },
+    {
+      "id": "radiante",
+      "name": "Radiante",
+      "color": "#ffe9a8",
+      "description": "El escalón más alto. No tiene divisiones: una sola insignia para el top global.",
+      "divisions": [
+        {"name": "Radiante", "emblem": "radiante.png"}
+      ]
+    }
+  ]
+}

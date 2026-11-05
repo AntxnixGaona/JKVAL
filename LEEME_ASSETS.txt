@@ -1,0 +1,12 @@
+Biblioteca de recursos VALORANT para JKVAL.
+
+Carpetas y procedencia:
+- `logos_rangos_valorant/`: iconos obtenidos del campo `largeIcon` del conjunto de rangos de `https://valorant-api.com/v1/competitivetiers`. La API comunitaria sirve los PNG desde `https://media.valorant-api.com/competitivetiers/`. Nombres de rangos/divisiones: FAQ oficial de Riot, https://support-valorant.riotgames.com/hc/en-us/articles/360047937633-VALORANT-Competitive-Mode-FAQ
+- `logos_agentes/`: campos `displayIcon` y `fullPortrait` de `https://valorant-api.com/v1/agents?isPlayableCharacter=true`; los PNG proceden de la CDN `media.valorant-api.com`.
+- `mapas_valorant/`: campos `listViewIcon`, `displayIcon`, `stylizedBackgroundImage` y `backgroundImage` del endpoint `https://valorant-api.com/v1/maps`.
+- `pantallas_carga_valorant/`: campo `splash` del mismo endpoint de mapas.
+- `logos_valorant/`: paquete oficial ZIP enlazado por Riot Games Press, https://www.riotgames.com/en/press (sección “VALORANT Logos”).
+- `videos_agentes/` y `assets_valorant/videos_agentes_en_linea/`: accesos directos a trailers del canal verificado VALORANT en YouTube; los enlaces directos se guardan en los archivos `.url`.
+- `assets_valorant/`: datos e imágenes de habilidades, armas, skins, equipo, tarjetas, sprays, buddies, modos y otros catálogos, desde `https://valorant-api.com/`. La tabla `assets_valorant/FUENTES_ASSETS.csv` registra para cada archivo descargado la URL de origen, el endpoint y el campo usado. Los MP4 de previews de armas se obtienen de la CDN oficial de Riot (`valorant.dyn.riotcdn.net`) y se indexan en el CSV de videos.
+
+Riot explica su catálogo público en https://developer.riotgames.com/docs/valorant y señala que puede retrasarse tras algunos parches. `valorant-api.com` es una API comunitaria no afiliada a Riot Games. Los derechos de marcas y contenido pertenecen a Riot Games.

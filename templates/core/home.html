@@ -1,0 +1,391 @@
+{% extends "base.html" %}
+{% load static l10n jkval_assets %}
+{% block content %}
+<section class="hero">
+  <div class="hero__media" aria-hidden="true">
+    <picture>
+      <source media="(max-width: 760px)" srcset="{% static 'assets/hero/ascent-900.webp' %}">
+      <img src="{% static 'assets/hero/ascent-1600.webp' %}" alt="" width="1600" height="900" fetchpriority="high" decoding="async">
+    </picture>
+  </div>
+  <div class="hero__scrim" aria-hidden="true"></div>
+  <div class="hero__edge" aria-hidden="true"></div>
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow"><span>JKVAL // Competitive Lab</span><span class="eyebrow__meta">V26 · Acto 3</span></p>
+      <h1>
+        <span class="hero__line">El meta no se adivina.</span>
+        <span class="hero__line hero__line--accent">Se lee.</span>
+      </h1>
+      <p class="lede">Estadísticas, guías y práctica para leer el juego con contexto. Cada número muestra su muestra, su parche y su fuente. Sin humo.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#top-agentes"><span>Ver el meta</span><span class="btn__arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href="{% url 'core:guias' %}">Explorar guías</a>
+      </div>
+      <p class="hero__note"><span class="badge badge--demo">DEMO · Datos ficticios</span> Riot/RSO desactivado · Sin datos de jugadores · <a href="{% url 'core:fuentes' %}">Método y fuentes</a></p>
+    </div>
+
+    <aside class="rank-card" aria-labelledby="rank-title">
+      <span class="rank-card__cut" aria-hidden="true"></span>
+      <div class="rank-card__top">
+        <span class="label">Rango destacado</span>
+        <span class="rank-card__code" aria-hidden="true">DEMO / 01</span>
+      </div>
+      <div class="rank-card__emblem">
+        {% include "partials/rank-emblem.html" with rank=featured_rank %}
+      </div>
+      <h2 id="rank-title">{{ featured_rank }}</h2>
+      <p class="rank-card__desc">Se elige al entrar y se mantiene mientras navegas. Una nueva visita puede mostrar otro rango.</p>
+      <dl class="rank-card__facts">
+        <div><dt>Modo</dt><dd>{{ mode_name }}</dd></div>
+        <div><dt>Rango filtrado</dt><dd>{{ rank_display }}</dd></div>
+        <div><dt>Partidas</dt><dd class="num">{{ stats.matches }}</dd></div>
+      </dl>
+      <div class="rank-card__foot">
+        <img src="{{ filters.mode|mode_img }}" alt="" width="96" height="96" loading="lazy" decoding="async">
+        <span>Dataset estático · {{ meta.dataset }}</span>
+      </div>
+    </aside>
+  </div>
+  <div class="hero__ticker" aria-hidden="true">
+    <div class="hero__ticker-track">
+      <span>Competitivo</span><span>Sin clasificar</span><span>Swiftplay</span><span>Deathmatch</span><span>Parche 13.09</span><span>LATAM</span><span>NA</span><span>EU</span><span>APAC</span><span>Demo sintética</span>
+      <span>Competitivo</span><span>Sin clasificar</span><span>Swiftplay</span><span>Deathmatch</span><span>Parche 13.09</span><span>LATAM</span><span>NA</span><span>EU</span><span>APAC</span><span>Demo sintética</span>
+    </div>
+  </div>
+</section>
+
+<section class="section section--filters" aria-labelledby="filters-title">
+  <div class="wrap">
+    <div class="section-head section-head--compact">
+      <div>
+        <p class="eyebrow">01 / Lectura</p>
+        <h2 id="filters-title">Filtra el meta</h2>
+      </div>
+      <p class="section-head__note">Solo se habilitan dimensiones con cobertura. Los modos sin rango muestran «No aplica» y no se mezclan con clasificatorias.</p>
+    </div>
+    <form class="filter-form" method="get" action="{% url 'core:home' %}">
+      <div class="filter-form__head">
+        <img src="{{ filters.mode|mode_img }}" alt="" width="96" height="96" loading="lazy" decoding="async">
+        <div>
+          <span>Modo activo</span>
+          <strong>{{ mode_name }}</strong>
+        </div>
+        <span class="filter-form__tag">Dataset DEMO</span>
+      </div>
+      <input type="hidden" name="sort" value="{{ filters.sort }}">
+      <label class="field">
+        <span>Modo</span>
+        <select name="mode">
+          {% for option in options.modes %}<option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>{% endfor %}
+        </select>
+      </label>
+      <label class="field{% if not options.rank_applies %} field--disabled{% endif %}">
+        <span>Rango</span>
+        {% if options.rank_applies %}
+        <select name="rank">
+          {% for option in options.ranks %}{% if option.value == "all" %}<option value="all"{% if option.selected %} selected{% endif %}>Todos los rangos ({{ ranks_total }} divisiones)</option>{% endif %}{% endfor %}
+          {% for group in options.rank_groups %}
+          <optgroup label="{{ group.name }}">
+            {% for option in group.options %}<option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>{% endfor %}
+          </optgroup>
+          {% endfor %}
+        </select>
+        {% else %}
+        <select name="rank" disabled aria-disabled="true"><option>No aplica</option></select>
+        <small>No aplica en {{ mode_name }}</small>
+        {% endif %}
+      </label>
+      <label class="field">
+        <span>Región</span>
+        <select name="region">
+          {% for option in options.regions %}<option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>{% endfor %}
+        </select>
+      </label>
+      <label class="field">
+        <span>Acto</span>
+        <select name="act">
+          {% for option in options.acts %}<option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>{% endfor %}
+        </select>
+      </label>
+      <label class="field">
+        <span>Parche</span>
+        <select name="patch">
+          {% for option in options.patches %}<option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>{% endfor %}
+        </select>
+      </label>
+      <label class="field{% if not options.map_applies %} field--disabled{% endif %}">
+        <span>Mapa</span>
+        {% if options.map_applies %}
+        <select name="map">
+          {% for option in options.maps %}<option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>{% endfor %}
+        </select>
+        {% else %}
+        <select name="map" disabled aria-disabled="true"><option>No aplica</option></select>
+        <small>No aplica en {{ mode_name }}</small>
+        {% endif %}
+      </label>
+      <div class="filter-form__actions">
+        <button class="btn btn--primary" type="submit">Aplicar filtros</button>
+        <a class="btn btn--ghost" href="{% url 'core:home' %}">Restablecer</a>
+      </div>
+    </form>
+    {% if notices %}
+    <ul class="notices" role="status">
+      {% for notice in notices %}<li>{{ notice }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section section--agents" id="top-agentes" aria-labelledby="agents-title">
+  <div class="wrap">
+    <div class="section-head section-head--display">
+      <div>
+        <p class="eyebrow">02 / Meta medido</p>
+        <h2 id="agents-title"><span class="ghost-num" aria-hidden="true">05</span>Agentes<span class="h2-sub">Top 5</span></h2>
+      </div>
+      <div class="segmented" role="group" aria-label="Ordenar agentes">
+        {% for link in sort_links %}
+        <a class="segmented__item{% if link.active %} is-active{% endif %}" href="{{ link.url }}"{% if link.active %} aria-current="true"{% endif %}>{{ link.label }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <p class="context-line">
+      <span class="chip">{{ mode_name }}</span>
+      <span class="chip">{{ provenance.rank }}</span>
+      <span class="chip">{{ provenance.region }}</span>
+      <span class="chip">{{ provenance.act }}</span>
+      <span class="chip">{{ provenance.patch }}</span>
+      <span class="chip">{{ provenance.map }}</span>
+      <span class="chip">Publicado {{ provenance.published_at|slice:":10" }}</span>
+      <span class="chip chip--data">{{ stats.matches }} partidas · {{ stats.picks }} picks</span>
+    </p>
+    {% if stats.agents %}
+    <div class="table-wrap table-wrap--scoreboard">
+      <table class="data-table">
+        <caption class="sr-only">Top 5 de agentes para los filtros seleccionados. Uso y tasa de victorias se muestran por separado.</caption>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Agente</th>
+            <th scope="col">Rol</th>
+            <th scope="col">Tasa de victorias</th>
+            <th scope="col">Picks</th>
+            <th scope="col">% de picks</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for agent in stats.agents %}
+          <tr{% if agent.insufficient %} class="is-insufficient"{% endif %}>
+            <td class="cell-rank"><span class="rank-num">{{ agent.position }}</span></td>
+            <td class="cell-agent">
+              <span class="agent-cell">
+                <span class="agent-thumb"><img src="{{ agent.name|agent_img }}" alt="" width="192" height="192" loading="lazy" decoding="async"></span>
+                <span class="agent-cell__text">
+                  <span class="agent-name">{{ agent.name }}</span>
+                  {% if agent.insufficient %}<span class="tag tag--warn">Datos insuficientes</span>{% endif %}
+                </span>
+              </span>
+            </td>
+            <td class="muted cell-role">{{ agent.role }}</td>
+            <td>
+              {% if agent.win_rate != None %}
+              <span class="metric__value metric__value--win">{{ agent.win_rate|floatformat:1 }} %</span>
+              <progress class="metric__bar" max="100" value="{{ agent.win_rate|unlocalize }}" aria-label="Tasa de victorias de {{ agent.name }}: {{ agent.win_rate|floatformat:1 }} por ciento">{% if agent.win_rate %}{{ agent.win_rate|floatformat:1 }}%{% endif %}</progress>
+              {% else %}<span class="muted">No aplica</span>{% endif %}
+            </td>
+            <td class="num">{{ agent.sample }} {% if agent.sample == 1 %}pick{% else %}picks{% endif %}</td>
+            <td>
+              <div class="metric">
+                <span class="metric__value">{{ agent.usage|floatformat:1 }} %</span>
+                <progress class="metric__bar" max="100" value="{{ agent.usage|unlocalize }}" aria-label="Porcentaje de picks de {{ agent.name }}: {{ agent.usage|floatformat:1 }} por ciento">{% if agent.usage %}{{ agent.usage|floatformat:1 }}%{% endif %}</progress>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state" role="status">
+      <h3>Sin datos para esta combinación</h3>
+      <p>No hay partidas que cumplan todos los filtros. No se infieren resultados. Prueba a ampliar la región, el acto o el mapa.</p>
+      <a class="btn btn--primary" href="{% url 'core:home' %}">Restablecer filtros</a>
+    </div>
+    {% endif %}
+    <div class="table-help">
+      <details>
+        <summary>Cómo leer «picks», muestra e intervalo de confianza</summary>
+        <dl class="meta-grid">
+          <div><dt>Picks</dt><dd>Veces que un agente fue elegido en las partidas que cumplen los filtros. Un pick no es una partida: en cada partida hay diez picks, cinco por equipo.</dd></div>
+          <div><dt>% de picks</dt><dd>Proporción de picks del agente sobre el total de picks del filtro. Sirve para comparar popularidad, no rendimiento.</dd></div>
+          <div><dt>Partidas</dt><dd>Partidas completas del filtro. Es la base de la muestra global que aparece en las fichas de contexto.</dd></div>
+          <div><dt>Tasa de victorias</dt><dd>Porcentaje de picks del agente que terminaron en victoria. Es la métrica principal de la tabla y el orden por defecto.</dd></div>
+        </dl>
+        {% if stats.agents %}
+        <table class="data-table data-table--ci">
+          <caption>Intervalo de Wilson al 95 % por agente</caption>
+          <thead><tr><th scope="col">Agente</th><th scope="col">Picks</th><th scope="col">IC 95 %</th></tr></thead>
+          <tbody>
+            {% for agent in stats.agents %}
+            <tr><th scope="row">{{ agent.name }}</th><td class="num">{{ agent.sample }}</td><td class="num">{% if agent.wilson_low != None %}{{ agent.wilson_low|floatformat:1 }}–{{ agent.wilson_high|floatformat:1 }} %{% else %}No aplica{% endif %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+        <p class="footnote">El intervalo de Wilson acota la incertidumbre de la tasa de victorias para la muestra observada. Una tasa alta con muestra pequeña no demuestra que un agente sea mejor.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt section--comps" aria-labelledby="comps-title">
+  <div class="wrap">
+    <div class="section-head section-head--display">
+      <div>
+        <p class="eyebrow">03 / Sinergia</p>
+        <h2 id="comps-title"><span class="ghost-num" aria-hidden="true">05</span>Composiciones<span class="h2-sub">Top 5</span></h2>
+      </div>
+      <div class="section-head__side">
+        <p class="section-head__note">Composiciones observadas en el dataset DEMO. Las sugerencias editoriales se marcan aparte y no se presentan como meta medida.</p>
+        <a class="btn btn--ghost btn--small" href="{% url 'core:composiciones' %}?map={% if filters.map and filters.map != "all" %}{{ filters.map }}{% else %}Ascent{% endif %}&amp;rank=all">Explorar por mapa y rango</a>
+      </div>
+    </div>
+    {% if show_comps and stats.compositions %}
+    <div class="comp-grid">
+      {% for comp in stats.compositions %}
+      <article class="comp-card{% if comp.insufficient %} is-insufficient{% endif %}">
+        <div class="comp-card__top">
+          <span class="comp-card__index" aria-hidden="true">{{ comp.position|stringformat:"02d" }}</span>
+          <div>
+            <h3>{{ comp.name }}</h3>
+            <p class="comp-card__kind">{% if comp.kind == "editorial" %}<span class="tag tag--editorial">Sugerencia editorial</span>{% else %}<span class="tag">Observada · DEMO</span>{% endif %}{% if comp.insufficient %}<span class="tag tag--warn">Datos insuficientes</span>{% endif %}</p>
+          </div>
+        </div>
+        <ul class="comp-roster" aria-label="Agentes de la composición">
+          {% for name in comp.agents %}
+          <li class="comp-agent"><img src="{{ name|agent_img }}" alt="{{ name }}" width="192" height="192" loading="lazy" decoding="async"><span>{{ name }}</span></li>
+          {% endfor %}
+        </ul>
+        <dl class="comp-card__metrics">
+          <div><dt>Uso</dt><dd>{{ comp.usage|floatformat:1 }} %</dd></div>
+          <div><dt>Victorias</dt><dd>{% if comp.win_rate != None %}{{ comp.win_rate|floatformat:1 }} %{% else %}No aplica{% endif %}</dd></div>
+          <div><dt>Muestra</dt><dd>{{ comp.sample }} usos</dd></div>
+          <div><dt>IC 95 %</dt><dd>{% if comp.wilson_low != None %}{{ comp.wilson_low|floatformat:1 }}–{{ comp.wilson_high|floatformat:1 }} %{% else %}No aplica{% endif %}</dd></div>
+        </dl>
+        <p class="comp-card__desc">{{ comp.description }}</p>
+        <p class="comp-card__maps"><span>Mapas sugeridos</span></p>
+        <ul class="comp-maps">
+          {% for map_name in comp.maps %}
+          <li><img src="{{ map_name|map_img }}" alt="" width="480" height="270" loading="lazy" decoding="async"><span>{{ map_name }}</span></li>
+          {% endfor %}
+        </ul>
+      </article>
+      {% endfor %}
+    </div>
+    {% elif show_comps %}
+    <div class="empty-state" role="status">
+      <h3>Sin composiciones para estos filtros</h3>
+      <p>La muestra no alcanza el mínimo de 500 usos o no hay composiciones observadas. No se presentan sugerencias como si fueran datos medidos.</p>
+    </div>
+    {% else %}
+    <div class="empty-state empty-state--compact" role="status">
+      <h3>Composiciones: No aplica</h3>
+      <p>{{ mode_name }} no se juega con composiciones de cinco agentes en este modelo de datos. No se mezcla con modos por equipos.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section section--maps" aria-labelledby="maps-title">
+  <div class="wrap">
+    <div class="section-head section-head--display">
+      <div>
+        <p class="eyebrow">04 / Territorio</p>
+        <h2 id="maps-title">Mapas<span class="h2-sub">12 del dataset</span></h2>
+      </div>
+      <p class="section-head__note">Arte local del catálogo de mapas. La ficha editorial de cada mapa se publica en la Fase 2; aquí solo se muestra la cobertura del dataset.</p>
+    </div>
+    <ul class="map-grid">
+      {% for option in options.maps %}{% if option.value != "all" %}
+      <li class="map-card">
+        <div class="map-card__media"><img src="{{ option.value|map_img }}" alt="Arte del mapa {{ option.value }}" width="480" height="270" loading="lazy" decoding="async"></div>
+        <span class="map-card__index" aria-hidden="true">{{ forloop.counter0|stringformat:"02d" }}</span>
+        <div class="map-card__body"><h3>{{ option.value }}</h3><span>Ficha en Fase 2</span></div>
+      </li>
+      {% endif %}{% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="provenance-title">
+  <div class="wrap">
+    <details class="provenance"{% if not has_data %} open{% endif %}>
+      <summary id="provenance-title"><span class="provenance__kicker">DATA / STATUS</span> Procedencia y estado de los datos <span class="badge badge--demo">DEMO</span></summary>
+      <div class="provenance__body">
+        <dl class="meta-grid">
+          <div><dt>Fuente</dt><dd>{{ provenance.source }}</dd></div>
+          <div><dt>Estado</dt><dd><span class="badge badge--demo">DEMO · Datos ficticios</span></dd></div>
+          <div><dt>Método</dt><dd>{{ provenance.method }}</dd></div>
+          <div><dt>Dataset</dt><dd>{{ provenance.dataset }}</dd></div>
+          <div><dt>Parche</dt><dd>{{ provenance.patch }}</dd></div>
+          <div><dt>Periodo</dt><dd>{{ provenance.period }}</dd></div>
+          <div><dt>Filtros aplicados</dt><dd>{{ provenance.filters_text }}</dd></div>
+          <div><dt>Partidas</dt><dd>{{ provenance.matches }}</dd></div>
+          <div><dt>Muestra</dt><dd>{{ provenance.picks }} picks · mínimos: {{ provenance.thresholds.agent_picks }} por agente y {{ provenance.thresholds.composition_uses }} por composición</dd></div>
+          <div><dt>Fuente publicó</dt><dd>{{ provenance.published_at }}</dd></div>
+          <div><dt>JKVAL consultó</dt><dd>{{ provenance.last_checked_at }}</dd></div>
+          <div><dt>Actualización</dt><dd>Desactivada: dataset estático. No se simulan refrescos.</dd></div>
+        </dl>
+        <div class="provenance__notes">
+          <h3>Cómo leerlo</h3>
+          <ul>
+            {% for note in provenance.notes %}<li>{{ note }}</li>{% endfor %}
+          </ul>
+          <p><a href="{% url 'core:fuentes' %}">Ver fuentes, método y límites</a></p>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="section section--next" aria-labelledby="next-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div><p class="eyebrow">Siguiente</p><h2 id="next-title">Del dato a la decisión</h2></div>
+      <p class="section-head__note">Las guías y los perfiles se construyen en fases posteriores. Mientras tanto, esta portada ya es navegable y honesta con sus datos.</p>
+    </div>
+    <div class="cta-grid">
+      <a class="cta-card" href="{% url 'core:guias' %}">
+        <span class="cta-card__media" aria-hidden="true"><img src="{% static 'assets/agentes/jett.webp' %}" alt="" width="192" height="192" loading="lazy" decoding="async"></span>
+        <span class="cta-card__phase">Fase 2</span>
+        <h3>Guías</h3>
+        <p>Agentes, mapas y composiciones con roles, utilidad, sinergias y consejos citados.</p>
+        <span class="cta-card__link">Ver estado <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="cta-card" href="{% url 'core:estadisticas' %}">
+        <span class="cta-card__media" aria-hidden="true"><img src="{% static 'assets/armas/phantom.webp' %}" alt="" width="320" height="160" loading="lazy" decoding="async"></span>
+        <span class="cta-card__phase">Fase 3</span>
+        <h3>Estadísticas</h3>
+        <p>Explorador filtrable con procedencia, muestra e incertidumbre.</p>
+        <span class="cta-card__link">Ver estado <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="cta-card" href="{% url 'core:perfiles' %}">
+        <span class="cta-card__media" aria-hidden="true"><img src="{% static 'assets/rangos/inmortal.webp' %}" alt="" width="192" height="192" loading="lazy" decoding="async"></span>
+        <span class="cta-card__phase">Fase 3</span>
+        <h3>Perfiles</h3>
+        <p>Cuenta JKVAL privada, verificación y Riot opcional desactivado.</p>
+        <span class="cta-card__link">Ver estado <span aria-hidden="true">→</span></span>
+      </a>
+      <a class="cta-card" href="{% url 'core:aim_trainer' %}">
+        <span class="cta-card__media" aria-hidden="true"><img src="{% static 'assets/modos/deathmatch.webp' %}" alt="" width="96" height="96" loading="lazy" decoding="async"></span>
+        <span class="cta-card__phase">Fase 4</span>
+        <h3>Aim trainer</h3>
+        <p>Práctica original con calibración y métricas honestas.</p>
+        <span class="cta-card__link">Ver estado <span aria-hidden="true">→</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

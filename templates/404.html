@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Error 404</p>
+    <h1>Esa ruta no existe</h1>
+    <p class="lede">Puede que el enlace esté mal escrito o que la sección aún no esté construida. No hay datos ocultos ni redirecciones engañosas.</p>
+    <p><a class="btn btn--primary" href="{% url 'core:home' %}">Volver a la portada</a> <a class="btn btn--ghost" href="{% url 'core:fuentes' %}">Ver fuentes</a></p>
+  </div>
+</section>
+{% endblock %}

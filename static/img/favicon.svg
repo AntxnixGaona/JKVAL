@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="JKVAL">
+  <defs>
+    <linearGradient id="jk-fav" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c9a8ff"/>
+      <stop offset="1" stop-color="#6d3df0"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" fill="#000020"/>
+  <path d="M0 0 H64 V8 L8 64 H0 Z" fill="#050a2a"/>
+  <path d="M64 0 H64 L64 64 H56 L0 8 V0 Z" fill="#071039"/>
+  <path d="M46 8 H56 L20 56 H10 Z" fill="url(#jk-fav)"/>
+  <g fill="#eaf2ff" transform="translate(8 18) scale(0.245)">
+    <path d="M14 0 H66 V76 L33 108 L0 76 V58 H18 V68 L33 84 L48 70 V16 H14 Z"/>
+    <path d="M84 0 H104 V40 L118 0 H142 L112 46 L144 100 H120 L104 64 V100 H84 Z"/>
+  </g>
+</svg>

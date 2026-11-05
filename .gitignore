@@ -1,0 +1,34 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+db.sqlite3
+db.sqlite3-journal
+
+# Salidas locales
+var/
+outbox/
+*.log
+
+# Biblioteca cruda de assets: no se versiona completa
+assets_valorant/
+logos_agentes/
+logos_rangos_valorant/
+logos_valorant/
+mapas_valorant/
+pantallas_carga_valorant/
+videos_agentes/
+
+# Artefactos de pruebas y capturas locales
+.pytest_cache/
+.coverage
+htmlcov/
+test-results/
+playwright-report/
+capturas/
+
+# Intermedios del render 3D (se regeneran con scripts/build_intro_blender.py)
+assets/intro/frames/
+assets/intro/*.blend1
