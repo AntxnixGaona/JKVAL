@@ -1,13 +1,23 @@
 from urllib.parse import urlencode
+import logging
 
 from django.conf import settings
 from django.http import Http404, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.decorators.http import require_safe
 
 from . import catalog, demo
+from .services import tracker_service
+from .services.valorant_api import (
+    AccountNotFound,
+    AuthenticationError,
+    ConfigurationError,
+    HenrikDevError,
+)
 
 LEGAL_UPDATED = "2026-10-28"
+logger = logging.getLogger(__name__)
 
 
 def _sort_links(filters: dict) -> list[dict]:
@@ -261,7 +271,6 @@ def composiciones(request):
     if sort not in ("picks", "winrate"):
         sort = "winrate"
 
-    # En el dataset, `None` significa «todos los rangos»; "all" es solo el valor del formulario.
     rank_filter = None if rank == "all" else rank
     report = demo.composition_report("competitive", rank_filter, region, act, patch, map_name, sort)
     map_options = demo.maps_with_coverage(region, act, patch)
@@ -321,7 +330,6 @@ def composiciones(request):
 
 @require_safe
 def rangos(request):
-    """Las 25 divisiones competitivas con su emblema y su muestra en el dataset."""
     data, error = _load_dataset_or_503(request)
     if error:
         return error
@@ -362,22 +370,6 @@ def estadisticas(request):
             "Estados demo, estático, incompleto y atrasado",
             "Comparaciones con muestra e incertidumbre",
             "Sin mezclar datos demo y reales",
-        ],
-    )
-
-
-@require_safe
-def perfiles(request):
-    return _placeholder(
-        request,
-        "Perfiles",
-        "Fase 3",
-        "Cuentas JKVAL privadas por defecto, con verificación de correo y vinculación Riot opcional y desactivada.",
-        [
-            "Registro con verificación obligatoria",
-            "Perfil Resumen, Partidas, Agentes, Mapas, Armas y Tendencias",
-            "Exportar, ocultar, revocar y eliminar datos",
-            "Riot/RSO desactivado por feature flag",
         ],
     )
 
@@ -424,3 +416,185 @@ def not_found(request, exception):
 
 def server_error(request):
     return render(request, "500.html", {"page_title": "Error interno"}, status=500)
+
+
+# ==========================================
+# TRACKER DE JUGADOR
+# ==========================================
+MAX_NAME_LENGTH = 64
+MAX_TAG_LENGTH = 16
+PLATFORM_CHOICES = ("pc", "console")
+
+
+def _clean_player_field(value, limit: int) -> str:
+    if isinstance(value, (list, tuple)):
+        value = value[0] if value else ""
+    return str(value or "").strip()[:limit]
+
+
+def _is_valid_player_field(value: str) -> bool:
+    """Rechaza vacíos, controles y separadores de ruta."""
+    if not value:
+        return False
+    return not any(ord(char) < 32 or ord(char) == 127 or char in ("/", "\\") for char in value)
+
+
+def _empty_tracker_context(name: str = "", tag: str = "", *, platform: str = "pc",
+                           searched: bool = False, form_error: str = "") -> dict:
+    return {
+        "page_title": "Tracker de jugador",
+        "name": name,
+        "tag": tag,
+        "level": "",
+        "region": "",
+        "rank": None,
+        "matches": [],
+        "stats": None,
+        "warnings": [],
+        "error": "",
+        "searched": searched,
+        "partial": False,
+        "source": "HenrikDev",
+        "updated_at": None,
+        "analyzed_matches": 0,
+        "platform": platform,
+        "form_error": form_error,
+    }
+
+
+@require_safe
+def search_player(request):
+    """Formulario y redirección al perfil. No existe autocompletado oficial."""
+    name = _clean_player_field(request.GET.get("name"), MAX_NAME_LENGTH)
+    tag = _clean_player_field(request.GET.get("tag"), MAX_TAG_LENGTH).lstrip("#")
+    platform = _clean_player_field(request.GET.get("platform"), 10).lower()
+    if platform not in PLATFORM_CHOICES:
+        platform = "pc"
+
+    provided = "name" in request.GET or "tag" in request.GET
+    if not provided:
+        return render(
+            request,
+            "core/player_stats.html",
+            _empty_tracker_context(platform=platform),
+        )
+
+    if not _is_valid_player_field(name) or not _is_valid_player_field(tag):
+        return render(
+            request,
+            "core/player_stats.html",
+            _empty_tracker_context(
+                name=name,
+                tag=tag,
+                platform=platform,
+                form_error=(
+                    "Introduce un nombre y un tag válidos (sin barras ni "
+                    "caracteres de control)."
+                ),
+            ),
+        )
+
+    url = reverse("core:player_stats", kwargs={"name": name, "tag": tag})
+    return redirect(f"{url}?{urlencode({'platform': platform})}")
+
+
+@require_safe
+def player_stats_view(request, name: str, tag: str):
+    """Perfil público de un jugador con datos reales del proveedor."""
+    name = _clean_player_field(name, MAX_NAME_LENGTH)
+    tag = _clean_player_field(tag, MAX_TAG_LENGTH).lstrip("#")
+    raw_platform = _clean_player_field(request.GET.get("platform"), 10).lower()
+    platform_warnings = []
+    if raw_platform not in PLATFORM_CHOICES:
+        if raw_platform:
+            platform_warnings.append(
+                "La plataforma indicada no es válida; se muestra pc."
+            )
+        platform = "pc"
+    else:
+        platform = raw_platform
+
+    if not _is_valid_player_field(name) or not _is_valid_player_field(tag):
+        context = _empty_tracker_context(
+            name=name,
+            tag=tag,
+            platform=platform,
+            searched=True,
+            form_error="El nombre o el tag no son válidos.",
+        )
+        context["warnings"] = platform_warnings
+        context["error"] = "El nombre o el tag no son válidos."
+        return render(request, "core/player_stats.html", context, status=400)
+
+    try:
+        profile = tracker_service.get_profile(name, tag, platform=platform)
+    except AccountNotFound:
+        context = _empty_tracker_context(
+            name=name,
+            tag=tag,
+            platform=platform,
+            searched=True,
+        )
+        context["warnings"] = platform_warnings
+        context["error"] = (
+            "Cuenta no encontrada. Comprueba el nombre y el tag e inténtalo de nuevo."
+        )
+        return render(request, "core/player_stats.html", context, status=404)
+    except (AuthenticationError, ConfigurationError) as exc:
+        context = _empty_tracker_context(
+            name=name,
+            tag=tag,
+            platform=platform,
+            searched=True,
+        )
+        context["warnings"] = platform_warnings
+        context["error"] = exc.user_message
+        return render(request, "core/player_stats.html", context, status=503)
+    except HenrikDevError as exc:
+        context = _empty_tracker_context(
+            name=name,
+            tag=tag,
+            platform=platform,
+            searched=True,
+        )
+        context["warnings"] = [*platform_warnings, exc.user_message]
+        context["error"] = exc.user_message
+        return render(request, "core/player_stats.html", context, status=200)
+    except Exception:
+        logger.warning("Fallo inesperado al cargar el perfil de un jugador")
+        context = _empty_tracker_context(
+            name=name,
+            tag=tag,
+            platform=platform,
+            searched=True,
+        )
+        context["warnings"] = platform_warnings
+        context["error"] = (
+            "No se pudo cargar el perfil en este momento. Inténtalo más tarde."
+        )
+        return render(request, "core/player_stats.html", context, status=200)
+
+    account = profile["account"]
+    warnings = [*platform_warnings, *profile["warnings"]]
+    context = {
+        "page_title": f"Perfil de {account['name']}",
+        "name": account["name"] or name,
+        "tag": account["tag"] or tag,
+        "level": account["account_level"],
+        "region": account["region"],
+        "rank": profile["rank"],
+        "matches": profile["matches"],
+        "stats": profile["stats"],
+        "warnings": warnings,
+        "error": "",
+        "searched": True,
+        "partial": profile["partial"],
+        "source": profile["source"],
+        "updated_at": profile["updated_at"],
+        "analyzed_matches": profile["analyzed_matches"],
+        "platform": platform,
+        "form_error": "",
+        # Datos de cuenta que el frontend puede necesitar (card, title...).
+        "account": account,
+    }
+    return render(request, "core/player_stats.html", context)

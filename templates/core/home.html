@@ -18,10 +18,12 @@
         <span class="hero__line hero__line--accent">Se lee.</span>
       </h1>
       <p class="lede">Estadísticas, guías y práctica para leer el juego con contexto. Cada número muestra su muestra, su parche y su fuente. Sin humo.</p>
+
       <div class="hero__actions">
         <a class="btn btn--primary" href="#top-agentes"><span>Ver el meta</span><span class="btn__arrow" aria-hidden="true">→</span></a>
         <a class="btn btn--ghost" href="{% url 'core:guias' %}">Explorar guías</a>
       </div>
+
       <p class="hero__note"><span class="badge badge--demo">DEMO · Datos ficticios</span> Riot/RSO desactivado · Sin datos de jugadores · <a href="{% url 'core:fuentes' %}">Método y fuentes</a></p>
     </div>
 
@@ -35,7 +37,7 @@
         {% include "partials/rank-emblem.html" with rank=featured_rank %}
       </div>
       <h2 id="rank-title">{{ featured_rank }}</h2>
-      <p class="rank-card__desc">Se elige al entrar y se mantiene mientras navegas. Una nueva visita puede mostrar otro rango.</p>
+      <p class="rank-card__desc">{% if static_build %}Rango destacado de esta edición estática. Consulta la escala completa en Rangos.{% else %}Se elige al entrar y se mantiene mientras navegas. Una nueva visita puede mostrar otro rango.{% endif %}</p>
       <dl class="rank-card__facts">
         <div><dt>Modo</dt><dd>{{ mode_name }}</dd></div>
         <div><dt>Rango filtrado</dt><dd>{{ rank_display }}</dd></div>
@@ -371,11 +373,11 @@
         <p>Explorador filtrable con procedencia, muestra e incertidumbre.</p>
         <span class="cta-card__link">Ver estado <span aria-hidden="true">→</span></span>
       </a>
-      <a class="cta-card" href="{% url 'core:perfiles' %}">
+      <a class="cta-card" href="{% url 'core:search_player' %}">
         <span class="cta-card__media" aria-hidden="true"><img src="{% static 'assets/rangos/inmortal.webp' %}" alt="" width="192" height="192" loading="lazy" decoding="async"></span>
         <span class="cta-card__phase">Fase 3</span>
         <h3>Perfiles</h3>
-        <p>Cuenta JKVAL privada, verificación y Riot opcional desactivado.</p>
+        <p>Consulta de cuenta, rango e historial mediante HenrikDev en la aplicación Django.</p>
         <span class="cta-card__link">Ver estado <span aria-hidden="true">→</span></span>
       </a>
       <a class="cta-card" href="{% url 'core:aim_trainer' %}">

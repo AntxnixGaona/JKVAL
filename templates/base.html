@@ -35,10 +35,13 @@
           <a href="{% url 'core:composiciones' %}"{% if request.resolver_match.url_name == "composiciones" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">03</span>Combinaciones</a>
           <a href="{% url 'core:rangos' %}"{% if request.resolver_match.url_name == "rangos" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">04</span>Rangos</a>
           <a href="{% url 'core:estadisticas' %}"{% if request.resolver_match.url_name == "estadisticas" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">05</span>Estadísticas</a>
-          <a href="{% url 'core:perfiles' %}"{% if request.resolver_match.url_name == "perfiles" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">06</span>Perfiles</a>
+
+          <a href="{% url 'core:search_player' %}"{% if request.resolver_match.url_name == "search_player" or request.resolver_match.url_name == "player_stats" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">06</span>Tracker / Perfiles</a>
+
           <a href="{% url 'core:aim_trainer' %}"{% if request.resolver_match.url_name == "aim_trainer" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">07</span>Aim trainer</a>
         </nav>
       </details>
+
       <div class="header__status">
         <span class="header__riot"><span class="status-dot" aria-hidden="true"></span><span class="header__status-text">Riot/RSO off</span></span>
         <span class="badge badge--demo">DEMO</span>
@@ -47,6 +50,7 @@
   </header>
 
   <main id="contenido" tabindex="-1">
+    {% if static_build %}<aside class="publication-note wrap">Publicación estática para la actividad · Guías y datos DEMO. Los filtros y las consultas de jugadores requieren ejecutar Django.</aside>{% endif %}
     {% block content %}{% endblock %}
   </main>
 
@@ -56,7 +60,7 @@
       <div class="footer__brand">
         <a class="brand brand--footer" href="{% url 'core:home' %}" aria-label="JKVAL, ir a la portada">{% include "partials/logo.html" %}</a>
         <p>Competitive Lab. Un proyecto escolar para aprender a leer datos, contexto y límites. No afiliado a Riot Games.</p>
-        <p class="footer__demo"><span class="badge badge--demo">DEMO</span> Datos ficticios · Sin datos de jugadores</p>
+        <p class="footer__demo"><span class="badge badge--demo">DEMO</span> Guías: datos DEMO · Tracker local: HenrikDev</p>
       </div>
       <nav class="footer__col" aria-label="Explorar">
         <h2>Explorar</h2>
@@ -65,7 +69,9 @@
         <a href="{% url 'core:composiciones' %}">Combinaciones</a>
         <a href="{% url 'core:rangos' %}">Rangos</a>
         <a href="{% url 'core:estadisticas' %}">Estadísticas</a>
-        <a href="{% url 'core:perfiles' %}">Perfiles</a>
+
+        <a href="{% url 'core:search_player' %}">Tracker / Perfiles</a>
+
         <a href="{% url 'core:aim_trainer' %}">Aim trainer</a>
       </nav>
       <nav class="footer__col" aria-label="Transparencia">

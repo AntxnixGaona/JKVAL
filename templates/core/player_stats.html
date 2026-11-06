@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="wrap tracker">
+  <p class="eyebrow">Competitive Lab / Tracker</p>
+  <h1>Tu juego, en datos.</h1>
+  <p class="lede">Consulta una cuenta por su Riot ID completo. El resumen cubre las últimas partidas disponibles, no todo el historial del jugador.</p>
+  {% if static_build %}
+  <div class="tracker-notice"><h2>El tracker necesita un servidor</h2><p>Esta entrega está publicada en GitHub Pages. Puedes explorar las guías y los rangos; la consulta a HenrikDev se ejecuta únicamente en la aplicación Django, con una clave configurada en el servidor.</p><a class="btn btn--primary" href="{% url 'core:guias' %}">Explorar guías</a></div>
+  {% else %}
+  <form class="tracker-search" action="{% url 'core:search_player' %}" method="get">
+    <label class="field"><span>Nombre de jugador</span><input name="name" value="{{ name }}" maxlength="64" placeholder="Nombre" required autocomplete="off"></label>
+    <label class="field"><span>Tag</span><input name="tag" value="{{ tag }}" maxlength="16" placeholder="Sin #" required autocomplete="off"></label>
+    <label class="field"><span>Plataforma</span><select name="platform"><option value="pc"{% if platform == 'pc' %} selected{% endif %}>PC</option><option value="console"{% if platform == 'console' %} selected{% endif %}>Consola</option></select></label>
+    <button class="btn btn--primary" type="submit">Buscar perfil</button>
+  </form>
+  <small>Consulta tu cuenta o una cuenta cuyo titular haya autorizado el uso de sus datos. Fuente: HenrikDev, servicio independiente de Riot Games.</small>
+  {% if form_error %}<p class="tracker-notice" role="alert">{{ form_error }}</p>{% endif %}
+  {% if error %}<div class="tracker-notice" role="alert"><h2>{{ name }} #{{ tag }}</h2><p>{{ error }}</p></div>{% endif %}
+  {% if warnings %}<ul class="tracker-notice" role="status">{% for warning in warnings %}<li>{{ warning }}</li>{% endfor %}</ul>{% endif %}
+  {% if searched and not error %}
+  <h2>{{ name }} <span class="text-accent">#{{ tag }}</span></h2>
+  <p>Nivel {{ level|default_if_none:"—" }} · Región {{ region|upper|default:"—" }} · {{ platform|upper }}</p>
+  <dl class="tracker-metrics">
+    <div><dt>Rango actual</dt><dd>{{ rank.tier_name|default:"No disponible" }}</dd></div>
+    <div><dt>RR</dt><dd>{% if rank %}{{ rank.rr|default_if_none:"—" }}{% else %}—{% endif %}</dd></div>
+    <div><dt>Partidas analizadas</dt><dd>{{ analyzed_matches }}</dd></div>
+    <div><dt>Victorias / derrotas / empates</dt><dd>{{ stats.wins }} / {{ stats.losses }} / {{ stats.draws }}</dd></div>
+    <div><dt>Victorias (sin empates)</dt><dd>{{ stats.win_rate|floatformat:1|default:"—" }} %</dd></div>
+    <div><dt>K/D</dt><dd>{{ stats.kd|floatformat:2|default:"—" }}</dd></div>
+    <div><dt>ACS</dt><dd>{{ stats.acs|floatformat:1|default:"—" }}</dd></div>
+    <div><dt>Daño por ronda</dt><dd>{{ stats.adr|floatformat:1|default:"—" }}</dd></div>
+    <div><dt>Impactos a la cabeza</dt><dd>{{ stats.headshot_percent|floatformat:1|default:"—" }} %</dd></div>
+  </dl>
+  <p class="footnote">«—» significa que no hay datos suficientes. Cada métrica utiliza solo las partidas con sus campos completos; pueden incluir modos diferentes.</p>
+  <details><summary>Cobertura de los datos</summary><ul>{% for metric, coverage in stats.coverage.items %}<li>{{ metric }}: {{ coverage.available }} de {{ coverage.total }} partidas</li>{% endfor %}</ul></details>
+  <h2>Partidas recientes</h2>
+  {% if matches %}<div class="table-wrap"><table class="tracker-table"><caption>Historial disponible en {{ source }}</caption><thead><tr><th>Fecha</th><th>Mapa / modo</th><th>Agente</th><th>Resultado</th><th>Rondas</th><th>K / D / A</th></tr></thead><tbody>
+  {% for match in matches %}<tr><td>{{ match.started_at|date:"d/m/Y H:i"|default:"—" }} UTC</td><td>{{ match.map_name }}<br><small>{{ match.mode }}</small></td><td>{{ match.agent_name|default:"—" }}</td><td class="{{ match.result }}">{% if match.result == 'victory' %}Victoria{% elif match.result == 'defeat' %}Derrota{% elif match.result == 'draw' %}Empate{% else %}No disponible{% endif %}</td><td>{{ match.rounds_won|default_if_none:"—" }} – {{ match.rounds_lost|default_if_none:"—" }}</td><td>{{ match.kills|default_if_none:"—" }} / {{ match.deaths|default_if_none:"—" }} / {{ match.assists|default_if_none:"—" }}</td></tr>{% endfor %}
+  </tbody></table></div>{% else %}<p class="tracker-notice">No hay partidas disponibles para mostrar.</p>{% endif %}
+  <p class="footnote">Fuente: {{ source }} · Consulta: {{ updated_at|date:"d/m/Y H:i" }} UTC</p>
+  {% endif %}
+  {% endif %}
+</section>
+{% endblock %}

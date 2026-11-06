@@ -11,9 +11,9 @@ Aplicación web escolar sobre VALORANT: portada, guías, estadísticas, perfiles
 | 0 | Fundamentos, arquitectura, amenazas, privacidad, assets | Documentada; revisión independiente pendiente |
 | 1 | Portada, identidad, intro, navegación, datos DEMO | **Implementada y verificada** |
 | 2 | Guías, mapas, combinaciones por mapa/división, 25 rangos e intro 3D | **Implementada**; 32 pruebas Django + 68 comprobaciones de navegador |
-| 3 | Cuentas, perfiles y estadísticas | Pendiente (bloqueada por decisiones de escuela/Riot) |
+| 3 | Tracker HenrikDev: cuenta, rango, partidas y métricas | Implementado en Django; requiere clave y verificación real con una cuenta autorizada |
 | 4 | Aim trainer original | Pendiente |
-| 5 | Preparación de despliegue | Pendiente |
+| 5 | Publicación frontend en GitHub Pages | Exportador estático y workflow configurados |
 
 Las estadísticas actuales son **DEMO · Datos ficticios**: sintéticas, deterministas y estáticas. Riot/RSO está desactivado por feature flag. No se simulan actualizaciones ni se mezclan datos demo con reales.
 
@@ -89,3 +89,41 @@ docs/             arquitectura, seguridad, privacidad, assets, operación y QA
 - Sin inspección visual humana de las capturas en esta sesión; las comprobaciones de layout son programáticas.
 - Sin lector de pantalla, sin Firefox y sin pruebas de penetración ejecutadas.
 - Registro, menores, correo real, Riot/RSO y hosting requieren decisiones y autorizaciones externas.
+
+## Entrega A6U2: GitHub Pages
+
+La publicación estática se construye automáticamente desde `master` con
+`.github/workflows/pages.yml`. En GitHub, Settings → Pages debe usar
+**GitHub Actions** como fuente. URL prevista: https://AntxnixGaona.github.io/JKVAL/
+
+El exportador renderiza las páginas educativas con Django durante el build;
+GitHub Pages sirve únicamente HTML/CSS/JS y recursos locales. No publica
+credenciales, SQLite ni perfiles reales. Los filtros de servidor aparecen
+deshabilitados y el tracker explica que necesita ejecutar Django. El aim
+trainer y el explorador de estadísticas conservan sus avisos de desarrollo.
+
+```bash
+.venv/bin/python scripts/export_pages.py --prefix /JKVAL --output dist
+```
+
+`dist/` es regenerable y no se versiona. El exportador verifica las rutas y
+recursos referenciados y falla si intenta consultar la red. Para reconstruir,
+elimina únicamente la salida `dist/` generada anteriormente.
+
+## Tracker local con HenrikDev
+
+El buscador está en `/player/buscar/`. Consulta cuenta, MMR v3 e historial v4;
+muestra resultados parciales y errores explícitos, nunca estadísticas ficticias
+como reemplazo. Calcula las métricas sobre las últimas 10 partidas disponibles
+(configurable entre 1 y 20), que pueden incluir modos distintos. La persistencia
+deduplica por match ID; todavía no ofrece un historial completo ni filtros de
+modo/temporada. Las ausencias se muestran como «—».
+
+1. Copia `.env.example` a `.env` y establece `HENRIKDEV_API_KEY` con una clave
+   propia vigente. El archivo se carga automáticamente; el entorno tiene prioridad.
+2. Instala `requirements.txt` y ejecuta `python manage.py migrate`.
+3. Ejecuta `python manage.py runserver` y abre el buscador.
+
+Las credenciales nunca deben publicarse. Rota cualquier clave compartida
+anteriormente. Consulta únicamente cuentas cuyo titular autorice el uso de sus
+ datos. Esta integración no es Riot Sign On y no habilita el tracker en Pages.

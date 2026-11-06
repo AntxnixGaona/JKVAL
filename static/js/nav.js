@@ -3,7 +3,7 @@
   "use strict";
   var disclosure = document.querySelector(".nav-disclosure");
   if (!disclosure) return;
-  var wide = window.matchMedia("(min-width: 981px)");
+  var wide = window.matchMedia("(min-width: 1281px)");
   function sync() {
     disclosure.open = wide.matches;
   }

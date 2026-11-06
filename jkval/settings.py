@@ -4,6 +4,66 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+def _load_env_file(path: Path) -> None:
+    """Carga ``KEY=VALUE`` de un archivo .env sin dependencias externas.
+
+    - Ignora comentarios y líneas sin ``=``.
+    - Ignora valores vacíos.
+    - Quita comillas simples o dobles que envuelvan el valor.
+    - Usa ``os.environ.setdefault``: el entorno real siempre tiene prioridad.
+    """
+    if not path.is_file():
+        return
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return
+    for raw_line in lines:
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[len("export "):].strip()
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        if not key:
+            continue
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
+            value = value[1:-1]
+        if not value:
+            continue
+        os.environ.setdefault(key, value)
+
+
+_load_env_file(BASE_DIR / ".env")
+
+
+def _env_float(name: str, default: float) -> float:
+    raw = os.environ.get(name, "").strip()
+    if not raw:
+        return default
+    try:
+        value = float(raw)
+    except ValueError:
+        return default
+    return value if value > 0 else default
+
+
+def _env_int_clamped(name: str, default: int, minimum: int, maximum: int) -> int:
+    raw = os.environ.get(name, "").strip()
+    if not raw:
+        return default
+    try:
+        value = int(raw)
+    except ValueError:
+        return default
+    return min(maximum, max(minimum, value))
+
+
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
     "dev-only-insecure-key-change-me-before-any-deployment-000020",
@@ -126,6 +186,11 @@ PERMISSIONS_POLICY = "camera=(), microphone=(), geolocation=(), payment=(), usb=
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1_000_000
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1_000_000
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 200
+
+# Proveedor de datos de VALORANT (HenrikDev)
+HENRIKDEV_API_KEY = os.environ.get("HENRIKDEV_API_KEY", "").strip()
+HENRIKDEV_TIMEOUT = _env_float("HENRIKDEV_TIMEOUT", 8.0)
+HENRIKDEV_MATCH_SIZE = _env_int_clamped("HENRIKDEV_MATCH_SIZE", 10, 1, 20)
 
 # Funciones dependientes de autorización externa
 FEATURE_RIOT_RSO = False
