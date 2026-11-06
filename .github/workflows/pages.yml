@@ -1,4 +1,4 @@
-name: Publicar JKVAL en GitHub Pages
+name: Publicar página
 on:
   push:
     branches: [master]
