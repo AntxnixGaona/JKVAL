@@ -99,8 +99,7 @@ La publicación estática se construye automáticamente desde `master` con
 El exportador renderiza las páginas educativas con Django durante el build;
 GitHub Pages sirve únicamente HTML/CSS/JS y recursos locales. No publica
 credenciales, SQLite ni perfiles reales. Los filtros de servidor aparecen
-deshabilitados y el tracker explica que necesita ejecutar Django. El aim
-trainer y el explorador de estadísticas conservan sus avisos de desarrollo.
+deshabilitados y el tracker explica que necesita ejecutar Django. El aim trainer 3D funciona íntegramente en el navegador. El explorador de estadísticas conserva su aviso de desarrollo.
 
 ```bash
 .venv/bin/python scripts/export_pages.py --prefix /JKVAL --output dist
@@ -127,3 +126,27 @@ modo/temporada. Las ausencias se muestran como «—».
 Las credenciales nunca deben publicarse. Rota cualquier clave compartida
 anteriormente. Consulta únicamente cuentas cuyo titular autorice el uso de sus
  datos. Esta integración no es Riot Sign On y no habilita el tracker en Pages.
+
+
+## Aim trainer
+
+`/aim-trainer/` funciona tanto en Django como en GitHub Pages, sin API ni CDN.
+Requiere WebGL, mouse y teclado, y un navegador que permita Pointer Lock.
+Incluye un campo de práctica y tres escenarios graybox aproximados (entradas
+Ascent A, Bind B y Haven C), con colisiones y oclusión de disparos. No son
+recreaciones a escala de los mapas de Riot.
+
+Usa WASD, Shift para caminar, click para disparar, R para recargar y Esc para
+pausar. Hay precisión, peeks con objetivos alternados, movimiento y pared de
+recoil. Los perfiles Vandal/Phantom son aproximaciones, no patrones oficiales.
+
+Sensibilidad: referencia comunitaria de 0.07 grados por count. DPI solo calcula
+cm/360; nunca escala otra vez los eventos. La entrada sin aceleración se solicita
+cuando está disponible, pero el navegador puede ignorarla. Calibra físicamente
+una vuelta completa con el mismo DPI y sistema que usas en Valorant. FOV vertical
+fijo equivalente a 103 grados horizontales en 16:9; otras relaciones de aspecto
+cambian el FOV horizontal. Ajustes guardados solo en localStorage.
+
+Motor: Three.js r160 vendorizado, licencia MIT en `static/vendor/three-LICENSE.txt`.
+Pruebas del cálculo y geometría: `node --test scripts/test_aim.mjs`.
+Referencia de entrada: https://www.w3.org/TR/pointerlock/

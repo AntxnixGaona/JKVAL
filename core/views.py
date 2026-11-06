@@ -376,18 +376,7 @@ def estadisticas(request):
 
 @require_safe
 def aim_trainer(request):
-    return _placeholder(
-        request,
-        "Aim trainer",
-        "Fase 4",
-        "Entrenador original en navegador, con calibración, métricas honestas y alternativa táctil. Se implementa tras verificar las fases anteriores.",
-        [
-            "Escenarios y arte originales",
-            "Pointer lock en escritorio y alternativa táctil",
-            "Sensibilidad/DPI como calibración, sin prometer equivalencia exacta",
-            "Progreso local por defecto y sincronización solo con consentimiento",
-        ],
-    )
+    return render(request, "core/aim_trainer.html", {"page_title": "Aim trainer"})
 
 
 @require_safe

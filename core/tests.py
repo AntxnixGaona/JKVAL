@@ -863,3 +863,19 @@ class TrackerPresentationTests(TestCase):
         self.assertContains(response, 'El tracker necesita un servidor')
         self.assertNotContains(response, '<form')
         get.assert_not_called()
+
+
+class AimTrainerTests(SimpleTestCase):
+    def test_trainer_renders_without_contacting_player_api(self):
+        with mock.patch("requests.sessions.Session.request", side_effect=AssertionError("No API required")):
+            response = self.client.get(reverse("core:aim_trainer"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="aim-canvas"')
+        self.assertContains(response, 'type="module"')
+        self.assertNotContains(response, 'Gate pendiente')
+
+    @override_settings(STATIC_BUILD=True)
+    def test_static_trainer_keeps_client_controls(self):
+        response = self.client.get(reverse("core:aim_trainer"))
+        self.assertContains(response, 'id="aim-start"')
+        self.assertNotContains(response, '<form')

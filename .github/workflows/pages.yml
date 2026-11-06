@@ -17,6 +17,10 @@ jobs:
         with:
           python-version: '3.13'
       - run: pip install -r requirements.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test scripts/test_aim.mjs
       - run: python manage.py check
       - run: python manage.py test --verbosity 1
       - run: python scripts/export_pages.py --prefix /JKVAL --output dist

@@ -1,0 +1,44 @@
+{% extends "base.html" %}{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/aim-trainer.css' %}">
+<section class="wrap aim-page">
+  <p class="eyebrow">PRÁCTICA / 3D EN TU NAVEGADOR</p><h1>AIM TRAINER</h1>
+  <p>Afina la mira, controla las ráfagas y practica cómo salir de una cobertura.</p>
+  <div class="aim-layout">
+    <aside class="aim-settings" aria-label="Configuración de práctica">
+      <label>Escenario<select id="aim-map"><option value="range">Campo de práctica</option><option value="ascent">Ascent · entrada a A</option><option value="bind">Bind · entrada a B</option><option value="haven">Haven · entrada a C</option></select></label>
+      <label>Ejercicio<select id="aim-mode"><option value="static">Precisión · objetivos fijos</option><option value="peek">Peeks · limpiar ángulos</option><option value="strafe">Objetivos en movimiento</option><option value="spray">Recoil · pared de impactos</option></select></label>
+      <label>Arma de referencia<select id="aim-weapon"><option value="vandal">Vandal · 25 balas</option><option value="phantom">Phantom · 30 balas</option></select></label>
+      <div class="aim-pair"><label>Sens de Valorant<input id="aim-sens" type="number" value="0.35" min="0.01" max="10" step="0.001"></label><label>DPI del mouse<input id="aim-dpi" type="number" value="800" min="100" max="32000" step="50"></label></div>
+      <label>Factor de calibración<input id="aim-factor" type="number" value="1" min="0.1" max="5" step="0.01"></label>
+      <p id="aim-distance" class="aim-small"></p>
+      <label class="aim-check"><input id="aim-recoil" type="checkbox" checked> Recoil y dispersión</label>
+      <label>Duración<select id="aim-duration"><option value="60">60 segundos</option><option value="120">120 segundos</option><option value="0">Libre</option></select></label>
+      <button id="aim-start" class="btn btn--primary" type="button">COMENZAR</button>
+      <button id="aim-reset" class="btn btn--ghost" type="button">REINICIAR</button>
+      <button id="aim-fullscreen" class="btn btn--ghost" type="button">PANTALLA COMPLETA</button>
+      <p class="aim-small">WASD: moverte · Shift: caminar · Click: disparar · R: recargar · Esc: pausar.</p>
+    </aside>
+    <div>
+      <div id="aim-stage" class="aim-stage">
+        <canvas id="aim-canvas" tabindex="0" aria-label="Escenario 3D de práctica de puntería"></canvas>
+        <div class="aim-crosshair" aria-hidden="true">+</div>
+        <div class="aim-hud"><span id="aim-clock">60 s</span><span id="aim-score">0 objetivos</span><span id="aim-ammo">25 / 25</span></div>
+        <div id="aim-message" class="aim-message" role="status">Configura tu sensibilidad y pulsa Comenzar. Necesitas mouse y teclado.</div>
+        <canvas id="aim-minimap" class="aim-minimap" width="150" height="150" aria-label="Plano del escenario y posición del jugador"></canvas>
+        <div id="aim-feedback" class="aim-feedback" aria-hidden="true"></div>
+      </div>
+      <p id="aim-map-hint" class="aim-small"></p>
+      <p id="aim-input" class="aim-small" role="status">Mouse sin capturar.</p>
+      <div class="aim-results" aria-live="polite" id="aim-results">Tu resumen aparecerá al terminar la sesión.</div>
+    </div>
+  </div>
+  <details class="aim-notes"><summary>Sensibilidad y límites de la simulación</summary>
+    <p>Se usa la referencia comunitaria de 0.07° por unidad de movimiento × sensibilidad, con FOV vertical equivalente a 103° horizontales en 16:9. El DPI sirve para calcular cm/360; no vuelve a multiplicar la entrada del mouse. No se puede leer el DPI real desde el navegador.</p>
+    <p>Para calibrar: mide cuánto desplazas el mouse para una vuelta completa en Valorant y aquí, con el mismo DPI. Multiplica el factor actual por (distancia aquí ÷ distancia en Valorant). Usa la misma configuración del sistema. Se solicita entrada sin aceleración cuando el navegador la admite; aun así, la equivalencia no está garantizada.</p>
+    <p>El recoil, la dispersión, los tiempos y la geometría son aproximaciones originales para practicar. No son los patrones internos de Riot ni mapas a escala exacta. Los impactos no atraviesan paredes. El entrenador funciona localmente, sin API; solo guarda tus ajustes en este navegador.</p>
+  </details>
+  <noscript>Activa JavaScript para usar el entrenador.</noscript>
+</section>
+<script type="module" src="{% static 'js/aim-trainer.mjs' %}"></script>
+{% endblock %}
