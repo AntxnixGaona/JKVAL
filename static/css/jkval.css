@@ -1394,3 +1394,34 @@ main { flex: 1; }
 .static-form { border: 0; padding: 0; min-width: 0; opacity: .65; }
 @media (max-width: 760px) { .tracker-search { grid-template-columns: 1fr 1fr; } .tracker-search .btn { width: 100%; } }
 @media (max-width: 420px) { .tracker-search { grid-template-columns: 1fr; } }
+
+/* Mobile layout shared by Django and the GitHub Pages export. */
+@media (max-width: 760px) {
+  .hero__grid { padding-block: 36px 64px; }
+  .page-hero { padding-block: 36px; }
+  .section { padding-block: 36px; }
+  .section-head { gap: 16px; }
+  .section-head > *, .hero__grid > *, .panel-grid > * { min-width: 0; }
+  .section-head h2, .page-hero h1, .tracker h1 { overflow-wrap: anywhere; }
+  .field input, .field select, .tracker-search input, .tracker-search select {
+    font-size: 16px; min-height: 48px;
+  }
+  .btn, .nav-toggle, .segmented__item { min-height: 44px; }
+  .site-nav { max-height: calc(100dvh - 84px); overflow-y: auto; overscroll-behavior: contain; }
+  .table-wrap { max-width: 100%; overflow-x: auto; }
+  .publication-note { font-size: .8rem; line-height: 1.5; padding-block: 12px; }
+  .tracker { padding-block: 32px 48px; }
+  .tracker-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .tracker-metrics div { min-width: 0; padding: 14px; }
+  .tracker-metrics dd { font-size: 1.6rem; overflow-wrap: anywhere; }
+  .rank-tier { padding: 16px; }
+  .rank-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .rank-tile { min-width: 0; padding-inline: 4px; }
+  .rank-tile__name { font-size: .8rem; }
+  .rank-tile .tag { max-width: 100%; white-space: normal; }
+  .footer__bottom p { overflow-wrap: anywhere; }
+}
+@media (max-width: 380px) {
+  .rank-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero__actions { flex-direction: column; align-items: stretch; }
+}
