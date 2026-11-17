@@ -2,7 +2,7 @@ from urllib.parse import urlencode
 import logging
 
 from django.conf import settings
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_safe, require_http_methods
@@ -650,3 +650,57 @@ def training_history(request):
         'best':max((r.accuracy for r in rows),default=0),
         'change':round(rows[0].accuracy-rows[1].accuracy,1) if len(rows)>1 else None,
     })
+
+
+@require_http_methods(['GET', 'POST'])
+def notes(request):
+    """CRUD protegido para la tabla existente del ejercicio en Supabase."""
+    import os
+    import hmac
+    import hashlib
+    from .services.supabase_notes import request_notes, NotesUnavailable
+    access_key = os.environ.get('JKVAL_NOTES_PASSWORD', '')
+    fingerprint = hashlib.sha256(access_key.encode()).hexdigest() if access_key else ''
+    authenticated = bool(fingerprint and hmac.compare_digest(request.session.get('notes_authenticated', ''), fingerprint))
+    error = ''
+    if request.method == 'POST':
+        action = request.POST.get('action', '')
+        if action == 'login':
+            provided = request.POST.get('password', '')
+            if len(access_key) >= 16 and hmac.compare_digest(provided, access_key):
+                request.session.cycle_key()
+                request.session['notes_authenticated'] = fingerprint
+                return redirect('core:notes')
+            error = 'No se pudo iniciar sesión. Comprueba la contraseña.'
+        elif action == 'logout':
+            request.session.flush()
+            return redirect('core:notes')
+        elif not authenticated:
+            return HttpResponseForbidden('Acceso requerido.')
+        elif action in ('create', 'update', 'delete'):
+            title = request.POST.get('titulo', '').strip()
+            content = request.POST.get('contenido', '').strip()
+            raw_id = request.POST.get('id', '')
+            if action != 'create' and (not raw_id.isascii() or not raw_id.isdigit() or len(raw_id) > 19 or not 0 < int(raw_id) < 2**63):
+                error = 'Identificador inválido.'
+            elif action != 'delete' and (not title or len(title) > 120 or len(content) > 2000):
+                error = 'Escribe un título de hasta 120 caracteres y contenido de hasta 2000.'
+            else:
+                try:
+                    method = {'create': 'POST', 'update': 'PATCH', 'delete': 'DELETE'}[action]
+                    result = request_notes(method, None if action == 'create' else int(raw_id), None if action == 'delete' else {'titulo': title, 'contenido': content})
+                    if not result:
+                        error = 'No se encontró la nota.'
+                    else:
+                        return redirect('core:notes')
+                except NotesUnavailable as exc:
+                    error = str(exc)
+        else:
+            error = 'Acción no válida.'
+    rows = []
+    if authenticated:
+        try:
+            rows = request_notes('GET')
+        except NotesUnavailable as exc:
+            error = str(exc)
+    return render(request, 'core/notes.html', {'page_title': 'Notas', 'authenticated': authenticated, 'notes': rows, 'error': error})

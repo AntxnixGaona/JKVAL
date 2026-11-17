@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="wrap tracker">
+  <p class="eyebrow">JKVAL / Supabase</p><h1>Notas</h1>
+  {% if error %}<p class="tracker-notice" role="alert">{{ error }}</p>{% endif %}
+  {% if not authenticated %}
+  <p>Ingresa la contraseña de acceso para administrar las notas.</p>
+  <form method="post" class="practice-form">{% csrf_token %}<input type="hidden" name="action" value="login"><label class="field"><span>Contraseña</span><input type="password" name="password" required autocomplete="current-password"></label><button class="btn btn--primary">Entrar</button></form>
+  {% else %}
+  <p>Las notas se consultan y guardan en Supabase.</p>
+  <form method="post" class="practice-form">{% csrf_token %}<input type="hidden" name="action" value="create"><label class="field"><span>Título</span><input name="titulo" maxlength="120" required></label><label class="field"><span>Contenido</span><textarea name="contenido" maxlength="2000" rows="4"></textarea></label><button class="btn btn--primary">Crear nota</button></form>
+  <h2>Notas guardadas</h2>
+  {% for note in notes %}<div class="practice-panel"><form method="post" class="practice-form">{% csrf_token %}<input type="hidden" name="id" value="{{ note.id }}"><label class="field"><span>Título</span><input name="titulo" value="{{ note.titulo }}" maxlength="120" required></label><label class="field"><span>Contenido</span><textarea name="contenido" maxlength="2000" rows="3">{{ note.contenido }}</textarea></label><div><button class="btn btn--primary" name="action" value="update">Guardar cambios</button> <button class="btn btn--ghost" name="action" value="delete" formnovalidate>Eliminar</button></div></form></div>{% empty %}<p>No hay notas guardadas.</p>{% endfor %}
+  <form method="post">{% csrf_token %}<button class="btn btn--ghost" name="action" value="logout">Cerrar sesión</button></form>
+  {% endif %}
+</section>
+{% endblock %}

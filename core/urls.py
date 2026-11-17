@@ -6,6 +6,7 @@ from . import views
 app_name = "core"
 
 urlpatterns = [
+    path("notas/", views.notes, name="notes"),
     path("api/entrenamientos/", views.training_save, name="training_save"),
     path("mi-progreso/", views.training_history, name="training_history"),
     path(

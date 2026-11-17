@@ -929,3 +929,26 @@ class TrainingResultTests(TestCase):
     def test_csrf_required(self):
         from django.test import Client
         self.assertEqual(Client(enforce_csrf_checks=True).post('/api/entrenamientos/',self.payload(),content_type='application/json').status_code,403)
+
+
+class SupabaseNotesTests(TestCase):
+    @mock.patch.dict('os.environ', {'JKVAL_NOTES_PASSWORD': 'test-password-long-enough', 'SUPABASE_URL': 'https://project.supabase.co', 'SUPABASE_SECRET_KEY': 'test-secret'})
+    @mock.patch('core.services.supabase_notes.requests.request')
+    def test_login_and_crud_use_server_side_supabase(self, request_mock):
+        request_mock.return_value.raise_for_status.return_value = None
+        request_mock.return_value.content = b'[]'
+        request_mock.return_value.json.return_value = [{'id': 9, 'titulo': 'Ejemplo', 'contenido': 'Prueba'}]
+        self.assertEqual(self.client.post('/notas/', {'action':'create','titulo':'X'}).status_code, 403)
+        self.assertEqual(self.client.post('/notas/', {'action':'login','password':'test-password-long-enough'}).status_code, 302)
+        for action,method in [('create','POST'),('update','PATCH'),('delete','DELETE')]:
+            self.assertEqual(self.client.post('/notas/', {'action':action,'id':'9','titulo':'Ejemplo','contenido':'Prueba'}).status_code, 302)
+            self.assertEqual(request_mock.call_args.args[0], method)
+        page = self.client.get('/notas/')
+        self.assertContains(page, 'Ejemplo')
+        self.assertNotContains(page, 'test-secret')
+
+    @mock.patch.dict('os.environ', {'JKVAL_NOTES_PASSWORD': 'test-password-long-enough'})
+    def test_rejects_invalid_login(self):
+        response = self.client.post('/notas/', {'action':'login','password':'wrong'})
+        self.assertContains(response, 'No se pudo iniciar sesión')
+        self.assertEqual(self.client.post('/notas/', {'action':'delete','id':'9'}).status_code, 403)
