@@ -5,9 +5,11 @@ from django.conf import settings
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.decorators.http import require_safe
+from django.views.decorators.http import require_safe, require_http_methods
 
 from . import catalog, demo
+from .forms import PracticeSessionForm
+from .models import PracticeSession
 from .services import tracker_service
 from .services.valorant_api import (
     AccountNotFound,
@@ -18,6 +20,24 @@ from .services.valorant_api import (
 
 LEGAL_UPDATED = "2026-10-28"
 logger = logging.getLogger(__name__)
+
+
+@require_http_methods(["GET", "POST"])
+def practices(request):
+    """Guarda un resultado del formulario y consulta los últimos registros."""
+    if request.method == "POST":
+        form = PracticeSessionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(f"{reverse('core:practices')}?guardado=1")
+    else:
+        form = PracticeSessionForm()
+    return render(request, "core/practices.html", {
+        "page_title": "Registro de prácticas",
+        "form": form,
+        "sessions": PracticeSession.objects.all()[:20],
+        "saved": request.GET.get("guardado") == "1",
+    })
 
 
 def _sort_links(filters: dict) -> list[dict]:
@@ -587,3 +607,46 @@ def player_stats_view(request, name: str, tag: str):
         "account": account,
     }
     return render(request, "core/player_stats.html", context)
+
+
+@require_http_methods(["POST"])
+def training_save(request):
+    import json
+    import uuid
+    import math
+    from .models import TrainingResult
+    try:
+        data = json.loads(request.body)
+        sid = uuid.UUID(data['session_id'])
+        player = data['player'].strip()
+        if not player or len(player) > 40:
+            raise ValueError()
+        for key in ('shots', 'hits', 'kills', 'headshots'):
+            if type(data[key]) is not int or not 0 <= data[key] <= 1000000:
+                raise ValueError()
+        duration = float(data['duration'])
+        if not math.isfinite(duration) or not 0 < duration <= 86400:
+            raise ValueError()
+        if not data['headshots'] <= data['hits'] <= data['shots'] or data['kills'] > data['hits']:
+            raise ValueError()
+        if data['mode'] not in ('static','peek','strafe','spray') or data['arena'] not in ('range','ascent','bind','haven') or data['weapon'] not in ('vandal','phantom'):
+            raise ValueError()
+    except (ValueError, KeyError, TypeError, AttributeError):
+        return JsonResponse({'error': 'Resultado inválido.'}, status=400)
+    fields = {key: data[key] for key in ('mode','arena','weapon','shots','hits','kills','headshots')}
+    result, created = TrainingResult.objects.get_or_create(session_id=sid, defaults={**fields, 'player':player, 'duration':duration})
+    return JsonResponse({'id':result.pk, 'saved':True}, status=201 if created else 200)
+
+
+@require_safe
+def training_history(request):
+    from .models import TrainingResult
+    player = request.GET.get('player', '').strip()[:40]
+    rows = list(TrainingResult.objects.filter(player=player)[:100]) if player else []
+    total_shots = sum(r.shots for r in rows)
+    return render(request, 'core/training_history.html', {
+        'page_title':'Mi progreso', 'player':player, 'results':rows,
+        'accuracy': round(sum(r.hits for r in rows)*100/total_shots,1) if total_shots else 0,
+        'best':max((r.accuracy for r in rows),default=0),
+        'change':round(rows[0].accuracy-rows[1].accuracy,1) if len(rows)>1 else None,
+    })

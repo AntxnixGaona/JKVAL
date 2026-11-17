@@ -5,3 +5,6 @@ body:has(.aim-page)::after{display:none}
 .aim-stage{scroll-margin-top:90px}
 
 .aim-minimap{position:absolute;right:12px;top:62px;width:120px!important;height:120px!important;opacity:.85;pointer-events:none;border:1px solid #6b7280}.aim-stage canvas.aim-minimap{width:120px;height:120px}
+
+.aim-settings { max-height: 720px; overflow-y: auto; scrollbar-width: thin; }
+@media(max-width: 800px){ .aim-settings { max-height: none; } }

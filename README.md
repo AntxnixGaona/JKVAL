@@ -128,6 +128,17 @@ anteriormente. Consulta únicamente cuentas cuyo titular autorice el uso de sus
  datos. Esta integración no es Riot Sign On y no habilita el tracker en Pages.
 
 
+## Registro de prácticas local
+
+En `/practicas/`, el usuario captura alias, ejercicio, aciertos e intentos. Un
+formulario POST protegido con CSRF envía los datos a Django; `PracticeSessionForm`
+valida que haya al menos un intento y que los aciertos no superen los intentos.
+`PracticeSession` persiste cada registro en SQLite. La misma página consulta los
+últimos 20 resultados y calcula la precisión; al recargar, los datos permanecen.
+Esta función requiere ejecutar Django y no se publica en la exportación estática
+de GitHub Pages. Los resultados son introducidos por usuarios de la instalación
+local; no provienen de Riot ni de HenrikDev.
+
 ## Aim trainer
 
 `/aim-trainer/` funciona tanto en Django como en GitHub Pages, sin API ni CDN.

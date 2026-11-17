@@ -6,16 +6,45 @@ let renderer;
 try {renderer=new T.WebGLRenderer({canvas,antialias:true});} catch { $('message').textContent='No se pudo iniciar WebGL. Prueba un navegador con aceleración gráfica.'; $('start').disabled=true; }
 if(renderer) init();
 function init(){
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0x343b4b);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setClearColor(0x343b4b);
+  renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
   const scene=new T.Scene();scene.fog=new T.Fog(0x343b4b,35,95);
-  scene.add(new T.HemisphereLight(0xeaf2ff,0x828b9e,2.4));const sun=new T.DirectionalLight(0xffffff,2.6);sun.position.set(-8,25,12);scene.add(sun);
+  scene.add(new T.HemisphereLight(0xeaf2ff,0x828b9e,2.4));const sun=new T.DirectionalLight(0xffffff,2.6);sun.position.set(-8,25,12);scene.add(sun);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-35;sun.shadow.camera.right=35;sun.shadow.camera.top=35;sun.shadow.camera.bottom=-35;sun.shadow.camera.far=90;sun.shadow.bias=-.001;
   const camera=new T.PerspectiveCamera(70,1,.05,120);camera.rotation.order='YXZ';scene.add(camera);
-  const gun=new T.Group();camera.add(gun);gun.position.set(.25,-.24,-.48);
+  const gun=new T.Group();camera.add(gun);gun.position.set(.25,-.24,-.48);gun.scale.setScalar(.75);
+  const muzzle=new T.Mesh(new T.SphereGeometry(.04,8,6),new T.MeshBasicMaterial({color:0xffcc77}));muzzle.position.set(0,.02,-.44);gun.add(muzzle);muzzle.visible=false;
   for(const [w,h,d,x,y,z] of [[.10,.09,.38,0,0,0],[.035,.035,.25,0,.02,-.3],[.07,.15,.08,0,-.10,.06]]){const part=new T.Mesh(new T.BoxGeometry(w,h,d),new T.MeshStandardMaterial({color:0x343048,roughness:.6}));part.position.set(x,y,z);gun.add(part);}
   const world=new T.Group();scene.add(world);const ray=new T.Raycaster();
-  const keys=new Set();let walls=[],solid=[],targets=[],marks=[],map,shot=0,ammo=25,shots=0,hits=0,kills=0,heads=0,movingShots=0;
+  const desiredVelocity=new T.Vector3();const keys=new Set();let walls=[],solid=[],targets=[],marks=[],map,shot=0,ammo=25,shots=0,hits=0,kills=0,heads=0,movingShots=0;
   let yaw=0,pitch=0,velocity=new T.Vector3(),elapsed=0,lastShot=-100,reloadEnd=0,active=false,started=false,trigger=false,raw='';
+  let sessionId=null,sessionPlayer='',finished=false,saving=false;
   let previous=performance.now(),feedbackUntil=0,hitTimes=[],pendingPeek=null;
+  const pendingKey='jkval-aim-pending-v1';
+  let pending=[];
+  try{pending=JSON.parse(localStorage.getItem(pendingKey)||'[]');if(!Array.isArray(pending))pending=[];$('player').value=localStorage.getItem('jkval-aim-player')||'';}catch{}
+  function storePending(){try{localStorage.setItem(pendingKey,JSON.stringify(pending));}catch{$('save-status').textContent='Almacenamiento local no disponible. Mantén esta página abierta hasta guardar.';}}
+  function historyLink(){const link=$('history');if(link)link.href='/mi-progreso/?player='+encodeURIComponent($('player').value.trim());}
+  $('player').addEventListener('input',historyLink);historyLink();
+  async function flush(){
+    if(saving||!pending.length)return;
+    const config=$('save-config');if(!config){$('save-status').textContent='Resultado pendiente en este navegador. El guardado requiere abrir la aplicación Django.';return;}
+    saving=true;$('save-status').textContent='Guardando resultados…';
+    try{while(pending.length){const response=await fetch(config.dataset.url,{method:'POST',headers:{'Content-Type':'application/json','X-CSRFToken':config.querySelector('input').value},body:JSON.stringify(pending[0])});if(!response.ok)throw new Error();pending.shift();storePending();}
+      $('save-status').textContent='Resultados guardados. Consulta tu progreso.';$('retry').hidden=true;
+    }catch{$('save-status').textContent='No se pudo guardar. Resultado pendiente; vuelve a intentarlo.';$('retry').hidden=false;}
+    finally{saving=false;}
+  }
+  function finish(){
+    if(!started||finished||elapsed<=0)return;
+    finished=true;active=false;trigger=false;document.exitPointerLock?.();summary();
+    pending.push({session_id:sessionId,player:sessionPlayer,mode:$('mode').value,arena:$('map').value,weapon:$('weapon').value,shots,hits,kills,headshots:heads,duration:elapsed});storePending();flush();
+    $('message').textContent='Sesión terminada. Consulta tu progreso o inicia otra.';
+    for(const id of controls)$(id).disabled=false;$('player').disabled=false;
+  }
+  $('finish').addEventListener('click',finish);$('retry').addEventListener('click',flush);window.addEventListener('online',flush);flush();
+  // Audio breve sintetizado: no depende de archivos ni descargas durante la partida.
+  let audio;
+  function sound(hit=false){try{audio??=new AudioContext();const osc=audio.createOscillator(),gain=audio.createGain();osc.type=hit?'sine':'triangle';osc.frequency.setValueAtTime(hit?950:140,audio.currentTime);osc.frequency.exponentialRampToValueAtTime(hit?600:45,audio.currentTime+.06);gain.gain.setValueAtTime(.035,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.08);osc.connect(gain).connect(audio.destination);osc.start();osc.stop(audio.currentTime+.08);}catch{}}
   const mat=new T.MeshStandardMaterial({color:0xdde1e8,roughness:.92});
   const targetMat=new T.MeshStandardMaterial({color:0x7546dd,roughness:.8});
   const headMat=new T.MeshStandardMaterial({color:0xff9565,roughness:.6});
@@ -28,7 +57,7 @@ function init(){
     try{localStorage.setItem('jkval-aim-settings',JSON.stringify(Object.fromEntries(controls.map(id=>[id,$(id).type==='checkbox'?$(id).checked:$(id).value]))));}catch{}
   }
   function dispose(group){group.traverse(o=>{o.geometry?.dispose();if(o.material&&! [mat,targetMat,headMat].includes(o.material))o.material.dispose?.();});group.clear();}
-  function box(x,y,z,w,h,d,color){const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),color?new T.MeshStandardMaterial({color,roughness:.9}):mat);mesh.position.set(x,y,z);world.add(mesh);return mesh;}
+  function box(x,y,z,w,h,d,color){const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),color?new T.MeshStandardMaterial({color,roughness:.9}):mat);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;world.add(mesh);return mesh;}
   function build(){
     dispose(world);walls=[];solid=[];targets=[];marks=[];map=maps[$('map').value];
     const floor=box(0,-.15,0,70,.3,90,0x8993a4);walls.push(floor);
@@ -40,14 +69,14 @@ function init(){
       const dot=new T.Mesh(new T.RingGeometry(.06,.12,32),new T.MeshBasicMaterial({color:0x6f49c8,side:T.DoubleSide}));dot.position.set(map.spawn[0],1.65,map.spawn[1]-11.88);world.add(dot);
     }else for(const [x,z] of map.targets){
       const group=new T.Group();group.position.set(x,0,z);
-      const body=new T.Mesh(new T.CylinderGeometry(.26,.30,1.15,10),targetMat);body.position.y=.84;group.add(body);
-      const head=new T.Mesh(new T.SphereGeometry(.17,16,12),headMat);head.position.y=1.58;group.add(head);
+      const body=new T.Mesh(new T.CylinderGeometry(.26,.30,1.15,10),targetMat);body.position.y=.84;body.castShadow=true;group.add(body);
+      const head=new T.Mesh(new T.SphereGeometry(.17,16,12),headMat);head.position.y=1.58;head.castShadow=true;group.add(head);
       const base=new T.Mesh(new T.CylinderGeometry(.42,.42,.08,20),new T.MeshStandardMaterial({color:0x403254}));base.position.y=.04;group.add(base);
       const t={group,body,head,x,z,hp:100,respawn:0,visibleSince:null};body.userData.target=t;head.userData.target=t;head.userData.head=true;targets.push(t);world.add(group);
     }
     $('map-hint').textContent=map.hint;reset();
   }
-  function reset(){active=false;started=false;trigger=false;keys.clear();document.exitPointerLock?.();
+  function reset(){if(started&&!finished)finish();sessionId=null;finished=false;$('player').disabled=false;active=false;started=false;trigger=false;keys.clear();document.exitPointerLock?.();
     camera.position.set(...[map.spawn[0],1.65,map.spawn[1]]);yaw=0;pitch=0;velocity.set(0,0,0);shot=0;ammo=capacity();shots=hits=kills=heads=movingShots=elapsed=0;lastShot=-100;reloadEnd=0;hitTimes=[];pendingPeek=null;
     for(const [i,t] of targets.entries()){t.group.visible=$('mode').value!=='peek'||i===0;t.hp=100;t.respawn=t.group.visible?0:Infinity;t.visibleSince=null;t.group.position.set(t.x,0,t.z);}
     for(const m of marks){world.remove(m);m.geometry.dispose();m.material.dispose();}marks=[];
@@ -58,6 +87,10 @@ function init(){
     $('results').textContent=`${shots} disparos · ${hits} impactos · ${shots?Math.round(hits/shots*100):0}% precisión · ${kills} objetivos · ${heads} impactos a cabeza · ${movingShots} disparos en movimiento${mean!==null?' · '+mean+' ms desde objetivo visible hasta eliminación':''}. Tiempo activo: ${elapsed.toFixed(1)} s.`;
   }
   async function start(){
+    const player=$('player').value.trim();if(!player){$('message').textContent='Escribe tu usuario o alias antes de comenzar.';$('player').focus();return;}
+    if(finished)reset();
+    if(!sessionId){sessionId=crypto.randomUUID();sessionPlayer=player;try{localStorage.setItem('jkval-aim-player',player);}catch{}}
+
     if(!canvas.requestPointerLock){$('message').textContent='Este navegador no permite capturar el mouse. Abre el entrenador en una computadora con mouse y teclado.';return;}
     if(Number($('duration').value)&&elapsed>=Number($('duration').value))reset();
     try{raw='Se solicitó entrada sin aceleración.';await canvas.requestPointerLock({unadjustedMovement:true});}
@@ -65,8 +98,8 @@ function init(){
   }
   document.addEventListener('pointerlockchange',()=>{
     active=document.pointerLockElement===canvas;if(active)$('stage').scrollIntoView({block:'center'});trigger=false;keys.clear();velocity.set(0,0,0);
-    if(active){started=true;$('message').textContent='';$('start').textContent='CONTINUAR';$('input').textContent=raw+' Esc libera el mouse.';}else{if(started){$('message').textContent=Number($('duration').value)&&elapsed>=Number($('duration').value)?'Sesión terminada. Pulsa Comenzar para repetir.':'Sesión en pausa. Pulsa Continuar para volver.';summary();}$('input').textContent='Mouse sin capturar.';}
-    for(const id of controls)$(id).disabled=active;
+    if(active){started=true;$('player').disabled=true;$('message').textContent='';$('start').textContent='CONTINUAR';$('input').textContent=raw+' Esc libera el mouse.';}else{if(started){$('message').textContent=Number($('duration').value)&&elapsed>=Number($('duration').value)?'Sesión terminada. Pulsa Comenzar para repetir.':'Sesión en pausa. Pulsa Continuar para volver.';summary();}$('input').textContent='Mouse sin capturar.';}
+    for(const id of controls)$(id).disabled=started&&!finished;
   });
   document.addEventListener('pointerlockerror',()=>{if(!active)$('message').textContent='La captura del mouse fue rechazada. Abre esta página directamente en Chrome o Firefox, fuera de un navegador integrado, y pulsa Comenzar.';});
   document.addEventListener('mousemove',e=>{if(!active)return;const s=setting();yaw-=turn(e.movementX,s.sens,s.factor);pitch=clamp(pitch-turn(e.movementY,s.sens,s.factor),-1.5,1.5);});
@@ -78,7 +111,7 @@ function init(){
   function reload(){if(!reloadEnd&&ammo<capacity()){reloadEnd=elapsed+2.4;trigger=false;shot=0;hud();}}
   function collision(x,z){const r=.3;return x<map.bounds[0]+r||x>map.bounds[1]-r||z<map.bounds[2]+r||z>map.bounds[3]-r||solid.some(b=>x>b.min.x-r&&x<b.max.x+r&&z>b.min.z-r&&z<b.max.z+r);}
   function move(dt){let x=(keys.has('KeyD')?1:0)-(keys.has('KeyA')?1:0),z=(keys.has('KeyS')?1:0)-(keys.has('KeyW')?1:0);const len=Math.hypot(x,z)||1;const speed=keys.has('ShiftLeft')||keys.has('ShiftRight')?2.2:5.4;
-    const desired=new T.Vector3((x*Math.cos(yaw)+z*Math.sin(yaw))/len*speed,0,(-x*Math.sin(yaw)+z*Math.cos(yaw))/len*speed);velocity.lerp(desired,1-Math.exp(-18*dt));
+    const desired=desiredVelocity.set((x*Math.cos(yaw)+z*Math.sin(yaw))/len*speed,0,(-x*Math.sin(yaw)+z*Math.cos(yaw))/len*speed);velocity.lerp(desired,1-Math.exp(-18*dt));
     const nx=camera.position.x+velocity.x*dt;if(!collision(nx,camera.position.z))camera.position.x=nx;else velocity.x=0;
     const nz=camera.position.z+velocity.z*dt;if(!collision(camera.position.x,nz))camera.position.z=nz;else velocity.z=0;
   }
@@ -99,7 +132,7 @@ function init(){
     }else{
       const dot=new T.Mesh(new T.SphereGeometry(.035,6,4),new T.MeshBasicMaterial({color:0x35242f}));dot.position.copy(result.point).addScaledVector(dir,-.025);world.add(dot);marks.push(dot);if(marks.length>150){const old=marks.shift();world.remove(old);old.geometry.dispose();old.material.dispose();}
     }}
-    shot++;hud();
+    sound(!!result?.object.userData.target);shot++;hud();
   }
   $('start').addEventListener('click',start);$('reset').addEventListener('click',reset);
   $('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('stage').requestFullscreen();}catch{$('message').textContent='Pantalla completa no disponible en este navegador.';}});
@@ -125,10 +158,13 @@ function init(){
       const frustum=new T.Frustum().setFromProjectionMatrix(new T.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
       for(const t of targets){if(t.group.visible&&t.visibleSince===null){const pos=t.head.getWorldPosition(new T.Vector3());if(frustum.containsPoint(pos)){const direction=pos.clone().sub(camera.position);const distance=direction.length();ray.set(camera.position,direction.normalize());const wall=ray.intersectObjects(walls,false)[0];if(!wall||wall.distance>distance)t.visibleSince=elapsed;}}}
       if(trigger)fire();if(elapsed>feedbackUntil)$('feedback').textContent='';
-      const duration=Number($('duration').value);if(duration&&elapsed>=duration){elapsed=duration;active=false;trigger=false;document.exitPointerLock();summary();$('message').textContent='Sesión terminada. Pulsa Comenzar para repetir.';}$('start').textContent=active?'EN PRÁCTICA':'COMENZAR';hud();
+      const duration=Number($('duration').value);if(duration&&elapsed>=duration){elapsed=duration;finish();}$('start').textContent=active?'EN PRÁCTICA':'COMENZAR';hud();
     }
+    muzzle.visible=active&&elapsed-lastShot<.045;
     gun.rotation.x=Math.exp(-Math.max(0,elapsed-lastShot)*24)*.12;
-    camera.rotation.set(pitch,yaw,0);renderer.render(scene,camera);minimap();
+    camera.rotation.set(pitch,yaw,0);const bob=active?Math.sin(elapsed*10)*Math.min(velocity.length()/5.4,1)*.008:0;
+    gun.position.y=-.24+bob;gun.position.z=-.48+Math.exp(-Math.max(0,elapsed-lastShot)*24)*.025;
+    renderer.render(scene,camera);if(Math.floor(now/100)!==Math.floor((now-dt*1000)/100))minimap();
   }
   requestAnimationFrame(frame);
 }

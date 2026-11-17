@@ -6,7 +6,29 @@ from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import NoReverseMatch, reverse
 
 from . import demo
-from .models import TrackerMatch, TrackerPlayer, TrackerPlayerMatch
+from .models import PracticeSession, TrackerMatch, TrackerPlayer, TrackerPlayerMatch
+
+
+class PracticeSessionTests(TestCase):
+    def test_form_saves_and_result_survives_new_request(self):
+        response = self.client.post(reverse("core:practices"), {
+            "player": "Prueba JKVAL", "exercise": "precision",
+            "hits": 18, "attempts": 25,
+        })
+        self.assertRedirects(response, reverse("core:practices") + "?guardado=1")
+        self.assertEqual(PracticeSession.objects.count(), 1)
+        page = self.client.get(reverse("core:practices"))
+        self.assertContains(page, "Prueba JKVAL")
+        self.assertContains(page, "72,0 %")
+
+    def test_hits_cannot_exceed_attempts(self):
+        response = self.client.post(reverse("core:practices"), {
+            "player": "Prueba JKVAL", "exercise": "precision",
+            "hits": 26, "attempts": 25,
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Los aciertos no pueden superar los intentos")
+        self.assertFalse(PracticeSession.objects.exists())
 from .services import stats_calculator, tracker_service
 from .services.valorant_api import (
     AccountNotFound,
@@ -879,3 +901,31 @@ class AimTrainerTests(SimpleTestCase):
         response = self.client.get(reverse("core:aim_trainer"))
         self.assertContains(response, 'id="aim-start"')
         self.assertNotContains(response, '<form')
+
+
+class TrainingResultTests(TestCase):
+    def payload(self):
+        return {'session_id':'7281ce28-1839-4d90-b709-f01fed780ba4','player':'Jugador prueba','mode':'static','arena':'range','weapon':'vandal','shots':25,'hits':18,'kills':6,'headshots':2,'duration':60}
+
+    def test_save_retry_and_history(self):
+        from .models import TrainingResult
+        data=self.payload()
+        self.assertEqual(self.client.post('/api/entrenamientos/',data,content_type='application/json').status_code,201)
+        self.assertEqual(self.client.post('/api/entrenamientos/',data,content_type='application/json').status_code,200)
+        self.assertEqual(TrainingResult.objects.count(),1)
+        response=self.client.get('/mi-progreso/',{'player':'Jugador prueba'})
+        self.assertContains(response,'72')
+        self.assertEqual(len(response.context['results']),1)
+        other=self.client.get('/mi-progreso/',{'player':'Otro'})
+        self.assertEqual(len(other.context['results']),0)
+
+    def test_reject_invalid_results(self):
+        from .models import TrainingResult
+        for key,value in [('hits',26),('duration',-1),('player',''),('mode','invalid'),('shots',True)]:
+            data=self.payload();data[key]=value
+            self.assertEqual(self.client.post('/api/entrenamientos/',data,content_type='application/json').status_code,400)
+        self.assertFalse(TrainingResult.objects.exists())
+
+    def test_csrf_required(self):
+        from django.test import Client
+        self.assertEqual(Client(enforce_csrf_checks=True).post('/api/entrenamientos/',self.payload(),content_type='application/json').status_code,403)

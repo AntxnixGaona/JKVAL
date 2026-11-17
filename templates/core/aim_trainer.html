@@ -6,6 +6,14 @@
   <p>Afina la mira, controla las ráfagas y practica cómo salir de una cobertura.</p>
   <div class="aim-layout">
     <aside class="aim-settings" aria-label="Configuración de práctica">
+      <label>Tu usuario o alias<input id="aim-player" maxlength="40" required placeholder="Escribe tu alias"></label>
+      <p class="aim-small">Usa siempre el mismo alias para consultar tu progreso. Es un registro local compartido, sin contraseña.</p>
+      {% if not static_build %}<form id="aim-save-config" data-url="{% url 'core:training_save' %}">{% csrf_token %}</form><a id="aim-history" href="{% url 'core:training_history' %}">Consultar mi progreso</a>{% endif %}
+      <button id="aim-start" class="btn btn--primary" type="button">COMENZAR</button>
+      <button id="aim-finish" class="btn btn--primary" type="button">TERMINAR Y GUARDAR</button>
+      <p id="aim-save-status" role="status"></p><button id="aim-retry" class="btn btn--ghost" type="button" hidden>REINTENTAR GUARDADO</button>
+      <button id="aim-reset" class="btn btn--ghost" type="button">REINICIAR</button>
+      <button id="aim-fullscreen" class="btn btn--ghost" type="button">PANTALLA COMPLETA</button>
       <label>Escenario<select id="aim-map"><option value="range">Campo de práctica</option><option value="ascent">Ascent · entrada a A</option><option value="bind">Bind · entrada a B</option><option value="haven">Haven · entrada a C</option></select></label>
       <label>Ejercicio<select id="aim-mode"><option value="static">Precisión · objetivos fijos</option><option value="peek">Peeks · limpiar ángulos</option><option value="strafe">Objetivos en movimiento</option><option value="spray">Recoil · pared de impactos</option></select></label>
       <label>Arma de referencia<select id="aim-weapon"><option value="vandal">Vandal · 25 balas</option><option value="phantom">Phantom · 30 balas</option></select></label>
@@ -14,9 +22,6 @@
       <p id="aim-distance" class="aim-small"></p>
       <label class="aim-check"><input id="aim-recoil" type="checkbox" checked> Recoil y dispersión</label>
       <label>Duración<select id="aim-duration"><option value="60">60 segundos</option><option value="120">120 segundos</option><option value="0">Libre</option></select></label>
-      <button id="aim-start" class="btn btn--primary" type="button">COMENZAR</button>
-      <button id="aim-reset" class="btn btn--ghost" type="button">REINICIAR</button>
-      <button id="aim-fullscreen" class="btn btn--ghost" type="button">PANTALLA COMPLETA</button>
       <p class="aim-small">WASD: moverte · Shift: caminar · Click: disparar · R: recargar · Esc: pausar.</p>
     </aside>
     <div>
@@ -36,7 +41,7 @@
   <details class="aim-notes"><summary>Sensibilidad y límites de la simulación</summary>
     <p>Se usa la referencia comunitaria de 0.07° por unidad de movimiento × sensibilidad, con FOV vertical equivalente a 103° horizontales en 16:9. El DPI sirve para calcular cm/360; no vuelve a multiplicar la entrada del mouse. No se puede leer el DPI real desde el navegador.</p>
     <p>Para calibrar: mide cuánto desplazas el mouse para una vuelta completa en Valorant y aquí, con el mismo DPI. Multiplica el factor actual por (distancia aquí ÷ distancia en Valorant). Usa la misma configuración del sistema. Se solicita entrada sin aceleración cuando el navegador la admite; aun así, la equivalencia no está garantizada.</p>
-    <p>El recoil, la dispersión, los tiempos y la geometría son aproximaciones originales para practicar. No son los patrones internos de Riot ni mapas a escala exacta. Los impactos no atraviesan paredes. El entrenador funciona localmente, sin API; solo guarda tus ajustes en este navegador.</p>
+    <p>El recoil, la dispersión, los tiempos y la geometría son aproximaciones originales para practicar. No son los patrones internos de Riot ni mapas a escala exacta. Los impactos no atraviesan paredes. Los resultados se guardan automáticamente al terminar en la instalación Django. En GitHub Pages solo se conservan resultados pendientes en este navegador.</p>
   </details>
   <noscript>Activa JavaScript para usar el entrenador.</noscript>
 </section>

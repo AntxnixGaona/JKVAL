@@ -6,6 +6,8 @@ from . import views
 app_name = "core"
 
 urlpatterns = [
+    path("api/entrenamientos/", views.training_save, name="training_save"),
+    path("mi-progreso/", views.training_history, name="training_history"),
     path(
         "favicon.ico",
         RedirectView.as_view(url="/static/img/favicon.svg", permanent=True),
@@ -33,5 +35,6 @@ urlpatterns = [
     path("player/<str:name>/<str:tag>/", views.player_stats_view, name="player_stats"),
 
     path("aim-trainer/", views.aim_trainer, name="aim_trainer"),
+    path("practicas/", views.practices, name="practices"),
     path("salud/", views.salud, name="salud"),
 ]

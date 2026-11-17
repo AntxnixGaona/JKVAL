@@ -10,6 +10,28 @@ Los campos numéricos admiten ``NULL`` para distinguir "dato ausente" de cero.
 from django.db import models
 
 
+class PracticeSession(models.Model):
+    """Resultado de práctica introducido por el usuario en la instalación local."""
+
+    player = models.CharField(max_length=40)
+    exercise = models.CharField(max_length=20, choices=[
+        ("precision", "Precisión"),
+        ("peeks", "Peeks"),
+        ("movement", "Movimiento"),
+        ("recoil", "Recoil"),
+    ])
+    hits = models.PositiveSmallIntegerField()
+    attempts = models.PositiveSmallIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at", "-id"]
+
+    @property
+    def accuracy(self):
+        return round(self.hits * 100 / self.attempts, 1)
+
+
 class TrackerPlayer(models.Model):
     """Cuenta pública de VALORANT que se desea rastrear."""
 
@@ -120,3 +142,24 @@ class TrackerPlayerMatch(models.Model):
 
     def __str__(self):
         return f"{self.player} @ {self.match.match_id}"
+
+
+class TrainingResult(models.Model):
+    session_id = models.UUIDField(unique=True)
+    player = models.CharField(max_length=40, db_index=True)
+    mode = models.CharField(max_length=16)
+    arena = models.CharField(max_length=16)
+    weapon = models.CharField(max_length=16)
+    shots = models.PositiveIntegerField()
+    hits = models.PositiveIntegerField()
+    kills = models.PositiveIntegerField()
+    headshots = models.PositiveIntegerField()
+    duration = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    @property
+    def accuracy(self):
+        return round(100 * self.hits / self.shots, 1) if self.shots else 0

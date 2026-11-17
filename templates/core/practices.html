@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="wrap tracker practice-page">
+  <p class="eyebrow">Competitive Lab / Registro local</p>
+  <h1>Registra tu práctica.</h1>
+  <p class="lede">Guarda un resultado real de tu entrenamiento y consúltalo de inmediato. Los registros se almacenan en la base de datos de esta instalación de JKVAL.</p>
+
+  <div class="practice-layout">
+    <div class="practice-panel">
+      <h2>Nueva sesión</h2>
+      <form method="post" action="{% url 'core:practices' %}" class="practice-form">
+        {% csrf_token %}
+        <label class="field"><span>Nombre o alias</span><input type="text" name="player" maxlength="40" value="{{ form.player.value|default:'' }}" required placeholder="Tu alias"></label>
+        <label class="field"><span>Ejercicio</span><select name="exercise" required>{% for value,label in form.fields.exercise.choices %}<option value="{{ value }}"{% if form.exercise.value == value %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+        <label class="field"><span>Aciertos</span><input type="number" name="hits" min="0" max="999" value="{{ form.hits.value|default:'' }}" required placeholder="Ej. 18"></label>
+        <label class="field"><span>Intentos</span><input type="number" name="attempts" min="1" max="999" value="{{ form.attempts.value|default:'' }}" required placeholder="Ej. 25"></label>
+        {% if form.errors %}<div class="tracker-notice" role="alert">Revisa los datos: {% for field in form %}{% for error in field.errors %}{{ error }} {% endfor %}{% endfor %}</div>{% endif %}
+        <button class="btn btn--primary" type="submit">Guardar resultado</button>
+      </form>
+    </div>
+    <div class="practice-panel">
+      <h2>Últimas sesiones</h2>
+      {% if saved %}<p class="tracker-notice" role="status">Resultado guardado correctamente en el backend.</p>{% endif %}
+      {% if sessions %}
+      <div class="table-wrap"><table class="tracker-table"><thead><tr><th>Jugador</th><th>Ejercicio</th><th>Aciertos</th><th>Precisión</th><th>Fecha</th></tr></thead><tbody>
+      {% for session in sessions %}<tr><td>{{ session.player }}</td><td>{{ session.get_exercise_display }}</td><td>{{ session.hits }}/{{ session.attempts }}</td><td>{{ session.accuracy }} %</td><td>{{ session.created_at|date:"d/m/Y H:i" }} UTC</td></tr>{% endfor %}
+      </tbody></table></div>
+      {% else %}<p>Aún no hay resultados. Completa el formulario para crear el primero.</p>{% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

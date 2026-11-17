@@ -39,6 +39,7 @@
           <a href="{% url 'core:search_player' %}"{% if request.resolver_match.url_name == "search_player" or request.resolver_match.url_name == "player_stats" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">06</span>Tracker / Perfiles</a>
 
           <a href="{% url 'core:aim_trainer' %}"{% if request.resolver_match.url_name == "aim_trainer" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">07</span>Aim trainer</a>
+          {% if not static_build %}<a href="{% url 'core:practices' %}"{% if request.resolver_match.url_name == "practices" %} aria-current="page"{% endif %}><span class="nav__index" aria-hidden="true">08</span>Prácticas</a>{% endif %}
         </nav>
       </details>
 
