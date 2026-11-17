@@ -5,8 +5,8 @@ import dj_database_url
 
 DEBUG = False
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
-if len(SECRET_KEY) < 50 or SECRET_KEY.startswith('dev-only-'):
-    raise ImproperlyConfigured('Configura DJANGO_SECRET_KEY con un valor aleatorio de al menos 50 caracteres.')
+if len(SECRET_KEY) < 32 or SECRET_KEY.startswith('dev-only-'):
+    raise ImproperlyConfigured('Configura DJANGO_SECRET_KEY con un valor aleatorio de al menos 32 caracteres.')
 
 ALLOWED_HOSTS = [h.strip() for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if h.strip()]
 render_host = os.environ.get('RENDER_EXTERNAL_HOSTNAME', '').strip()

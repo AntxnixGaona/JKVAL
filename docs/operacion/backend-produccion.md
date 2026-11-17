@@ -11,7 +11,7 @@ Requiere PostgreSQL persistente. No utiliza db.sqlite3 del equipo local.
 - Inicio: `bash scripts/start-production.sh`.
 - Comprobación HTTP: `/salud/`.
 - `DJANGO_SETTINGS_MODULE=jkval.production`.
-- `DJANGO_SECRET_KEY`: secreto aleatorio de al menos 50 caracteres, generado en el proveedor.
+- `DJANGO_SECRET_KEY`: secreto aleatorio de al menos 32 caracteres, generado en el proveedor.
 - `DATABASE_URL`: conexión privada a PostgreSQL del proveedor.
 - `DJANGO_ALLOWED_HOSTS`: dominio exacto sin esquema. En Render se incorpora automáticamente RENDER_EXTERNAL_HOSTNAME.
 - `HENRIKDEV_API_KEY`: opcional, únicamente para el tracker externo.
