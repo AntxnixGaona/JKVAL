@@ -1,4 +1,6 @@
 """Configuración de JKVAL. Local-first; producción requiere variables explícitas."""
+import ipaddress
+import math
 import os
 from pathlib import Path
 
@@ -50,7 +52,28 @@ def _env_float(name: str, default: float) -> float:
         value = float(raw)
     except ValueError:
         return default
-    return value if value > 0 else default
+    return value if value > 0 and math.isfinite(value) else default
+
+
+def _env_float_clamped(name: str, default: float, maximum: float) -> float:
+    value = _env_float(name, default)
+    return min(maximum, value)
+
+
+def _env_networks(name: str) -> tuple[str, ...]:
+    return tuple(
+        value.strip()
+        for value in os.environ.get(name, "").split(",")
+        if value.strip() and _is_network(value.strip())
+    )
+
+
+def _is_network(value: str) -> bool:
+    try:
+        ipaddress.ip_network(value, strict=False)
+        return True
+    except ValueError:
+        return False
 
 
 def _env_int_clamped(name: str, default: int, minimum: int, maximum: int) -> int:
@@ -90,6 +113,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "core.middleware.TrustedProxySSLHeaderMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -164,6 +188,8 @@ SECURE_HSTS_SECONDS = 31536000 if SECURE_COOKIES and not DEBUG else 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = bool(SECURE_COOKIES and not DEBUG)
 SECURE_HSTS_PRELOAD = False
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+# Solo el proxy HTTPS declarado por el operador puede activar la cabecera.
+TRUSTED_PROXY_NETWORKS = _env_networks("DJANGO_TRUSTED_PROXY_IPS")
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 X_FRAME_OPTIONS = "DENY"
@@ -189,8 +215,27 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 200
 
 # Proveedor de datos de VALORANT (HenrikDev)
 HENRIKDEV_API_KEY = os.environ.get("HENRIKDEV_API_KEY", "").strip()
-HENRIKDEV_TIMEOUT = _env_float("HENRIKDEV_TIMEOUT", 8.0)
+HENRIKDEV_TIMEOUT = _env_float_clamped("HENRIKDEV_TIMEOUT", 8.0, 30.0)
 HENRIKDEV_MATCH_SIZE = _env_int_clamped("HENRIKDEV_MATCH_SIZE", 10, 1, 20)
+
+# Límites para rutas públicas que consumen cuota externa. El backend de caché
+# por defecto es locmem (por proceso); en producción se recomienda Redis/database.
+TRACKER_RATE_LIMIT = _env_int_clamped("TRACKER_RATE_LIMIT", 12, 1, 240)
+TRACKER_RATE_WINDOW = _env_float_clamped("TRACKER_RATE_WINDOW", 60.0, 3600.0)
+TRACKER_BACKOFF_MAX = _env_int_clamped("TRACKER_BACKOFF_MAX", 300, 1, 3600)
+TRACKER_RATE_MAX_KEYS = _env_int_clamped("TRACKER_RATE_MAX_KEYS", 4096, 64, 65536)
+NOTES_LOGIN_RATE_LIMIT = _env_int_clamped("NOTES_LOGIN_RATE_LIMIT", 10, 1, 120)
+NOTES_LOGIN_RATE_WINDOW = _env_int_clamped("NOTES_LOGIN_RATE_WINDOW", 60, 1, 3600)
+
+CACHES = {
+    "default": {
+        "BACKEND": os.environ.get(
+            "DJANGO_CACHE_BACKEND",
+            "django.core.cache.backends.locmem.LocMemCache",
+        ),
+        "LOCATION": os.environ.get("DJANGO_CACHE_LOCATION", "jkval-default"),
+    }
+}
 
 # Funciones dependientes de autorización externa
 FEATURE_RIOT_RSO = False

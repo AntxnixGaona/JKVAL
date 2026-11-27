@@ -22,6 +22,7 @@ class PracticeSession(models.Model):
     ])
     hits = models.PositiveSmallIntegerField()
     attempts = models.PositiveSmallIntegerField()
+    session_key = models.CharField(max_length=40, blank=True, default="", db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

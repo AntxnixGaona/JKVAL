@@ -13,6 +13,15 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
+
+# Este scaffold duplicado no es usado por ningún entrypoint activo. Su selección
+# accidental activaría DEBUG y una SECRET_KEY conocida: falla cerrado salvo opt-in.
+if os.environ.get('JKVAL_ENABLE_LEGACY_SCAFFOLD') != '1':
+    raise ImproperlyConfigured(
+        'Scaffold legacy desactivado; usa jkval.settings o jkval.production.'
+    )
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

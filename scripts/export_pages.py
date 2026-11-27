@@ -85,6 +85,10 @@ def main():
     if out.exists():
         ap.error('Output exists; remove only the previous generated export before rebuilding')
     out.mkdir(parents=True)
+    # Repeated canonical check immediately before use (local TOCTOU hardening).
+    out = out.resolve()
+    if out == ROOT or ROOT not in out.parents or not out.is_dir() or out.is_symlink():
+        ap.error('Output changed during export setup; aborting')
     pending, visited, assets = {'/'}, set(), set()
     client = Client()
     # Fail closed: exporting must never contact a player-data provider.

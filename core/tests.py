@@ -2,11 +2,13 @@ from pathlib import Path
 from unittest import mock
 
 import requests
+from django.core.cache import cache
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import NoReverseMatch, reverse
 
 from . import demo
 from .models import PracticeSession, TrackerMatch, TrackerPlayer, TrackerPlayerMatch
+from .services import request_limits
 
 
 class PracticeSessionTests(TestCase):
@@ -29,6 +31,18 @@ class PracticeSessionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Los aciertos no pueden superar los intentos")
         self.assertFalse(PracticeSession.objects.exists())
+
+    def test_sessions_are_isolated_by_browser_session(self):
+        other = self.client_class()
+        self.client.post(reverse("core:practices"), {
+            "player": "Alice", "exercise": "precision", "hits": 8, "attempts": 10,
+        })
+        other.post(reverse("core:practices"), {
+            "player": "Bob", "exercise": "precision", "hits": 5, "attempts": 10,
+        })
+        page = other.get(reverse("core:practices"))
+        self.assertContains(page, "Bob")
+        self.assertNotContains(page, "Alice")
 from .services import stats_calculator, tracker_service
 from .services.valorant_api import (
     AccountNotFound,
@@ -952,3 +966,59 @@ class SupabaseNotesTests(TestCase):
         response = self.client.post('/notas/', {'action':'login','password':'wrong'})
         self.assertContains(response, 'No se pudo iniciar sesión')
         self.assertEqual(self.client.post('/notas/', {'action':'delete','id':'9'}).status_code, 403)
+
+
+@override_settings(
+    TRACKER_RATE_LIMIT=1, TRACKER_RATE_WINDOW=60, TRACKER_BACKOFF_MAX=60,
+    TRACKER_RATE_MAX_KEYS=128,
+)
+class TrackerRateLimitTests(TestCase):
+    def setUp(self):
+        request_limits.reset_limits()
+
+    def tearDown(self):
+        request_limits.reset_limits()
+
+    @mock.patch("core.views.tracker_service.get_profile")
+    def test_public_profile_rate_limited(self, get_profile):
+        get_profile.return_value = {
+            "account": {
+                "name": "TenZ", "tag": "NA1", "platform": "pc", "region": "na",
+                "account_level": 100, "card": "", "title": "",
+            },
+            "rank": {"current": "Unranked", "rr": None},
+            "overview": [], "radar": [], "agents": [], "weapons": [], "maps": [],
+            "matches": [], "warnings": [], "stats": {}, "partial": False,
+            "source": "test", "updated_at": "", "analyzed_matches": 0,
+        }
+        first = self.client.get(reverse("core:player_stats", args=["TenZ", "NA1"]))
+        second = self.client.get(reverse("core:player_stats", args=["TenZ", "NA1"]))
+        self.assertEqual(first.status_code, 200)
+        self.assertEqual(second.status_code, 429)
+
+
+@override_settings(NOTES_LOGIN_RATE_LIMIT=1, NOTES_LOGIN_RATE_WINDOW=60, TRACKER_RATE_MAX_KEYS=128)
+class NotesRateLimitTests(TestCase):
+    def setUp(self):
+        request_limits.reset_limits()
+
+    def tearDown(self):
+        request_limits.reset_limits()
+
+    @mock.patch.dict("os.environ", {"JKVAL_NOTES_PASSWORD": "x" * 16})
+    def test_notes_login_rate_limited(self):
+        self.client.post(reverse("core:notes"), {"action": "login", "password": "wrong"})
+        r = self.client.post(reverse("core:notes"), {"action": "login", "password": "wrong"})
+        self.assertContains(r, "Demasiados intentos", status_code=200)
+
+
+@override_settings(SECURE_PROXY_SSL_HEADER=None)
+class RenderHTTPSMiddlewareTests(TestCase):
+    def test_scheme_does_not_depend_on_forwarded_header(self):
+        from django.test import RequestFactory
+        from core.middleware import RenderHTTPSMiddleware
+        for supplied in ('http', 'https', 'https,http', ''):
+            request = RequestFactory().get('/', HTTP_X_FORWARDED_PROTO=supplied)
+            result = RenderHTTPSMiddleware(lambda req: req.is_secure())(request)
+            self.assertTrue(result)
+            self.assertNotIn('HTTP_X_FORWARDED_PROTO', request.META)

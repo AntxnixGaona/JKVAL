@@ -253,7 +253,8 @@ class HenrikDevClient:
 
         try:
             response = self.session.get(
-                url, headers=headers, params=params, timeout=self.timeout
+                url, headers=headers, params=params, timeout=self.timeout,
+                allow_redirects=False,
             )
         except requests.exceptions.Timeout as exc:
             raise ProviderTimeout() from exc
@@ -311,7 +312,22 @@ class HenrikDevClient:
         return data
 
     @staticmethod
+    @staticmethod
+    def _safe_segment(value: Any, label: str) -> str:
+        text = str(value or "").strip()
+        if not text or ".." in text or "/" in text or "\\" in text:
+            raise InvalidRequest(f"El {label} indicado no es válido.")
+        return text
+
+    @staticmethod
     def _identity(name: str, tag: str) -> tuple[str, str]:
+        clean_name = HenrikDevClient._safe_segment(name, "nombre")
+        clean_tag = HenrikDevClient._safe_segment(str(tag or "").lstrip("#"), "tag")
+        return clean_name, clean_tag
+
+    @staticmethod
+    def _by_puuid(puuid: str) -> str:
+        return HenrikDevClient._safe_segment(puuid, "PUUID")
         clean_name = str(name or "").strip()
         clean_tag = str(tag or "").strip().lstrip("#")
         if not clean_name or not clean_tag:

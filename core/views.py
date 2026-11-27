@@ -10,12 +10,13 @@ from django.views.decorators.http import require_safe, require_http_methods
 from . import catalog, demo
 from .forms import PracticeSessionForm
 from .models import PracticeSession
-from .services import tracker_service
+from .services import request_limits, tracker_service
 from .services.valorant_api import (
     AccountNotFound,
     AuthenticationError,
     ConfigurationError,
     HenrikDevError,
+    RateLimited,
 )
 
 LEGAL_UPDATED = "2026-10-28"
@@ -24,18 +25,23 @@ logger = logging.getLogger(__name__)
 
 @require_http_methods(["GET", "POST"])
 def practices(request):
-    """Guarda un resultado del formulario y consulta los últimos registros."""
+    """Guarda y muestra resultados solo dentro de la sesión actual."""
+    if not request.session.session_key:
+        request.session.save()
+    session_key = request.session.session_key
     if request.method == "POST":
         form = PracticeSessionForm(request.POST)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.session_key = session_key
+            obj.save()
             return redirect(f"{reverse('core:practices')}?guardado=1")
     else:
         form = PracticeSessionForm()
     return render(request, "core/practices.html", {
         "page_title": "Registro de prácticas",
         "form": form,
-        "sessions": PracticeSession.objects.all()[:20],
+        "sessions": PracticeSession.objects.filter(session_key=session_key)[:20],
         "saved": request.GET.get("guardado") == "1",
     })
 
@@ -536,6 +542,20 @@ def player_stats_view(request, name: str, tag: str):
         return render(request, "core/player_stats.html", context, status=400)
 
     try:
+        request_limits.check_tracker(request)
+    except request_limits.RateLimitExceeded as exc:
+        context = _empty_tracker_context(
+            name=name, tag=tag, platform=platform, searched=True,
+        )
+        context["warnings"] = platform_warnings
+        context["error"] = (
+            f"Demasiadas búsquedas. Inténtalo de nuevo en {exc.retry_after} s."
+        )
+        response = render(request, "core/player_stats.html", context, status=429)
+        response["Retry-After"] = str(exc.retry_after)
+        return response
+
+    try:
         profile = tracker_service.get_profile(name, tag, platform=platform)
     except AccountNotFound:
         context = _empty_tracker_context(
@@ -559,6 +579,19 @@ def player_stats_view(request, name: str, tag: str):
         context["warnings"] = platform_warnings
         context["error"] = exc.user_message
         return render(request, "core/player_stats.html", context, status=503)
+    except RateLimited as exc:
+        request_limits.block_tracker(request, exc.retry_after)
+        context = _empty_tracker_context(
+            name=name,
+            tag=tag,
+            platform=platform,
+            searched=True,
+        )
+        context["warnings"] = [*platform_warnings, exc.user_message]
+        context["error"] = exc.user_message
+        response = render(request, "core/player_stats.html", context, status=429)
+        response["Retry-After"] = str(exc.retry_after or 1)
+        return response
     except HenrikDevError as exc:
         context = _empty_tracker_context(
             name=name,
@@ -666,12 +699,19 @@ def notes(request):
     if request.method == 'POST':
         action = request.POST.get('action', '')
         if action == 'login':
-            provided = request.POST.get('password', '')
-            if len(access_key) >= 16 and hmac.compare_digest(provided, access_key):
-                request.session.cycle_key()
-                request.session['notes_authenticated'] = fingerprint
-                return redirect('core:notes')
-            error = 'No se pudo iniciar sesión. Comprueba la contraseña.'
+            try:
+                request_limits.check_notes_login(request)
+            except request_limits.RateLimitExceeded as exc:
+                error = f'Demasiados intentos. Inténtalo de nuevo en {exc.retry_after} s.'
+            else:
+                provided = request.POST.get('password', '')
+                if len(access_key) >= 16 and hmac.compare_digest(
+                    provided.encode('utf-8'), access_key.encode('utf-8')
+                ):
+                    request.session.cycle_key()
+                    request.session['notes_authenticated'] = fingerprint
+                    return redirect('core:notes')
+                error = 'No se pudo iniciar sesión. Comprueba la contraseña.'
         elif action == 'logout':
             request.session.flush()
             return redirect('core:notes')
