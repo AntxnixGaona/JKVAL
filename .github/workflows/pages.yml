@@ -25,7 +25,7 @@ jobs:
       - run: python manage.py check
       - run: python manage.py test --verbosity 1
       - run: python scripts/export_pages.py --prefix /JKVAL --output dist
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
   deploy:
